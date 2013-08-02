@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/login.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/login.js"></script>
+</head>
+<body>
+	<div class="login">
+		<form class="form-group" >
+			<fieldset>
+				<legend class="login-title">Login</legend>
+				<div class="form-group">
+					<label for="username">Username: </label>
+					<input id="username" type="text" class="form-control input-small form-input" name="username" id="username" />
+				</div>
+				<input type="button" class="btn btn-default" onclick="return login()" value="Login" />
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>
