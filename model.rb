@@ -3,7 +3,8 @@ require "bundler/setup"
 require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
+#DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 class Game
 	include DataMapper::Resource
 
