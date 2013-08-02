@@ -1,6 +1,7 @@
 function login() {
-	var username = document.getElementById('username').value,
-		data = { username: username };
+	var username = document.getElementById('username').value;
+	var password = document.getElementById('password').value;
+		data = { username: username, password: password};
 
 	$.ajax({
 		url: '/login',

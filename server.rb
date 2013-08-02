@@ -5,6 +5,7 @@ require 'sinatra'
 require 'json'
 require 'pp'
 require 'sinatra-websocket'
+require 'rest-client'
 
 
 helpers do
@@ -78,10 +79,22 @@ end
 #Returns: the text 'true' or 'false' depending on whether login was successfull
 post '/login' do
 	username = params['username']
-	#puts User.get(username).to_hash
-	user = User.first_or_create(:username => username)
-	session[:username] = username
-	user.to_hash.to_json
+	password = params['password']
+
+	#check this with JIRA
+	resource = RestClient::Resource.new('https://request.siteworx.com/rest/gadget/1.0/currentUser', {:user => username, :password => password})
+	#will throw exceptions on login failure
+	begin
+		response = resource.get
+		jiraInfo = JSON.parse(response)
+		user = User.first_or_create(:username => username, :fullname => jiraInfo['fullName'])
+		session[:username] = username
+		status 200
+		user.to_hash.to_json
+	rescue Exception => e
+		content_type :html
+		halt e.http_code, e.http_body
+	end
 end
 
 #Get the currently logged in user

@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/rest-client/rest-client.git
+  revision: 5cb0da475e64139a345ad28ef3fcd58dcffd88c5
+  specs:
+    rest-client (1.7.0.alpha)
+      mime-types (>= 1.16)
+      netrc (~> 0.7.7)
+
+GIT
   remote: https://github.com/simulacre/sinatra-websocket.git
   revision: 41fc939f21b12277ea54d60b2ae6e9cc7ea31a2e
   specs:
@@ -68,7 +76,9 @@ GEM
     fastercsv (1.5.5)
     json (1.8.0)
     json_pure (1.8.0)
+    mime-types (1.23)
     multi_json (1.7.7)
+    netrc (0.7.7)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -91,5 +101,6 @@ DEPENDENCIES
   data_mapper
   dm-sqlite-adapter
   json
+  rest-client!
   sinatra
   sinatra-websocket!
