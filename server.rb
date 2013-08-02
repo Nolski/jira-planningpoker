@@ -48,6 +48,7 @@ configure do
 	set :session_secret, "vM1IAofoUlBl57bDYzmJ"
 	set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
 	#set :protection, except: :session_hijacking
+	disable :protection
 
 	set :sockets, Array.new
 end
@@ -186,6 +187,9 @@ end
 #give a hash of parameters for the new story, currently only ticket_no is supported and *required*
 post '/game/:id/story' do
 	game = getGame(params[:id].to_i)
+	if loggedInUser != game.moderator
+		halt 403, "You must be the moderator to edit this game"
+	end
 	body = request.body.read
 	pp body
 	halt 400, "No data received" if body.empty?
@@ -193,7 +197,7 @@ post '/game/:id/story' do
 	halt 400, "Ticket number is required" unless data.has_key?('ticket_no')
 	story = Story.create(:ticket_no => data['ticket_no'], :game => game)
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
-	broadcast({:game => game.to_hash}.to_json)
+	broadcast({:story => story.to_hash}.to_json)
 	story.to_hash.to_json
 end
 
