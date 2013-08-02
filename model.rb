@@ -1,4 +1,5 @@
 require 'rubygems'
+require "bundler/setup"
 require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
