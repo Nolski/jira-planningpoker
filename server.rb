@@ -1,7 +1,10 @@
+require 'rubygems'
+require "bundler/setup"
+require_relative 'model'
 require 'sinatra'
 require 'json'
 require 'pp'
-require_relative 'model'
+require 'sinatra-websocket'
 
 
 helpers do
@@ -27,6 +30,12 @@ helpers do
 		return story
 	end
 
+	#send the message to all connected websocket clients
+	#use json, please!
+	def broadcast(message)
+		EM.next_tick { settings.sockets.each{|s| s.send(message) } }
+	end
+
 	
 end
 
@@ -37,7 +46,10 @@ configure do
 	set :sessions, true
 
 	set :session_secret, "vM1IAofoUlBl57bDYzmJ"
-	set :protection, origin_whitelist: ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
+	set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
+	#set :protection, except: :session_hijacking
+
+	set :sockets, Array.new
 end
 
 #debug
@@ -65,6 +77,7 @@ end
 #Returns: the text 'true' or 'false' depending on whether login was successfull
 post '/login' do
 	username = params['username']
+	#puts User.get(username).to_hash
 	user = User.first_or_create(:username => username)
 	session[:username] = username
 	user.to_hash.to_json
@@ -122,6 +135,8 @@ put '/game/:id' do
 	if !game.save 
 		pp game.errors
 		halt 500, "Could not edit game"
+	else
+		broadcast({:game => game.to_hash}.to_json)
 	end
 	game.to_hash.to_json
 end
@@ -149,6 +164,9 @@ post '/game/:id/participants' do
 	game.participants << loggedInUser
 	if !game.save 
 		halt 500, "A database error occured"
+	else
+		broadcast({:game => game.to_hash}.to_json)
+		true
 	end
 end
 
@@ -175,11 +193,13 @@ post '/game/:id/story' do
 	halt 400, "Ticket number is required" unless data.has_key?('ticket_no')
 	story = Story.create(:ticket_no => data['ticket_no'], :game => game)
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
+	broadcast({:game => game.to_hash}.to_json)
 	story.to_hash.to_json
 end
 
 delete '/game/:game/story/:ticket' do
 		story = getStory(params[:game].to_i, params[:ticket])
+		broadcast({:game => story.game.to_hash}.to_json)
 		story.destroy.to_json
 end
 
@@ -203,6 +223,8 @@ put '/game/:game/story/:ticket' do
 	if !story.save 
 		pp story.errors
 		halt 500, "Could not edit story"
+	else
+		broadcast({:story => story.to_hash}.to_json)
 	end
 	story.to_hash.to_json
 end
@@ -226,6 +248,7 @@ post '/game/:game/story/:ticket/estimate' do
 	estimate = Estimate.first(:story => story, :user => user)
 	unless estimate.nil? then estimate.destroy! end
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
+
 	estimate.to_hash.to_json
 end
 
@@ -234,6 +257,27 @@ end
 get '/game/:game/story/:ticket/estimate' do
 	story = getStory(params[:game].to_i, params[:ticket])
 	(story.estimates.map { |e| e.to_hash }).to_json
+end
+
+#######
+#Websocket stuff
+#######
+
+get '/websocket' do
+	if !request.websocket? then halt 400, "Connect a websocket here, not http" end
+	request.websocket do |ws| 
+		ws.onopen do
+			ws.send("connected")
+			settings.sockets << ws
+		end
+		ws.onmessage do |msg|
+		#nothing
+		end
+		ws.onclose do
+			puts "socket closed"
+			settings.sockets.delete(ws)
+		end
+	end
 end
 
 	
