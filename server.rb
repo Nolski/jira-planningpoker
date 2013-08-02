@@ -1,6 +1,6 @@
 require 'rubygems'
 require "bundler/setup"
-require_relative 'model'
+require './model'
 require 'sinatra'
 require 'json'
 require 'pp'
