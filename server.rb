@@ -36,6 +36,11 @@ helpers do
 	def broadcast(message)
 		EM.next_tick { settings.sockets.each{|s| s.send(message) } }
 	end
+	
+	#for RestClient
+	def authHash
+		{:user => session[:username], :password => session[:password]}
+	end
 
 	
 end
@@ -52,6 +57,8 @@ configure do
 	disable :protection
 
 	set :sockets, Array.new
+
+	set :jira_url, 'https://request.siteworx.com'
 end
 
 #debug
@@ -80,7 +87,7 @@ post '/login' do
 	password = params['password']
 
 	#check this with JIRA
-	resource = RestClient::Resource.new('https://request.siteworx.com/rest/gadget/1.0/currentUser', {:user => username, :password => password})
+	resource = RestClient::Resource.new(settings.jira_url+'/rest/gadget/1.0/currentUser', {:user => username, :password => password})
 	#will throw exceptions on login failure
 	begin
 		response = resource.get
@@ -208,6 +215,23 @@ post '/game/:id/story' do
 	data = JSON.parse(body)
 	halt 400, "Ticket number is required" unless data.has_key?('ticket_no')
 	story = Story.create(:ticket_no => data['ticket_no'], :game => game)
+
+	#get jira details
+	begin
+		resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
+		ticketInfo = JSON.parse(resource.get)
+		story.summary = ticketInfo['fields']['summary']
+		story.description = ticketInfo['fields']['description']
+		if ticketInfo['fields'].key?('customfield_10183')
+			story.story_points = ticketInfo['fields']['customfield_10183']
+			#TODO: Figure out if it always has the same key
+		end
+		story.save
+	rescue
+		puts "Could not get JIRA data for #{story.ticket_no}"
+	end
+
+
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
 	broadcast({:story => story.to_hash}.to_json)
 	story.to_hash.to_json
