@@ -73,10 +73,8 @@ end
 #you have to be logged in for pretty much everything
 
 
-#Post a 'username', and we'll call that user logged in
-#maybe there will be a password in the future
+#post a username and password. We check that against JIRA and store it in the encrypted client-side session
 #NOTE! Unlike every other endpoint here, don't post json in the body, use a form url encoded
-#Returns: the text 'true' or 'false' depending on whether login was successfull
 post '/login' do
 	username = params['username']
 	password = params['password']
@@ -89,6 +87,7 @@ post '/login' do
 		jiraInfo = JSON.parse(response)
 		user = User.first_or_create(:username => username, :fullname => jiraInfo['fullName'])
 		session[:username] = username
+		session[:password] = password
 		status 200
 		user.to_hash.to_json
 	rescue Exception => e
