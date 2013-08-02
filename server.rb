@@ -255,6 +255,11 @@ post '/game/:game/story/:ticket/estimate' do
 	estimate = Estimate.first(:story => story, :user => user)
 	unless estimate.nil? then estimate.destroy! end
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
+
+	#mark as complete if everyone is done estimating
+	story.complete = story.estimates.length == story.game.participants.length
+	story.save
+
 	broadcast({:story => story.to_hash}.to_json)
 	estimate.to_hash.to_json
 end
