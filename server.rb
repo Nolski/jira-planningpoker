@@ -249,6 +249,9 @@ post '/game/:game/story/:ticket/estimate' do
 	pp vote
 	story = getStory(params[:game].to_i, params[:ticket])
 	user = loggedInUser
+	unless story.game.participants.include?(user)
+		halt 403, "You must be in this game to make an estimate on its stories"
+	end
 	estimate = Estimate.first(:story => story, :user => user)
 	unless estimate.nil? then estimate.destroy! end
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
