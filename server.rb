@@ -7,7 +7,10 @@ require 'pp'
 require 'sinatra-websocket'
 require 'rest-client'
 
-
+class Net::HTTPSession
+	def ssl_version=(value)
+	end
+end
 helpers do
 	def loggedInUser
 		User.get(session[:username])
@@ -94,6 +97,8 @@ post '/login' do
 	rescue Exception => e
 		content_type :html
 		halt e.http_code, e.http_body
+		#raise e
+		e.inspect
 	end
 end
 
