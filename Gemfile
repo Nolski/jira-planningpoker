@@ -5,8 +5,12 @@ ruby "1.9.3"
 
 gem "sinatra"
 gem "json"
-#gem "dm-sqlite-adapter"
-gem "dm-postgres-adapter"
+group :development do
+	gem "dm-sqlite-adapter"
+end
+group :production do
+	gem "dm-postgres-adapter"
+end
 gem "data_mapper"
 gem 'sinatra-websocket', :git => "https://github.com/simulacre/sinatra-websocket.git"	
 gem 'rest-client', :git => "https://github.com/rest-client/rest-client.git"
