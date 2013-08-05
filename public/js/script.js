@@ -56,11 +56,12 @@ socket.onclose = function( evt ) {
 =================================*/
 function sendVote( storyValue ) {
 	var gameInfo = getGameInfo(),
-		username = gameInfo.username,
+		username = gameInfo.name,
 		data = {
 				value: storyValue,
 				username: username
 			},
+		ticket = 'TVTA-1234',
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + 'estimate';
 
@@ -102,7 +103,7 @@ function makeGame(id, callback) {
 	var url = '/game',
 		username = getUsername(),
 		data = {
-			name: 'blablablabla'
+			name: 'username'
 		};
 
 	//data = JSON.stringify( data );
