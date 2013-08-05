@@ -55,13 +55,12 @@ socket.onclose = function( evt ) {
 	Ajax functions
 =================================*/
 function sendVote( storyValue ) {
-	var gameInfo = getGameInfo(),
-		username = gameInfo.name,
+	var username = getGameInfo().name,
 		data = {
 				value: storyValue,
 				username: username
 			},
-		ticket = 'TVTA-1234',
+		ticket = 'TVTA-1234'
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + 'estimate';
 
