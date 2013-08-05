@@ -1,8 +1,9 @@
 /*================================
 	Globals
 =================================*/
-var id;
-var socket;
+var id,
+	socket,
+	result = {};
 
 /*================================
 	Event listeners
@@ -82,15 +83,13 @@ function sendVote( storyValue ) {
 function getGameInfo() {
 	var id = getId(),
 		url = '/game/' + id,
-		result = {};
-
+		
 	$.ajax({
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			result = data;
-			console.log( 'getGameInfo(): ', result );
-			return result;
+			console.log( 'sucessful! getGameInfo(): ', result );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
