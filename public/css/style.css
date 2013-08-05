@@ -172,6 +172,11 @@ body{
 	width:14vw;
 	position: fixed;
 	right:0;
+	bottom:0;
 	color: #FFF;
-	padding:5px;
+	padding:10px;
+}
+
+.admin-panel button {
+	margin:5px;
 }
