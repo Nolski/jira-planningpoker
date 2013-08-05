@@ -105,7 +105,7 @@ function makeGame(id, callback) {
 			name: username
 		};
 
-
+	data = JSON.stringify( data );
 	$.ajax({
 		url: url,
 		method: 'POST',
