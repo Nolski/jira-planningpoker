@@ -62,6 +62,8 @@ configure do
 	set :sockets, Array.new
 
 	set :jira_url, 'https://request.siteworx.com'
+	#Don't know if this is static. Can be found at https://JIRA/rest/api/2/field
+	set :story_points_customid, 10183
 end
 
 #debug
@@ -241,7 +243,7 @@ post '/game/:id/story' do
 		ticketInfo = JSON.parse(resource.get)
 		story.summary = ticketInfo['fields']['summary']
 		story.description = ticketInfo['fields']['description']
-		if ticketInfo['fields'].key?('customfield_10183')
+		if ticketInfo['fields'].key?("customfield_#{settings.story_points_customid}")
 			story.story_points = ticketInfo['fields']['customfield_10183']
 			#TODO: Figure out if it always has the same key
 		end
