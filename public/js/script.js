@@ -105,13 +105,11 @@ function makeGame(id, callback) {
 			name: username
 		};
 
-	data = JSON.stringify( data );
+	//data = JSON.stringify( data );
 	$.ajax({
 		url: url,
 		type: 'POST',
-		processData: false,
 		data: data,
-		contentType: 'application/json',
 		success: function( data, textStatus, jqXHR ) {
 			result = data;
 			console.log('makeGame()', result);
