@@ -3,7 +3,7 @@
 =================================*/
 var id,
 	socket,
-	result = {};
+	gameInfo = {};
 
 /*================================
 	Event listeners
@@ -33,6 +33,7 @@ $(document).ready(function(){
 	});
 
 	makeGame( 1, getGameInfo() );
+	getGameInfo();
 	//socket = new WebSocket('ws://localhost:9393');
 });
 
@@ -59,11 +60,11 @@ function sendVote( storyValue ) {
 	console.log('gameInfo before username: ', getGameInfo());
 	var data = {
 				value: storyValue,
-				username: result
+				username: gameInfo
 			},
 		ticket = 'TVTA-1234'
 		id = getId(),
-		url = '/game/' + id + '/story/' + ticket + 'estimate';
+		url = '/game/' + id + '/story/' + ticket + '/estimate';
 
 	$.ajax({
 		url: url,
@@ -87,8 +88,8 @@ function getGameInfo() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			result = data;
-			console.log( 'sucessful! getGameInfo(): ', result );
+			gameInfo = data;
+			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -110,10 +111,10 @@ function makeGame(id, callback) {
 		type: 'POST',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			result = data;
-			console.log('makeGame()', result);
+			gameInfo = data;
+			console.log('makeGame()', gameInfo);
 			getGameInfo();
-			return result;
+			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
