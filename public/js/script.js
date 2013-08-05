@@ -68,7 +68,7 @@ function sendVote( storyValue ) {
 		url: url,
 		type: 'POST',
 		dataType: 'json',
-		data: data,
+		'data': data,
 		success: function( data, textStatus, jqXHR ) {
 			console.log( 'success!' );
 		},
@@ -87,7 +87,7 @@ function getGameInfo() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			result = JSON.parse(data);
+			result = data;
 			console.log( 'getGameInfo(): ', result );
 			return result;
 		},
