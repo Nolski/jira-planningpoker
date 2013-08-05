@@ -109,12 +109,13 @@ function makeGame(id, callback) {
 	$.ajax({
 		url: url,
 		method: 'POST',
+		processData: false,
 		data: data,
 		dataType: 'json',
 		success: function( data, textStatus, jqXHR ) {
 			result = data;
 			console.log('makeGame()', result);
-			callback();
+			getGameInfo();
 			return result;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
