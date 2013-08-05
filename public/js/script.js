@@ -99,7 +99,7 @@ function getGameInfo() {
 }
 
 function makeGame(id, callback) {
-	var url = '/game/' + id,
+	var url = '/game',
 		username = getUsername(),
 		data = {
 			name: username
