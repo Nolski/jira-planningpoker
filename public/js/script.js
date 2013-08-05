@@ -113,6 +113,8 @@ function makeGame(id, callback) {
 		dataType: 'json',
 		success: function( data, textStatus, jqXHR ) {
 			result = JSON.parse(data);
+			callback();
+			console.log('makeGame()', result);
 			return result;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
