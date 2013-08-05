@@ -111,7 +111,7 @@ function makeGame(id, callback) {
 		method: 'POST',
 		processData: false,
 		data: data,
-		dataType: 'json',
+		contentType: 'application/json',
 		success: function( data, textStatus, jqXHR ) {
 			result = data;
 			console.log('makeGame()', result);
