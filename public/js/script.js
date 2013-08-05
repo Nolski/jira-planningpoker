@@ -97,6 +97,9 @@ function getGameInfo() {
 	});
 }
 
+/*================================
+	Admin Ajax functions
+=================================*/
 function makeGame(id, callback) {
 	var url = '/game',
 		username = getUsername(),
@@ -105,6 +108,27 @@ function makeGame(id, callback) {
 		};
 
 	//data = JSON.stringify( data );
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			gameInfo = data;
+			console.log('makeGame()', gameInfo);
+			getGameInfo();
+			return gameInfo;
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
+function makeStory(ticketNum) {
+	var url = '/game/' + getId() + 'story',
+		data = { 'ticket_no': ticketNum };
+
 	$.ajax({
 		url: url,
 		type: 'POST',

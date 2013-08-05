@@ -49,5 +49,20 @@
 			<li>TVTA-9012&nbsp;&nbsp;:&nbsp;&nbsp;5</li>
 		</ul>
 	</div>
+	<div class="admin-panel">
+		<form class="form-group" >
+			<fieldset>
+				<legend class="admin-title">Admin Panel</legend>
+				<div class="form-group">
+					<label for="ticket">New Ticket: </label>
+					<input id="ticket" type="text" class="form-control input-small form-input" name="ticket"/>
+					<input type="button" class="btn btn-default" onclick="return newTicket()" value="New Ticket" />
+					<label for="game">New Game: </label>
+					<input id="game" type="text" class="form-control input-small form-input" name="game" />
+					<input type="button" class="btn btn-default" onclick="return newGame()" value="New Game" />
+				</div>
+			</fieldset>
+		</form>
+	</div>
 </body>
 </html>
