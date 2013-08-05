@@ -253,7 +253,7 @@ post '/game/:id/story' do
 	end
 
 
-	puts story.errors.inpect if !story.saved?
+	puts story.errors.inspect if !story.saved?
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
 	broadcast({:story => story.to_hash}.to_json)
 	story.to_hash.to_json
