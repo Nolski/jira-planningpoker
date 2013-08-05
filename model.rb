@@ -79,14 +79,16 @@ class Story
 	property :id, Serial
 
 	def to_hash
-		{
+		h = {
 			:game_id => game_id,
 			:ticket_no => ticket_no,
 			:summary => summary,
 			:description => description,
 			:estimates => estimates.map {|estimate| estimate.to_hash},
-			:complete => complete
+			:complete => complete,
 		}
+		h[:story_points] = story_points.to_s('F') unless story_points.nil?
+		return h
 	end
 	validates_uniqueness_of :ticket_no, :scope => :game
 end
