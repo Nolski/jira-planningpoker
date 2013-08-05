@@ -55,7 +55,7 @@ socket.onclose = function( evt ) {
 	Ajax functions
 =================================*/
 function sendVote( storyValue ) {
-	console.log(getGameInfo());
+	console.log('gameInfo before username: ', getGameInfo());
 	var username = getGameInfo().name,
 		data = {
 				value: storyValue,
