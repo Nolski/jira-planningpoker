@@ -31,7 +31,7 @@ $(document).ready(function(){
 		sendVote( storyValue );
 	});
 
-	console.log( 'getGameInfo(): ', getGameInfo() );
+	makeGame( 1, getGameInfo() );
 	//socket = new WebSocket('ws://localhost:9393');
 });
 
@@ -88,6 +88,7 @@ function getGameInfo() {
 		method: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			result = JSON.parse(data);
+			console.log( 'getGameInfo(): ', result );
 			return result;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -97,12 +98,19 @@ function getGameInfo() {
 	});
 }
 
-function makeGame(id) {
-	url = '/game/' + id,
+function makeGame(id, callback) {
+	var url = '/game/' + id,
+		username = getUsername(),
+		data = {
+			name: username
+		};
+
 
 	$.ajax({
 		url: url,
-		method: 'PUT',
+		method: 'POST',
+		data: data,
+		dataType: 'json',
 		success: function( data, textStatus, jqXHR ) {
 			result = JSON.parse(data);
 			return result;
