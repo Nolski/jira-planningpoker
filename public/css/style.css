@@ -171,5 +171,7 @@ body{
 .admin-panel {
 	width:14vw;
 	position: fixed;
-	left:0;
+	right:0;
+	color: #FFF;
+	padding:5px;
 }
