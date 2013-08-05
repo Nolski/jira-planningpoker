@@ -133,11 +133,11 @@ post '/game' do
 	game.created = Time.now
 	game.moderator = loggedInUser
 	body = request.body.read
-	if !body.nil? && !body.empty?
+	if !params[:name].nil?
+		game.name = params[:name] unless params[:name].nil?
+	elsif  !body.nil? && !body.empty?
 		data = JSON.parse(body)
 		if data.has_key?('name') then game.name = data['name'] end
-	else
-		game.name = params[:name] unless params[:name].nil?
 	end
 	if !game.save 
 		pp game.errors
@@ -155,13 +155,14 @@ put '/game/:id' do
 		halt 403, "You must be the moderator to edit this game"
 	end
 
-	if !body.nil? && !body.empty?
-		data = JSON.parse(request.body.read)
+	body = request.body.read
+	if !params[:name].nil?
+		game.name = params[:name] unless params[:name].nil?
+	elsif !body.nil? && !body.empty?
+		data = JSON.parse(body)
 		if data.has_key?('name')
 			game.name = data['name']
 		end
-	else
-		game.name = params[:name] unless params[:name].nil?
 	end
 	if !game.save 
 		pp game.errors
@@ -221,11 +222,11 @@ post '/game/:id/story' do
 		halt 403, "You must be the moderator to edit this game"
 	end
 	body = request.body.read
-	if !body.nil? && !body.empty?
+	if !params[:ticket_no].nil?
+		ticket_no = params[:ticket_no]
+	elsif !body.nil? && !body.empty?
 		data = JSON.parse(body)
 		ticket_no = data['ticket_no']
-	elsif !params[:ticket_no].nil?
-		ticket_no = params[:ticket_no]
 	else
 		halt 400, "No data received" if body.empty?
 	end
@@ -274,11 +275,12 @@ put '/game/:game/story/:ticket' do
 		halt 403, "You must be the moderator to edit this game"
 	end
 
-	data = JSON.parse(request.body.read)
-	if !data.nil? && !data.empty? && data.has_key?('complete')
-		story.complete = data['complete']
-	elsif !params[:complete].nil?
+	body = request.body.read
+	if !params[:complete].nil?
 		story.complete = params[:complete] == 'true'
+	elsif !data.nil? && !data.empty? 
+		data = JSON.parse(body)
+		story.complete = data['complete']
 	end
 
 	if !story.save 
