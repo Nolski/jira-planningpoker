@@ -39,6 +39,11 @@ helpers do
 	def broadcast(message)
 		EM.next_tick { settings.sockets.each{|s| s.send(message) } }
 	end
+	
+	#for RestClient
+	def authHash
+		{:user => session[:username], :password => session[:password]}
+	end
 
 	
 end
@@ -55,6 +60,8 @@ configure do
 	disable :protection
 
 	set :sockets, Array.new
+
+	set :jira_url, 'https://request.siteworx.com'
 end
 
 #debug
@@ -76,22 +83,21 @@ end
 #you have to be logged in for pretty much everything
 
 
-#Post a 'username', and we'll call that user logged in
-#maybe there will be a password in the future
+#post a username and password. We check that against JIRA and store it in the encrypted client-side session
 #NOTE! Unlike every other endpoint here, don't post json in the body, use a form url encoded
-#Returns: the text 'true' or 'false' depending on whether login was successfull
 post '/login' do
 	username = params['username']
 	password = params['password']
 
 	#check this with JIRA
-	resource = RestClient::Resource.new('https://request.siteworx.com/rest/gadget/1.0/currentUser', {:user => username, :password => password})
+	resource = RestClient::Resource.new(settings.jira_url+'/rest/gadget/1.0/currentUser', {:user => username, :password => password})
 	#will throw exceptions on login failure
 	begin
 		response = resource.get
 		jiraInfo = JSON.parse(response)
 		user = User.first_or_create(:username => username, :fullname => jiraInfo['fullName'])
 		session[:username] = username
+		session[:password] = password
 		status 200
 		user.to_hash.to_json
 	rescue Exception => e
@@ -214,6 +220,23 @@ post '/game/:id/story' do
 	data = JSON.parse(body)
 	halt 400, "Ticket number is required" unless data.has_key?('ticket_no')
 	story = Story.create(:ticket_no => data['ticket_no'], :game => game)
+
+	#get jira details
+	begin
+		resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
+		ticketInfo = JSON.parse(resource.get)
+		story.summary = ticketInfo['fields']['summary']
+		story.description = ticketInfo['fields']['description']
+		if ticketInfo['fields'].key?('customfield_10183')
+			story.story_points = ticketInfo['fields']['customfield_10183']
+			#TODO: Figure out if it always has the same key
+		end
+		story.save
+	rescue
+		puts "Could not get JIRA data for #{story.ticket_no}"
+	end
+
+
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
 	broadcast({:story => story.to_hash}.to_json)
 	story.to_hash.to_json

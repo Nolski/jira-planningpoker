@@ -3,7 +3,8 @@ require "bundler/setup"
 require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
+#DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/db.db")
 class Game
 	include DataMapper::Resource
 
@@ -71,12 +72,18 @@ class Story
 
 	property :ticket_no, String, :required => true
 	property :complete, Boolean, :default => false
+	property :summary, Text
+	property :description, Text
+	property :story_points, Decimal
+
 	property :id, Serial
 
 	def to_hash
 		{
 			:game_id => game_id,
 			:ticket_no => ticket_no,
+			:summary => summary,
+			:description => description,
 			:estimates => estimates.map {|estimate| estimate.to_hash},
 			:complete => complete
 		}
