@@ -2,7 +2,7 @@ require 'rubygems'
 require "bundler/setup"
 require 'data_mapper'
 
-DataMapper::Logger.new($stdout, :debug)
+#DataMapper::Logger.new($stdout, :debug)
 #DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/db.db")
 class Game
@@ -55,12 +55,12 @@ class Estimate
 	belongs_to :story, :key => true
 	belongs_to :user, :key => true
 
-	property :vote, Decimal, :required => true
+	property :vote, Float, :required => true
 	property :made_at, DateTime, :required => true
 
 	def to_hash
 		result = { :user => user.to_hash, :made_at => made_at}
-		result[:vote] = vote.to_s('F') if story.complete
+		result[:vote] = vote if story.complete
 		return result
 	end
 end
@@ -74,7 +74,7 @@ class Story
 	property :complete, Boolean, :default => false
 	property :summary, Text
 	property :description, Text
-	property :story_points, Decimal
+	property :story_points, Float
 
 	property :id, Serial
 
@@ -87,7 +87,7 @@ class Story
 			:estimates => estimates.map {|estimate| estimate.to_hash},
 			:complete => complete,
 		}
-		h[:story_points] = story_points.to_s('F') unless story_points.nil?
+		h[:story_points] = story_points unless story_points.nil?
 		return h
 	end
 	validates_uniqueness_of :ticket_no, :scope => :game

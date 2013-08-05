@@ -269,7 +269,8 @@ get '/game/:game/story/:ticket' do
 		story.to_hash.to_json
 end
 
-#you may change the completeness of a story, by passing {"complete" : true}
+#you may change the completeness or points of a story, by passing {"complete" : true, "story_points" : 2}
+#story points will attempt to be set on JIRA
 put '/game/:game/story/:ticket' do
 	story = getStory(params[:game].to_i, params[:ticket])
 	game = story.game
@@ -280,14 +281,34 @@ put '/game/:game/story/:ticket' do
 	body = request.body.read
 	if !params[:complete].nil?
 		story.complete = params[:complete] == 'true'
-	elsif !data.nil? && !data.empty? 
+	elsif !body.nil? && !body.empty? 
 		data = JSON.parse(body)
 		story.complete = data['complete']
 	end
 
+	if !params[:story_points].nil?
+		story.story_points = params[:story_points].to_f
+	elsif !body.nil? && !body.empty? 
+		data = JSON.parse(body)
+		story.story_points = data['story_points'].to_f
+	end
+
+	unless story.story_points.nil?
+		begin
+			#update JIRA
+			resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
+			updates = {'fields' => {"customfield_#{settings.story_points_customid}" => story.story_points.to_f}}
+			resource.put updates.to_json, :content_type => :json, :accept => :json
+		rescue Exception => e
+			puts "An error occured while updating a story point value on JIRA"
+			puts e
+		end
+	end
+
+	
 	if !story.save 
 		pp story.errors
-		halt 500, "Could not edit story"
+		halt 500, "Could not edit story\n"+story.errors.inspect
 	else
 		broadcast({:story => story.to_hash}.to_json)
 	end
