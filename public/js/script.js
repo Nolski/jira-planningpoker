@@ -86,7 +86,23 @@ function getGameInfo() {
 	$.ajax({
 		url: url,
 		method: 'GET',
-		dataType: 'json',
+		success: function( data, textStatus, jqXHR ) {
+			result = JSON.parse(data);
+			return result;
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
+function makeGame(id) {
+	url = '/game/' + id,
+
+	$.ajax({
+		url: url,
+		method: 'PUT',
 		success: function( data, textStatus, jqXHR ) {
 			result = JSON.parse(data);
 			return result;
