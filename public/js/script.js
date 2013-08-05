@@ -67,8 +67,8 @@ function sendVote( storyValue ) {
 	$.ajax({
 		url: url,
 		method: 'POST',
-		data: data,
 		dataType: 'json',
+		data: data,
 		success: function( data, textStatus, jqXHR ) {
 			console.log( 'success!' );
 		},
