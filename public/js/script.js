@@ -34,7 +34,7 @@ $(document).ready(function(){
 
 	makeGame( 1, getGameInfo() );
 	getGameInfo();
-	//socket = new WebSocket('ws://localhost:9393');
+
 });
 
 /*================================
@@ -125,8 +125,9 @@ function makeGame(id, callback) {
 	});
 }
 
-function makeStory(ticketNum) {
-	var url = '/game/' + getId() + 'story',
+function makeStory() {
+	var url = '/game/' + getId() + '/story',
+		ticketNum = $('ticket').val,
 		data = { 'ticket_no': ticketNum };
 
 	$.ajax({
