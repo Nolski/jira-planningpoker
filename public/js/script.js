@@ -1,8 +1,9 @@
 /*================================
 	Globals
 =================================*/
-var id;
-var socket;
+var id,
+	socket,
+	gameInfo = {};
 
 /*================================
 	Event listeners
@@ -32,7 +33,8 @@ $(document).ready(function(){
 	});
 
 	makeGame( 1, getGameInfo() );
-	//socket = new WebSocket('ws://localhost:9393');
+	getGameInfo();
+
 });
 
 /*================================
@@ -55,15 +57,13 @@ socket.onclose = function( evt ) {
 	Ajax functions
 =================================*/
 function sendVote( storyValue ) {
-	console.log(getGameInfo());
-	var username = getGameInfo().name,
-		data = {
-				value: storyValue,
-				username: username
+	console.log('gameInfo before username: ', getGameInfo());
+	var data = {
+				vote: storyValue
 			},
 		ticket = 'TVTA-1234'
 		id = getId(),
-		url = '/game/' + id + '/story/' + ticket + 'estimate';
+		url = '/game/' + id + '/story/' + ticket + '/estimate';
 
 	$.ajax({
 		url: url,
@@ -81,16 +81,14 @@ function sendVote( storyValue ) {
 
 function getGameInfo() {
 	var id = getId(),
-		url = '/game/' + id,
-		result = {};
-
+		url = '/game/' + id;
+		
 	$.ajax({
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			result = data;
-			console.log( 'getGameInfo(): ', result );
-			return result;
+			gameInfo = data;
+			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -99,6 +97,9 @@ function getGameInfo() {
 	});
 }
 
+/*================================
+	Admin Ajax functions
+=================================*/
 function makeGame(id, callback) {
 	var url = '/game',
 		username = getUsername(),
@@ -112,10 +113,32 @@ function makeGame(id, callback) {
 		type: 'POST',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			result = data;
-			console.log('makeGame()', result);
+			gameInfo = data;
+			console.log('makeGame()', gameInfo);
 			getGameInfo();
-			return result;
+			return gameInfo;
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
+function makeStory() {
+	var url = '/game/' + getId() + '/story',
+		ticketNum = $('ticket').val,
+		data = { 'ticket_no': ticketNum };
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			gameInfo = data;
+			console.log('makeGame()', gameInfo);
+			getGameInfo();
+			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
