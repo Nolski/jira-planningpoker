@@ -66,7 +66,7 @@ function sendVote( storyValue ) {
 
 	$.ajax({
 		url: url,
-		method: 'POST',
+		type: 'POST',
 		dataType: 'json',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
@@ -85,7 +85,7 @@ function getGameInfo() {
 
 	$.ajax({
 		url: url,
-		method: 'GET',
+		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			result = JSON.parse(data);
 			console.log( 'getGameInfo(): ', result );
@@ -108,7 +108,7 @@ function makeGame(id, callback) {
 	data = JSON.stringify( data );
 	$.ajax({
 		url: url,
-		method: 'POST',
+		type: 'POST',
 		processData: false,
 		data: data,
 		contentType: 'application/json',
