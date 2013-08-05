@@ -58,7 +58,6 @@ body{
 	padding:1vw;
 	position:relative;
 	z-index: 2;
-	border-bottom: 1px solid #7b7b7b;
 }
 
 .title {
@@ -70,6 +69,7 @@ body{
 .title > h1 {
 	font-weight: 200;
 	font-size: 34px;
+	border-bottom: 1px solid #7b7b7b;
 }
 
 .title > h3 {
