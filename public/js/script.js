@@ -57,10 +57,9 @@ socket.onclose = function( evt ) {
 =================================*/
 function sendVote( storyValue ) {
 	console.log('gameInfo before username: ', getGameInfo());
-	var username = getGameInfo().name,
-		data = {
+	var data = {
 				value: storyValue,
-				username: username
+				username: result
 			},
 		ticket = 'TVTA-1234'
 		id = getId(),
