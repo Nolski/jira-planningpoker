@@ -82,7 +82,7 @@ function sendVote( storyValue ) {
 
 function getGameInfo() {
 	var id = getId(),
-		url = '/game/' + id,
+		url = '/game/' + id;
 		
 	$.ajax({
 		url: url,
