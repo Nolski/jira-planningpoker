@@ -167,3 +167,9 @@ body{
 	color:#5296b5;
 	cursor: pointer;
 }
+
+.admin-panel {
+	width:14vw;
+	position: fixed;
+	left:0;
+}
