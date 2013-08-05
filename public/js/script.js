@@ -102,7 +102,7 @@ function makeGame(id, callback) {
 	var url = '/game',
 		username = getUsername(),
 		data = {
-			name: username
+			name: 'blablablabla'
 		};
 
 	//data = JSON.stringify( data );
