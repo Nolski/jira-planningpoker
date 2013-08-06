@@ -58,6 +58,7 @@ $(document).ready(function(){
 
 	channel.bind('update_story', function ( data ) {
 		$('#stories').empty();
+		stories.push(data);
 		for (var i = 0; i < stories.length; i++) {
 			story = stories[i];
 			if (story.ticket_no == data.ticket_no) {
