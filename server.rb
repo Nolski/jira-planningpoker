@@ -7,10 +7,10 @@ require 'pp'
 require 'sinatra-websocket'
 require 'rest-client'
 
-class Net::HTTPSession
-	def ssl_version=(value)
-	end
-end
+#class Net::HTTPSession
+	#def ssl_version=(value)
+	#end
+#end
 helpers do
 	def loggedInUser
 		User.get(session[:username])
@@ -19,14 +19,22 @@ helpers do
 
 	def protect
 		if User.get(session[:username]).nil?
+			content_type :text
 			halt 403, "Login required"
 		end
 	end
 
 	def getGame(id)
 		game = Game.get(id)
+		content_type :text
 		halt 404, "No such game" if game.nil?
 		game
+	end
+	def preventModClosed(game)
+		if game.closed
+			content_type :text
+			halt 404, "This game is closed and cannot be changed"
+		end
 	end
 	def getStory(gameId, ticketNo)
 		story = Story.first(:game_id => gameId, :ticket_no => ticketNo)
@@ -153,6 +161,7 @@ end
 #returns the game
 put '/game/:id' do
 	game = getGame(params[:id].to_i)
+	preventModClosed(game)
 	if loggedInUser != game.moderator
 		halt 403, "You must be the moderator to edit this game"
 	end
@@ -181,6 +190,12 @@ get '/game/:id' do
 	game.to_hash.to_json
 end
 
+delete '/game/:id' do
+	game = getGame(params[:id].to_i)
+	game.closed = true
+	game.save
+end
+
 #######
 #participant mgmt
 #######
@@ -195,6 +210,7 @@ end
 #TODO: fail nicer
 post '/game/:id/participants' do
 	game = getGame(params[:id].to_i)
+	preventModClosed(game)
 	game.participants << loggedInUser
 	if !game.save 
 		halt 500, "A database error occured"
@@ -223,6 +239,7 @@ post '/game/:id/story' do
 	if loggedInUser != game.moderator
 		halt 403, "You must be the moderator to edit this game"
 	end
+	preventModClosed(game)
 	body = request.body.read
 	ticket_no = nil
 	if !params[:ticket_no].nil?
@@ -262,6 +279,7 @@ end
 
 delete '/game/:game/story/:ticket' do
 		story = getStory(params[:game].to_i, params[:ticket])
+		preventModClosed(story.game)
 		broadcast({:game => story.game.to_hash}.to_json)
 		story.destroy.to_json
 end
@@ -276,6 +294,7 @@ end
 put '/game/:game/story/:ticket' do
 	story = getStory(params[:game].to_i, params[:ticket])
 	game = story.game
+	preventModClosed(game)
 	if loggedInUser != game.moderator
 		halt 403, "You must be the moderator to edit this game"
 	end
@@ -330,6 +349,7 @@ post '/game/:game/story/:ticket/estimate' do
 		vote = JSON.parse(request.body.read)['vote'].to_f
 	end
 	story = getStory(params[:game].to_i, params[:ticket])
+	preventModClosed(story.game)
 	user = loggedInUser
 	unless story.game.participants.include?(user)
 		halt 403, "You must be in this game to make an estimate on its stories"

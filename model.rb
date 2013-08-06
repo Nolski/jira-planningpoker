@@ -14,6 +14,7 @@ class Game
 	property :id, Serial
 	property :name, String, :length => 160
 	property :created, DateTime, :required => true
+	property :closed, Boolean, :default => false
 
 	def to_hash
 		result = {
@@ -23,7 +24,8 @@ class Game
 			:stories => Array.new,
 			:moderator => moderator.to_hash,
 			:participants => participants.map {|user| user.to_hash},
-			:current_story => nil
+			:current_story => nil,
+			:closed => closed
 		}
 		#TODO: make more efficient
 		stories(:order => [:created.asc]).each do |story|
