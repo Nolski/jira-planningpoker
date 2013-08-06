@@ -32,7 +32,6 @@ $(document).ready(function(){
 		sendVote( storyValue );
 	});
 
-	makeGame( 1, getGameInfo() );
 	getGameInfo();
 
 });
@@ -115,7 +114,6 @@ function makeGame(id, callback) {
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = data;
 			console.log('makeGame()', gameInfo);
-			getGameInfo();
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
