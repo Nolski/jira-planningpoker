@@ -2,7 +2,7 @@ require 'rubygems'
 require "bundler/setup"
 require 'data_mapper'
 
-#DataMapper::Logger.new($stdout, :debug)
+DataMapper::Logger.new($stdout, :debug)
 #DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/db.db")
 class Game
@@ -16,14 +16,23 @@ class Game
 	property :created, DateTime, :required => true
 
 	def to_hash
-		{
+		result = {
 			:id => id,
 			:name => ((name.nil?) ? "#{moderator.fullname}'s Game (\##{id})" : name),
 			:created => created,
+			:stories => Array.new,
 			:moderator => moderator.to_hash,
-			:stories => stories.map {|story| story.ticket_no},
 			:participants => participants.map {|user| user.to_hash},
+			:current_story => nil
 		}
+		#TODO: make more efficient
+		stories.each do |story|
+			result[:stories] << story.ticket_no
+			if result[:current_story].nil? && !story.complete
+				result[:current_story] = story.ticket_no
+			end
+		end
+		return result
 	end
 
 end
