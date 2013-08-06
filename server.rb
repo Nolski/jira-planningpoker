@@ -224,6 +224,7 @@ post '/game/:id/story' do
 		halt 403, "You must be the moderator to edit this game"
 	end
 	body = request.body.read
+	ticket_no = nil
 	if !params[:ticket_no].nil?
 		ticket_no = params[:ticket_no]
 	elsif !body.nil? && !body.empty?
