@@ -4,13 +4,15 @@
 var id,
 	socket,
 	gameInfo = {};
+	stories = [];
 
 /*================================
 	Event listeners
 =================================*/
 $(document).ready(function(){
-		
+
 	id = getURLParameter('id');
+	gameinfo = getGameInfo();
 
 	$('.card').hover(function() {
 		$(this).animate({
@@ -32,25 +34,59 @@ $(document).ready(function(){
 		sendVote( storyValue );
 	});
 
-	getGameInfo();
+
+	/*================================
+		Pusher functions
+	=================================*/
+	var pusher = new Pusher('a8a337eb4d5e4c071c6a');
+	var channel = pusher.subscribe('game_' + id);
+
+	channel.bind('new_story', function ( data ) {
+		stories.push(data);
+		$('#stories').empty();
+		for (var i = 0; i < stories.length; i++) {
+			story = stories[i];
+			if(story.story_points == null) {
+				story.story_points = 0;
+			}
+			var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
+						   + story.story_points; + '</li>';
+			$('#stories').append(storyTitle);
+		};
+	});
+
+	channel.bind('update_story', function ( data ) {
+		$('#stories').empty();
+		for (var i = 0; i < stories.length; i++) {
+			story = stories[i];
+			if (story.ticket_no == data.ticket_no) {
+				story = data;
+			}
+
+			if(story.story_points == null) {
+				story.story_points = 0;
+			}
+			var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
+						   + story.story_points; + '</li>';
+			$('#stories').append(storyTitle);
+		};
+	});
+
+	channel.bind('current_story', function ( data ) {
+		$('#title').empty();
+		$('#description').empty();
+		var title = data.ticket_no + " - " + data.summary,
+			description = data.description.replace('\n', '<br />');
+		
+		description = description.replace('\t', '');
+		description = description.replace('\r', '');
+
+		$('#title').html(title);
+		$('#description').html(description);
+
+	});
 
 });
-
-/*================================
-	Socket functions
-=================================*
-socket.onopen = function( evt ) {
-	//stuff
-}
-
-socket.onmessage = function( evt ) {
-	var message = JSON.parse(evt);
-	console.log(message);
-}
-
-socket.onclose = function( evt ) {
-	//stuffthings
-}
 
 /*================================
 	Ajax functions
@@ -148,7 +184,7 @@ function makeStory() {
 
 /*================================
 	Polling functions
-=================================*/
+=================================*
 function poll() {
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
 	$.ajax({
@@ -166,16 +202,11 @@ function poll() {
 }
 
 function updatePage( data ) {
-	$('#title').empty();
-	$('#description').empty();
-	var title = data.ticket_no + " - " + data.summary,
-		description = data.description.replace('\n', '<br />');
-	
-	description = description.replace('\t', '');
-	description = description.replace('\r', '');
+	var storyTitle = '<li>' + data.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
+				+ data.story_points; + '</li>';
+	$('#stories').append(storyTitle);
 
-	$('#title').html(title);
-	$('#description').html(description);
+	
 }
 
 /*================================
