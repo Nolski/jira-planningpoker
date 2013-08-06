@@ -100,7 +100,7 @@ class Story
 			:complete => complete,
 			:sister_stories => game.stories.map {|s| s.ticket_no}
 		}
-		h[:story_points] = story_points unless story_points.nil?
+		h[:story_points] = unless story_points.nil? then story_points else -1 end
 		return h
 	end
 	validates_uniqueness_of :ticket_no, :scope => :game

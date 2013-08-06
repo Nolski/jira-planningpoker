@@ -372,7 +372,7 @@ post '/game/:game/story/:ticket/estimate' do
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
 
 	#mark as complete if everyone is done estimating
-	story.complete = story.estimates.length == story.game.participants.length
+	#story.complete = story.estimates.length == story.game.participants.length
 	story.save
 
 	broadcast({:story => story.to_hash}.to_json)
