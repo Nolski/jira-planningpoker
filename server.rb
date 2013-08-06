@@ -236,7 +236,7 @@ post '/game/:id/story' do
 
 	halt 400, "Ticket number required" if ticket_no.nil?
 
-	story = Story.create(:ticket_no => ticket_no, :game => game)
+	story = Story.create(:ticket_no => ticket_no, :game => game, :created => Time.now)
 
 	#get jira details
 	begin
@@ -280,19 +280,18 @@ put '/game/:game/story/:ticket' do
 		halt 403, "You must be the moderator to edit this game"
 	end
 
-	body = request.body.read
-	if !params[:complete].nil?
-		story.complete = params[:complete] == 'true'
-	elsif !body.nil? && !body.empty? 
+	if !params[:complete].nil? || !params[:story_points].nil?
+		if !params[:complete].nil?
+			story.complete = params[:complete] == 'true'
+		end
+		if !params[:story_points].nil?
+			story.story_points = params[:story_points].to_f
+		end
+	else
+		body = request.body.read
 		data = JSON.parse(body)
-		story.complete = data['complete']
-	end
-
-	if !params[:story_points].nil?
-		story.story_points = params[:story_points].to_f
-	elsif !body.nil? && !body.empty? 
-		data = JSON.parse(body)
-		story.story_points = data['story_points'].to_f
+		story.complete = data['complete'] unless data['complete'].nil?
+		story.story_points = data['story_points'].to_f unless data['story_points'].nil?
 	end
 
 	unless story.story_points.nil?

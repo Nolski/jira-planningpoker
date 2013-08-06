@@ -26,7 +26,7 @@ class Game
 			:current_story => nil
 		}
 		#TODO: make more efficient
-		stories.each do |story|
+		stories(:order => [:created.asc]).each do |story|
 			result[:stories] << story.ticket_no
 			if result[:current_story].nil? && !story.complete
 				result[:current_story] = story.ticket_no
@@ -84,6 +84,7 @@ class Story
 	property :summary, Text
 	property :description, Text
 	property :story_points, Float
+	property :created, DateTime, :required => true
 
 	property :id, Serial
 
