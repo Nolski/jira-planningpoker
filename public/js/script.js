@@ -99,7 +99,7 @@ function getGameInfo() {
 /*================================
 	Admin Ajax functions
 =================================*/
-function makeGame(id, callback) {
+function makeGame( id, callback ) {
 	var url = '/game',
 		username = getUsername(),
 		data = {
@@ -143,6 +143,39 @@ function makeStory() {
 			return null;
 		}
 	});
+}
+
+
+/*================================
+	Polling functions
+=================================*/
+function poll() {
+	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
+	$.ajax({
+		url: url,
+		type: 'GET',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			updatePage( data );
+			setTimeout(poll(), 5000);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
+
+function updatePage( data ) {
+	$('#title').empty();
+	$('#description').empty();
+	var title = data.ticket_no + " - " + data.summary,
+		description = data.description.replace('\n', '<br />');
+	
+	description = description.replace('\t', '');
+	description = description.replace('\r', '');
+
+	$('#title').html(title);
+	$('#description').html(description);
 }
 
 /*================================
