@@ -6,6 +6,7 @@ require 'json'
 require 'pp'
 require 'sinatra-websocket'
 require 'rest-client'
+require 'pusher'
 
 #class Net::HTTPSession
 	#def ssl_version=(value)
@@ -72,6 +73,13 @@ configure do
 	set :jira_url, 'https://request.siteworx.com'
 	#Don't know if this is static. Can be found at https://JIRA/rest/api/2/field
 	set :story_points_customid, 10183
+	
+	if settings.development?
+		#For local use only, production keys autoconfigured when running on heroku
+		Pusher.app_id = '51163'
+		Pusher.key    = '32de1f05aeb0cce00299'
+		Pusher.secret = '0d8dd90217332c305441'
+	end
 end
 
 #debug
@@ -194,6 +202,7 @@ delete '/game/:id' do
 	game = getGame(params[:id].to_i)
 	game.closed = true
 	game.save
+	Pusher.trigger("game_#{params[:id]}", 'closed', true)
 end
 
 #######
@@ -216,6 +225,7 @@ post '/game/:id/participants' do
 		halt 500, "A database error occured"
 	else
 		broadcast({:game => game.to_hash}.to_json)
+		Pusher.trigger("game_#{params[:id]}", 'joined', loggedInUser.to_hash)
 		true
 	end
 end
@@ -274,6 +284,7 @@ post '/game/:id/story' do
 	puts story.errors.inspect if !story.saved?
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
 	broadcast({:story => story.to_hash}.to_json)
+	Pusher.trigger("game_#{params[:id]}", 'new_story', story.to_hash)
 	story.to_hash.to_json
 end
 
@@ -281,6 +292,7 @@ delete '/game/:game/story/:ticket' do
 		story = getStory(params[:game].to_i, params[:ticket])
 		preventModClosed(story.game)
 		broadcast({:game => story.game.to_hash}.to_json)
+		Pusher.trigger("game_#{params[:game]}", 'deleted_story', params[:ticket])
 		story.destroy.to_json
 end
 
@@ -331,6 +343,12 @@ put '/game/:game/story/:ticket' do
 		halt 500, "Could not edit story\n"+story.errors.inspect
 	else
 		broadcast({:story => story.to_hash}.to_json)
+		Pusher.trigger("game_#{params[:game]}", 'updated_story', story.to_hash)
+		g_h = game.to_hash
+		#using the logic in game, push the full object of the "current story" of one exists
+		if g_h.key?(:current_story)
+			Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, g_h[:current_story]).to_hash)
+		end
 	end
 	story.to_hash.to_json
 end
@@ -359,10 +377,13 @@ post '/game/:game/story/:ticket/estimate' do
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
 
 	#mark as complete if everyone is done estimating
-	story.complete = story.estimates.length == story.game.participants.length
+	#story.complete = story.estimates.length == story.game.participants.length
 	story.save
 
 	broadcast({:story => story.to_hash}.to_json)
+	est_h = estimate.to_hash
+	est_h['ticket_no'] = story.ticket_no
+	Pusher.trigger("game_#{params[:game]}", 'estimate', est_h)
 	estimate.to_hash.to_json
 end
 

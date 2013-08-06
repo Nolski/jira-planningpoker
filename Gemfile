@@ -14,3 +14,4 @@ end
 gem "data_mapper"
 gem 'sinatra-websocket', :git => "https://github.com/simulacre/sinatra-websocket.git"	
 gem 'rest-client', :git => "https://github.com/rest-client/rest-client.git"
+gem 'pusher'
