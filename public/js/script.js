@@ -129,7 +129,7 @@ function makeStory() {
 	var url = '/game/' + getId() + '/story',
 		ticketNum = $('#ticket').val(),
 		data = { 'ticket_no': ticketNum };
-	console.log(ticketNum.val());
+	console.log(ticketNum);
 	$.ajax({
 		url: url,
 		type: 'POST',
