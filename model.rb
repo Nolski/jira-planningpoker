@@ -98,6 +98,7 @@ class Story
 			:description => description,
 			:estimates => estimates.map {|estimate| estimate.to_hash},
 			:complete => complete,
+			:sister_stories => game.stories.map {|s| s.ticket_no}
 		}
 		h[:story_points] = story_points unless story_points.nil?
 		return h
