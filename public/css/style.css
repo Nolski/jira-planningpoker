@@ -77,7 +77,7 @@ body{
 
 .description {
 	width: 100%;
-	padding-top:20px;
+	margin-top:20px;
 	height:38.9vh;
 	width:101.1%;
 	overflow-y:auto;
