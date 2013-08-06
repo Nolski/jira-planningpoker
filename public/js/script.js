@@ -42,6 +42,7 @@ $(document).ready(function(){
 	var channel = pusher.subscribe('game_' + id);
 
 	channel.bind('new_story', function ( data ) {
+		console.log('new story', data);
 		stories.push(data);
 		$('#stories').empty();
 		for (var i = 0; i < stories.length; i++) {
