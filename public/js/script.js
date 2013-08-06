@@ -139,9 +139,9 @@ function getGameInfo() {
 =================================*/
 function makeGame( id, callback ) {
 	var url = '/game',
-		username = getUsername(),
+		name = $('#game').val(),
 		data = {
-			name: 'username'
+			name: name
 		};
 
 	//data = JSON.stringify( data );
