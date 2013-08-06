@@ -344,6 +344,11 @@ put '/game/:game/story/:ticket' do
 	else
 		broadcast({:story => story.to_hash}.to_json)
 		Pusher.trigger("game_#{params[:game]}", 'updated_story', story.to_hash)
+		g_h = game.to_hash
+		#using the logic in game, push the full object of the "current story" of one exists
+		if g_h.key?(:current_story)
+			Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, g_h[:current_story]).to_hash)
+		end
 	end
 	story.to_hash.to_json
 end
