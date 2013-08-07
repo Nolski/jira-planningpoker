@@ -247,9 +247,6 @@ function update() {
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
-		if (story.ticket_no == data.ticket_no) {
-			story = data;
-		}
 
 		if(story.story_points == null) {
 			story.story_points = 0;
