@@ -9,8 +9,7 @@ function login() {
 		data: data,
 		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
-			console.log('success!');
-			window.location = "/index.html?id=1";
+			window.location = "/join.html";
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('ERROR: ', errorThrown);
