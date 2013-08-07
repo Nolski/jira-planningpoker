@@ -139,6 +139,7 @@ function getGameInfo() {
 }
 
 function getCurrentStory( data ) {
+	console.log("afhadfj", data);
 	var url = '/game/' + getId() + '/story/' + data.current_story;
 
 	$.ajax({
