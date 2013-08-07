@@ -5,9 +5,9 @@
 	<title>Login</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/login.css">
+	<link rel="stylesheet" href="css/join.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="js/login.js"></script>
+	<script src="js/join.js"></script>
 </head>
 <body>
 	<div class="join">
@@ -15,12 +15,16 @@
 			<fieldset>
 				<legend class="join-title">Select Game</legend>
 				<div class="form-group">
-					<label for="username">Username: </label>
-					<input id="username" type="text" class="form-control input-small form-input" name="username"/> 
-					<label for="password">Password: </label>
-					<input id="password" type="password" class="form-control input-small form-input" name="password" />
+					<table id="games">
+						<thead>
+							<tr>
+								<td>Game Name</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody id="games-body"></tbody>
+					</table>
 				</div>
-				<input type="button" class="btn btn-default" onclick="return joinGame()" value="Login" />
 			</fieldset>
 		</form>
 	</div>
