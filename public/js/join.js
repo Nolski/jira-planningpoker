@@ -20,16 +20,14 @@ function update( data ) {
 	for (var i = 0; i < data.length; i++) {
 		var game = data[i],
 			html = "<tr><td class='game'>" + game.name
-			+ "</td><td id='" + i + "' class='games-button'><input type='button' "
-			+ "class='btn btn-default button-click' value='Join Game' "
-			+ " /></td></tr>"
+			+ "</td><td id='" + game.id + "' class='games-button'><input type='button' "
+			+ "class='btn btn-default button-click' value='Join Game' /></td></tr>";
 		$('#games-body').append( html );
 	};
 	$('.games-button').click(joinGame);
 }
 
 function joinGame() {
-	console.log('samhkjnfha');
 	var self = $(this),
 		url = '/game/' + self.attr('id') + '/participants'
 	$.ajax({

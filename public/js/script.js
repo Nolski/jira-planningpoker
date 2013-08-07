@@ -240,7 +240,7 @@ function endGame() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
-			window.location('/login.html');
+			window.location = '/join.html';
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
