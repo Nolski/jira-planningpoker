@@ -117,7 +117,7 @@ function sendVote( storyValue ) {
 	var data = {
 				vote: storyValue
 			},
-		ticket = 'TVTA-1234'
+		ticket = currentStory,
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + '/estimate';
 
