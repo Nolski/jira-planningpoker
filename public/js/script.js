@@ -127,7 +127,7 @@ function sendVote( storyValue ) {
 		dataType: 'json',
 		'data': data,
 		success: function( data, textStatus, jqXHR ) {
-			console.log( 'success! sendVote()' );
+			console.log( 'success!' );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log( 'ERROR: ', errorThrown );
@@ -145,6 +145,7 @@ function getGameInfo() {
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = JSON.parse( data );
 			stories = gameInfo.stories;
+			getCurrentStory();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -161,7 +162,7 @@ function getCurrentStory() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			currentStory = data;
+			currentStory = JSON.parse( data );
 			console.log('getCurrentStory: ', currentStory);
 			update();
 		},
