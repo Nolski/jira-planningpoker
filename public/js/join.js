@@ -28,7 +28,8 @@ function update( data ) {
 	};
 }
 
-var function joinGame() {
+function joinGame() {
+	console.log('samhkjnfha');
 	var self = $(this),
 		url = '/game/' + self.attr('id') + '/participants'
 	$.ajax({
