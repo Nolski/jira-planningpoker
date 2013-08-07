@@ -66,3 +66,10 @@ body{
 	width:90%;
 }
 
+.games-table {
+	width:100%;
+}
+
+.games-button {
+	float:right;
+}
