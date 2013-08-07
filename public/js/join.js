@@ -37,7 +37,7 @@ function joinGame() {
 		method: 'POST',
 		success: function(data, textStatus, jqXHR) {
 			var gameUrl = '/index.html?id=' + self.attr('id');
-			window.location(gameUrl);
+			window.location = gameUrl;
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('ERROR: ', errorThrown);
