@@ -144,7 +144,6 @@ function makeGame( id, callback ) {
 			name: name
 		};
 
-	//data = JSON.stringify( data );
 	$.ajax({
 		url: url,
 		type: 'POST',
@@ -183,6 +182,40 @@ function makeStory() {
 	});
 }
 
+function endGame() {
+	var url = '/game/' + getId();
+	$.ajax({
+		url: url,
+		type: 'DELETE',
+		success: function( data, textStatus, jqXHR ) {
+			window.location('/login.html');
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
+
+function setScore() {
+	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
+		sp = $('#score').val(),
+		data = {
+				complete: true,
+				story_points: sp
+			};
+
+	$.ajax({
+		url: url,
+		type: 'PUT',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			console.log('setScore: ', data);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
 
 /*================================
 	Polling functions
