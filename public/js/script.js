@@ -128,7 +128,7 @@ function getGameInfo() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = data;
-			getCurrentStory();
+			getCurrentStory( data );
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -138,8 +138,8 @@ function getGameInfo() {
 	});
 }
 
-function getCurrentStory() {
-	var url = '/game/' + getId + '/story/' + gameInfo.current_story;
+function getCurrentStory( data ) {
+	var url = '/game/' + getId() + '/story/' + data.current_story;
 
 	$.ajax({
 		url: url,
