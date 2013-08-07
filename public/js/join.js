@@ -28,7 +28,7 @@ function update( data ) {
 	};
 }
 
-function joinGame() {
+var function joinGame() {
 	var self = $(this),
 		url = '/game/' + self.attr('id') + '/participants'
 	$.ajax({
