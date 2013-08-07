@@ -31,7 +31,7 @@ function joinGame() {
 	var self = $(this),
 		url = '/game/' + self.attr('id') + '/participants'
 	$.ajax({
-		url: '/game',
+		url: url,
 		method: 'POST',
 		success: function(data, textStatus, jqXHR) {
 			var gameUrl = '/index.html?id=' + self.attr('id');
