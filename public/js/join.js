@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	getGames();
 });
 
 function getGames() {
