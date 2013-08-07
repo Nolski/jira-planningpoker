@@ -97,6 +97,7 @@ $(document).ready(function(){
 		estimates.push( data );
 		for (var i = 0; i < estimates.length; i++) {
 			estimate = estimates[i];
+			console.log("estimate");
 			console.log(estimate);
 			var resultCard = "<div class='result-card' data-original-title='" 
 				+ estimate.fullname + "'></div>";
