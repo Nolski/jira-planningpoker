@@ -117,7 +117,7 @@ function sendVote( storyValue ) {
 	var data = {
 				vote: storyValue
 			},
-		ticket = currentStory,
+		ticket = currentStory.ticket_no,
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + '/estimate';
 
