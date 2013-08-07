@@ -100,7 +100,7 @@ $(document).ready(function(){
 			console.log("estimate");
 			console.log(estimate);
 			var resultCard = "<div class='result-card' data-original-title='" 
-				+ estimate.fullname + "'></div>";
+				+ estimate.user.fullname + "'></div>";
 			$('#result-cards').append(resultCard);
 		}
 	});
