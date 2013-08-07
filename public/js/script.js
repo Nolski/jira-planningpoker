@@ -274,7 +274,7 @@ function setScore() {
 	Utility functions
 =================================*/
 function update() {
-	console.log("stories.length: ", stories.length);
+	console.log("stories.length: ", stories);
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
