@@ -99,9 +99,11 @@ $(document).ready(function(){
 			estimate = estimates[i];
 			console.log("estimate");
 			console.log(estimate);
-			var resultCard = "<div class='result-card' data-original-title='" 
+			var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
 				+ estimate.user.fullname + "'></div>";
 			$('#result-cards').append(resultCard);
+			var id = '#' + i;
+			$(id).tooltip();
 		}
 	});
 
