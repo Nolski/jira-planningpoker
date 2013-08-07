@@ -68,6 +68,9 @@ body{
 	font-weight: 200;
 	font-size: 34px;
 	border-bottom: 1px solid;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .title > h3 {
@@ -76,13 +79,12 @@ body{
 }
 
 .description {
-	width: 100%;
 	margin-top:20px;
-	height:38.9vh;
+	height:38.6vh;
 	width:101.1%;
 	overflow-y:auto;
 	color: #FFF;
-	font: 10pt "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font: 10pt "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
 }
 
 .cards {
@@ -183,4 +185,10 @@ body{
 
 .btn-default {
 	margin: 5px 0 5px 0;
+}
+
+.moderator {
+	position:absolute;
+	left: 0;
+	bottom: 0;
 }
