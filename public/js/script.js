@@ -36,7 +36,7 @@ $(document).ready(function(){
 	});
 
 	stories = gameInfo.stories;
-	getCurrentStory();
+
 	/*================================
 		Pusher functions
 	=================================*/
@@ -128,6 +128,7 @@ function getGameInfo() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = data;
+			getCurrentStory();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
