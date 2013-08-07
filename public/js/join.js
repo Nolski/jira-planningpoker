@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	getGames();
-	$('.games-button').click( joinGame );
+	$('.games-button').click(function() {
+		console.log('asdhadfhj');
+	});
 });
 
 function getGames() {
