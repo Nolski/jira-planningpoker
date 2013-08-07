@@ -16,10 +16,14 @@ class Game
 	property :created, DateTime, :required => true
 	property :closed, Boolean, :default => false
 
+	def name
+		cname = super
+		((cname.nil?) ? "#{moderator.fullname}'s Game (\##{id})" : cname)	
+	end
 	def to_hash
 		result = {
 			:id => id,
-			:name => ((name.nil?) ? "#{moderator.fullname}'s Game (\##{id})" : name),
+			:name => name,
 			:created => created,
 			:stories => Array.new,
 			:moderator => moderator.to_hash,
