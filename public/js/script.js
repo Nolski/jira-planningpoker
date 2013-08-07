@@ -197,6 +197,7 @@ function endGame() {
 }
 
 function setScore() {
+	console.log(gameInfo);
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
