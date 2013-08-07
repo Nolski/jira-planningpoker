@@ -1,8 +1,5 @@
 $(document).ready(function() {
 	getGames();
-	$('.games-button').click(function() {
-		console.log('asdhadfhj');
-	});
 });
 
 function getGames() {
@@ -24,10 +21,11 @@ function update( data ) {
 		var game = data[i],
 			html = "<tr><td class='game'>" + game.name
 			+ "</td><td class='games-button'><input type='button' "
-			+ "class='btn btn-default' value='Join Game' id='" 
+			+ "class='btn btn-default button-click' value='Join Game' id='" 
 			+ i + "' /></td></tr>"
 		$('#games-body').append( html );
 	};
+	$('.games-button').click(joinGame);
 }
 
 function joinGame() {
