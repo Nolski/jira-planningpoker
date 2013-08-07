@@ -176,7 +176,7 @@ function getStories( story ) {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			stories = data;
+			stories = JSON.parse( data );
 			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
