@@ -36,7 +36,7 @@ $(document).ready(function(){
 	});
 
 	stories = gameInfo.stories;
-
+	getCurrentStory();
 	/*================================
 		Pusher functions
 	=================================*/
