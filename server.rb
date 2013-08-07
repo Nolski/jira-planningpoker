@@ -163,6 +163,16 @@ post '/game' do
 	end
 	game.to_hash.to_json
 end
+#Get all the open games
+get '/game' do
+	games = Game.all(:closed => false, :order => [:created.asc], :fields => [:id, :name])
+	result = Array.new
+	games.each do |game|
+		result << {:id => game.id, :name => game.name}
+	end
+	return result.to_json
+end
+
 
 #Pass an object with properties to change. Just name is supported now.
 #you must be logged in as the moderator
