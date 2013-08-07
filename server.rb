@@ -95,6 +95,9 @@ before do
 end
 
 
+get '/' do
+	redirect to((loggedInUser.nil?) ? 'login.html' : 'join.html')
+end
 ########
 #Authentication
 ########
