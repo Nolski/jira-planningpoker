@@ -162,7 +162,7 @@ function getCurrentStory() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			currentStory = JSON.parse( data );
+			currentStory = data;
 			console.log('getCurrentStory: ', currentStory);
 			update();
 		},
