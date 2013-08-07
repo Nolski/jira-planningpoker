@@ -4,6 +4,7 @@
 var id,
 	socket,
 	gameInfo = {},
+	currentStory = {},
 	stories = [];
 
 /*================================
@@ -34,6 +35,7 @@ $(document).ready(function(){
 		sendVote( storyValue );
 	});
 
+	stories = gameInfo.stories;
 
 	/*================================
 		Pusher functions
@@ -75,6 +77,7 @@ $(document).ready(function(){
 	});
 
 	channel.bind('current_story', function ( data ) {
+		currentStory = data
 		$('#title').empty();
 		$('#description').empty();
 		var title = data.ticket_no + " - " + data.summary,
@@ -126,6 +129,23 @@ function getGameInfo() {
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = data;
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
+function getCurrentStory() {
+	var url = '/game/' + getId + '/story/' + gameInfo.current_story;
+
+	$.ajax({
+		url: url,
+		type: 'GET',
+		success: function( data, textStatus, jqXHR ) {
+			currentStory = data;
+			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -219,35 +239,37 @@ function setScore() {
 }
 
 /*================================
-	Polling functions
-=================================*
-function poll() {
-	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
-	$.ajax({
-		url: url,
-		type: 'GET',
-		data: data,
-		success: function( data, textStatus, jqXHR ) {
-			updatePage( data );
-			setTimeout(poll(), 5000);
-		},
-		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
-		}
-	});
-}
-
-function updatePage( data ) {
-	var storyTitle = '<li>' + data.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
-				+ data.story_points; + '</li>';
-	$('#stories').append(storyTitle);
-
-	
-}
-
-/*================================
 	Utility functions
 =================================*/
+function update() {
+	$('#stories').empty();
+	for (var i = 0; i < stories.length; i++) {
+		story = stories[i];
+		if (story.ticket_no == data.ticket_no) {
+			story = data;
+		}
+
+		if(story.story_points == null) {
+			story.story_points = 0;
+		}
+
+		var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
+					   + story.story_points; + '</li>';
+		$('#stories').append(storyTitle);
+	}
+
+	$('#title').empty();
+	$('#description').empty();
+	var title = currentStory.ticket_no + " - " + currentStory.summary,
+		description = currentStory.description.replace('\n', '<br />');
+	
+	description = description.replace('\t', '');
+	description = description.replace('\r', '');
+
+	$('#title').html(title);
+	$('#description').html(description);
+}
+
 function getUsername() {
 	return getURLParameter('username');
 }
