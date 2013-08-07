@@ -147,6 +147,7 @@ function getCurrentStory() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			currentStory = data;
+			console.log('getCurrentStory: ', currentStory);
 			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -244,6 +245,7 @@ function setScore() {
 	Utility functions
 =================================*/
 function update() {
+	console.log("update: ", currentStory);
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
