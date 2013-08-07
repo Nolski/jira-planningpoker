@@ -5,6 +5,7 @@ var id,
 	socket,
 	gameInfo = {},
 	currentStory = {},
+	estimates = [],
 	stories = [];
 
 /*================================
@@ -14,7 +15,7 @@ $(document).ready(function(){
 
 	id = getURLParameter('id');
 	gameinfo = getGameInfo();
-
+	getStories();
 	$('.card').hover(function() {
 		$(this).animate({
 			'top': '5px'
@@ -91,6 +92,16 @@ $(document).ready(function(){
 
 	});
 
+	channel.bind('estimate', function ( data ) {
+		$('#result-cards').empty();
+		for (var i = 0; i < estimates.length; i++) {
+			estimate = estimates[i];
+			var resultCard = "<div class='result-card' data-original-title='" 
+				+ estimate.fullname + "'></div>";
+			$('#result-cards').append(resultCard);
+		}
+	});
+
 });
 
 /*================================
@@ -128,6 +139,7 @@ function getGameInfo() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = JSON.parse( data );
+			console.log(gameInfo.stories)
 			stories = gameInfo.stories;
 			getCurrentStory();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
@@ -148,6 +160,23 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			currentStory = data;
 			console.log('getCurrentStory: ', currentStory);
+			update();
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
+function getStories( story ) {
+	var url = '/game/' + getId() + '/story';
+
+	$.ajax({
+		url: url,
+		type: 'GET',
+		success: function( data, textStatus, jqXHR ) {
+			stories = JSON.parse( data );
 			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -245,7 +274,7 @@ function setScore() {
 	Utility functions
 =================================*/
 function update() {
-	console.log("update: ", currentStory);
+	console.log(stories);
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
