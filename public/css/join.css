@@ -50,6 +50,7 @@ body{
 	top:50%;
 	left:50%;
 	margin:-155px 0 0 -250px;
+	overflow-y:scroll;
 }
 
 .join-form {
