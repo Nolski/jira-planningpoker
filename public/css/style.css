@@ -68,6 +68,9 @@ body{
 	font-weight: 200;
 	font-size: 34px;
 	border-bottom: 1px solid;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .title > h3 {
