@@ -35,7 +35,7 @@ $(document).ready(function(){
 		sendVote( storyValue );
 	});
 
-	stories = gameInfo.stories;
+	
 
 	/*================================
 		Pusher functions
@@ -128,6 +128,7 @@ function getGameInfo() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = JSON.parse( data );
+			stories = gameInfo.stories;
 			getCurrentStory();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
