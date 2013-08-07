@@ -20,9 +20,9 @@ function update( data ) {
 	for (var i = 0; i < data.length; i++) {
 		var game = data[i],
 			html = "<tr><td class='game'>" + game.name
-			+ "</td><td class='games-button'><input type='button' "
-			+ "class='btn btn-default button-click' value='Join Game' id='" 
-			+ i + "' /></td></tr>"
+			+ "</td><td id='" + i + "' class='games-button'><input type='button' "
+			+ "class='btn btn-default button-click' value='Join Game' "
+			+ " /></td></tr>"
 		$('#games-body').append( html );
 	};
 	$('.games-button').click(joinGame);
