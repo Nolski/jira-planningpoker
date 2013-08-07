@@ -127,8 +127,8 @@ function getGameInfo() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			gameInfo = data;
-			getCurrentStory( data );
+			gameInfo = JSON.parse( data );
+			getCurrentStory();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -138,10 +138,8 @@ function getGameInfo() {
 	});
 }
 
-function getCurrentStory( data ) {
-	console.log(data);
-	var url = '/game/' + getId() + '/story/' + data["current_story"];
-	console.log("url", url);
+function getCurrentStory() {
+	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
 
 	$.ajax({
 		url: url,
