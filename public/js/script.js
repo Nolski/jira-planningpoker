@@ -170,7 +170,7 @@ function getCurrentStory() {
 }
 
 function getStories( story ) {
-	var url = '/game/' + getId() + '/story/';
+	var url = '/game/' + getId() + '/story';
 
 	$.ajax({
 		url: url,
