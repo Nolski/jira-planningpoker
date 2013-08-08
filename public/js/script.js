@@ -312,7 +312,7 @@ function flipCards() {
 		data = {
 				flipped: true,
 			};
-
+	console.log(gameInfo());
 	$.ajax({
 		url: url,
 		type: 'PUT',
