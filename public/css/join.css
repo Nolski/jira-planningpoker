@@ -83,3 +83,8 @@ body{
 .table-body > tr {
 	height:47px;
 }
+
+.new-game {
+	border-top:solid 1px #FFF;
+	padding-top:5px;
+}
