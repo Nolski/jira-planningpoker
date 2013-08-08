@@ -153,6 +153,7 @@ post '/game' do
 	game = Game.new
 	game.created = Time.now
 	game.moderator = loggedInUser
+	game.participants = [loggedInUser]
 	body = request.body.read
 	if !params[:name].nil?
 		game.name = params[:name] unless params[:name].nil?
