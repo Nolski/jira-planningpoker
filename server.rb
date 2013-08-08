@@ -294,6 +294,11 @@ post '/game/:id/story' do
 		puts "Could not get JIRA data for #{story.ticket_no}"
 	end
 
+	#set this as the current story if there isn't one
+	if game.current_story.nil?
+		game.current_story = story.ticket_no
+	end
+
 
 	puts story.errors.inspect if !story.saved?
 	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
