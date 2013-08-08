@@ -195,4 +195,5 @@ body{
 
 .form-group {
 	float: left;
+	margin: 0 160px 0 10px;
 }
