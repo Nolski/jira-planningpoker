@@ -297,6 +297,7 @@ post '/game/:id/story' do
 	#set this as the current story if there isn't one
 	if game.current_story.nil?
 		game.current_story = story.ticket_no
+		game.save
 	end
 
 
