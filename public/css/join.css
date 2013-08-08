@@ -63,13 +63,15 @@ body{
 }
 
 .form-input {
-	width:90%;
+	width:60%;
+	float:left;
+	height:26px;
+}
+
+.btn {
+	float: right;
 }
 
 .games-table {
 	width:100%;
-}
-
-.games-button {
-	float:right;
 }
