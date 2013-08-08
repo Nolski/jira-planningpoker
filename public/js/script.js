@@ -58,22 +58,24 @@ $(document).ready(function(){
 		};
 	});
 
-	channel.bind('update_story', function ( data ) {
-		$('#stories').empty();
-		stories.push(data);
-		for (var i = 0; i < stories.length; i++) {
-			story = stories[i];
-			if (story.ticket_no == data.ticket_no) {
-				story = JSON.parse( data );
-			}
-
-			if(story.story_points == null) {
-				story.story_points = 0;
-			}
-			var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
-						   + story.story_points; + '</li>';
-			$('#stories').append(storyTitle);
-		};
+	channel.bind('updated_story', function ( data ) {
+		if (data.flipped == false) {
+			return;
+		}
+		
+		$('#result-cards').empty();
+		
+		for (var i = 0; i < data.estimates.length; i++) {
+			estimate = data.estimates[i];
+			console.log("estimate");
+			console.log(estimate);
+			var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
+				+ estimate.user.fullname + "'><h1>" + estimate.vote + "</h1></div>";
+			$('#result-cards').append(resultCard);
+			var id = '#' + i;
+			$(id).tooltip();
+		}
+		
 	});
 
 	channel.bind('current_story', function ( data ) {
