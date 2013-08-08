@@ -181,7 +181,7 @@ function getStories( story ) {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
-			//update();
+			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -278,6 +278,7 @@ function setScore() {
 	Utility functions
 =================================*/
 function update() {
+	console.log('update');
 	console.log(stories);
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
