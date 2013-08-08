@@ -156,9 +156,10 @@ function getGameInfo() {
 
 function getCurrentStory() {
 	if(gameInfo.current_story == null) {
+		getStories();
 		return;
 	}
-	
+
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
 
 	$.ajax({
