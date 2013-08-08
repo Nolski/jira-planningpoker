@@ -345,7 +345,7 @@ function update() {
 	$('#description').empty();
 	var title = currentStory.ticket_no + " - " + currentStory.summary,
 		description = "";
-
+	console.log('currentStory - update', currentStory);
 	if (currentStory.description != null) {
 		description = currentStory.description.replace('\n', '<br />');
 		description = description.replace('\t', '');
