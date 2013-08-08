@@ -172,6 +172,7 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			console.log(data);
 			currentStory = data;
+			estimates = currentStory.estimates;
 			console.log('getCurrentStory: ', currentStory);
 			getStories();
 		},
