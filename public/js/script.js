@@ -264,7 +264,7 @@ function setScore() {
 				complete: true,
 				story_points: sp
 			};
-		console.log(sp);
+		console.log(data);
 
 	$.ajax({
 		url: url,
