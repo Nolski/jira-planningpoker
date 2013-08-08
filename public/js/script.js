@@ -306,10 +306,13 @@ function update() {
 	$('#title').empty();
 	$('#description').empty();
 	var title = currentStory.ticket_no + " - " + currentStory.summary,
+		description = "";
+
+	if (currentStory.description != null) {
 		description = currentStory.description.replace('\n', '<br />');
-	
-	description = description.replace('\t', '');
-	description = description.replace('\r', '');
+		description = description.replace('\t', '');
+		description = description.replace('\r', '');
+	}
 
 	$('#title').html(title);
 	$('#description').html(description);
