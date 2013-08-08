@@ -171,6 +171,7 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			console.log(data);
 			currentStory = data;
+			flipped = currentStory.flipped;
 			estimates = currentStory.estimates;
 			console.log('getCurrentStory: ', currentStory);
 			getStories();
