@@ -193,6 +193,10 @@ function getStories() {
 /*================================
 	Admin Ajax functions
 =================================*/
+function checkAdmin() {
+
+}
+
 function makeGame( id, callback ) {
 	var url = '/game',
 		name = $('#game').val(),
@@ -260,6 +264,7 @@ function setScore() {
 				complete: true,
 				story_points: sp
 			};
+		console.log(sp);
 
 	$.ajax({
 		url: url,
