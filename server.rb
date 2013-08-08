@@ -339,7 +339,6 @@ put '/game/:game/story/:ticket' do
 	end
 
 	unless story.story_points.nil?
-	puts "gonna update jira"
 		begin
 			#update JIRA
 			resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
