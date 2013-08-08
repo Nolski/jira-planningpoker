@@ -35,7 +35,7 @@ class Game
 		#TODO: make more efficient
 		#stories(:order => [:created.asc]).each do |story|
 			#result[:stories] << story.ticket_no
-			#if result[:current_story].nil? && !story.complete
+			#if result[:current_story].nil? && !story.flipped
 				#result[:current_story] = story.ticket_no
 			#end
 		#end
@@ -76,7 +76,7 @@ class Estimate
 
 	def to_hash
 		result = { :user => user.to_hash, :made_at => made_at}
-		result[:vote] = vote if story.complete
+		result[:vote] = vote if story.flipped
 		return result
 	end
 end
@@ -87,7 +87,7 @@ class Story
 	has n, :estimates
 
 	property :ticket_no, String, :required => true
-	property :complete, Boolean, :default => false
+	property :flipped, Boolean, :default => false
 	property :summary, Text
 	property :description, Text
 	property :story_points, Float
@@ -102,7 +102,7 @@ class Story
 			:summary => summary,
 			:description => description,
 			:estimates => estimates.map {|estimate| estimate.to_hash},
-			:complete => complete,
+			:flipped => flipped,
 			:sister_stories => game.stories.map {|s| s.ticket_no}
 		}
 		h[:story_points] = unless story_points.nil? then story_points else -1 end

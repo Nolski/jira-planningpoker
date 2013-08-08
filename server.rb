@@ -314,7 +314,7 @@ get '/game/:game/story/:ticket' do
 		story.to_hash.to_json
 end
 
-#you may change the completeness or points of a story, by passing {"complete" : true, "story_points" : 2}
+#you may change the flippedness or points of a story, by passing {"flipped" : true, "story_points" : 2}
 #story points will attempt to be set on JIRA
 put '/game/:game/story/:ticket' do
 	story = getStory(params[:game].to_i, params[:ticket])
@@ -324,9 +324,9 @@ put '/game/:game/story/:ticket' do
 		halt 403, "You must be the moderator to edit this game"
 	end
 
-	if !params[:complete].nil? || !params[:story_points].nil?
-		if !params[:complete].nil?
-			story.complete = params[:complete] == 'true'
+	if !params[:flipped].nil? || !params[:story_points].nil?
+		if !params[:flipped].nil?
+			story.flipped = params[:flipped] == 'true'
 		end
 		if !params[:story_points].nil?
 			story.story_points = params[:story_points].to_f
@@ -334,7 +334,7 @@ put '/game/:game/story/:ticket' do
 	else
 		body = request.body.read
 		data = JSON.parse(body)
-		story.complete = data['complete'] unless data['complete'].nil?
+		story.flipped = data['flipped'] unless data['flipped'].nil?
 		story.story_points = data['story_points'].to_f unless data['story_points'].nil?
 	end
 
@@ -381,7 +381,7 @@ post '/game/:game/goto-next-story' do
 	game = getGame(params[:game].to_i)
 	ticket_no = nil
 	begin
-		ticket_no =  game.stories(:order => [:created.asc], :complete => false, :fields => [:ticket_no]).first.ticket_no
+		ticket_no =  game.stories(:order => [:created.asc], :flipped => false, :fields => [:ticket_no]).first.ticket_no
 	rescue
 		return false
 	end
@@ -398,7 +398,7 @@ end
 #add your estimate
 #pass json object with vote OR a form field with vote.
 #any previous vote will be overritten
-# if all votes are in the story will be marked as complete
+# if all votes are in the story will be marked as flipped
 post '/game/:game/story/:ticket/estimate' do
 	if !params[:vote].nil?
 		vote = params[:vote].to_f
@@ -415,14 +415,14 @@ post '/game/:game/story/:ticket/estimate' do
 	unless estimate.nil? then estimate.destroy! end
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
 
-	#mark as complete if everyone is done estimating
-	oldComplete = story.complete
-	story.complete = story.complete || story.estimates.length == story.game.participants.length
+	#mark as flipped if everyone is done estimating
+	oldFlipped = story.flipped
+	story.flipped = story.flipped || story.estimates.length == story.game.participants.length
 		
 	story.save
 
-	#if the story was auto-completed, send a story updated notification
-	if oldComplete!=story.complete
+	#if the story was auto-flippedd, send a story updated notification
+	if oldFlipped!=story.flipped
 		Pusher.trigger("game_#{params[:game]}", 'updated_story', story.to_hash)
 	end
 
@@ -434,11 +434,25 @@ post '/game/:game/story/:ticket/estimate' do
 end
 
 #get just the estimates
-#votes will not show if story is incomplete
+#votes will not show if story is inflipped
 get '/game/:game/story/:ticket/estimate' do
 	story = getStory(params[:game].to_i, params[:ticket])
 	(story.estimates.map { |e| e.to_hash }).to_json
 end
+
+#clear all the estimates and start a new round
+delete '/game/:game/story/:ticket/estimate' do
+	story = getStory(params[:game].to_i, params[:ticket])
+	preventModClosed(story.game)
+	if loggedInUser != story.game.moderator
+		halt 403, "You must be the moderator to clear all the estimates"
+	end
+	if story.estimates.destroy
+		Pusher.trigger("game_#{params[:game]}", 'new_round', {:ticket_no => params[:ticket], :estimates => []})
+	end
+end
+
+	
 
 #######
 #Websocket stuff
