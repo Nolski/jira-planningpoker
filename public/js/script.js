@@ -290,6 +290,9 @@ function setScore() {
 function update() {
 	console.log('update');
 	console.log(stories);
+	if (stories.length == 0) {
+		return;
+	}
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
