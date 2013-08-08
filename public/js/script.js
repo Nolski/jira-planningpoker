@@ -373,7 +373,7 @@ function update() {
 		console.log(estimate);
 		var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
 			+ estimate.user.fullname + "'>";
-
+		console.log(flipped);
 		if (flipped) {
 			resultCard += estimate.user.fullname;
 		}
