@@ -372,7 +372,12 @@ function update() {
 		console.log("estimate");
 		console.log(estimate);
 		var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
-			+ estimate.user.fullname + "'></div>";
+			+ estimate.user.fullname + "'>";
+
+		if (flipped) {
+			resultCard += estimate.user.fullname;
+		}
+		resultCard += "</div>";
 		$('#result-cards').append(resultCard);
 		var id = '#' + i;
 		$(id).tooltip();
