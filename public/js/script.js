@@ -163,8 +163,7 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			currentStory = data;
 			console.log('getCurrentStory: ', currentStory);
-			getStories()
-			update();
+			getStories();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
