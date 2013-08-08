@@ -136,6 +136,12 @@ body{
 	border-radius: 4px;
 }
 
+.result-card > h1 {
+	text-align: center;
+	margin-top:46%;
+	color:#FFF;
+}
+
 /*==============================
 	All Styles Relating to 
 	Sidebar
