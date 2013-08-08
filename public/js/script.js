@@ -6,7 +6,8 @@ var id,
 	gameInfo = {},
 	currentStory = {},
 	estimates = [],
-	stories = [];
+	stories = [],
+	flipped = false;
 
 /*================================
 	Event listeners
@@ -64,7 +65,7 @@ $(document).ready(function(){
 		}
 		
 		$('#result-cards').empty();
-		
+		flipped = true;
 		for (var i = 0; i < data.estimates.length; i++) {
 			estimate = data.estimates[i];
 			console.log("estimate");
@@ -281,6 +282,7 @@ function endGame() {
 }
 
 function setScore() {
+	flipped = false;
 	console.log(gameInfo);
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
@@ -288,7 +290,7 @@ function setScore() {
 				flipped: true,
 				story_points: sp
 			};
-		console.log(data);
+	console.log(data);
 
 	$.ajax({
 		url: url,
@@ -304,6 +306,7 @@ function setScore() {
 }
 
 function flipCards() {
+	flipped = true;
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
