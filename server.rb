@@ -416,8 +416,15 @@ post '/game/:game/story/:ticket/estimate' do
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
 
 	#mark as complete if everyone is done estimating
+	oldComplete = story.complete
 	story.complete = story.complete || story.estimates.length == story.game.participants.length
+		
 	story.save
+
+	#if the story was auto-completed, send a story updated notification
+	if oldComplete!=story.complete
+		Pusher.trigger("game_#{params[:game]}", 'updated_story', story.to_hash)
+	end
 
 	broadcast({:story => story.to_hash}.to_json)
 	est_h = estimate.to_hash
