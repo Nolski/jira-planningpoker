@@ -281,10 +281,30 @@ function setScore() {
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
-				complete: true,
+				flipped: true,
 				story_points: sp
 			};
 		console.log(data);
+
+	$.ajax({
+		url: url,
+		type: 'PUT',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			console.log('setScore: ', data);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
+
+function flipCards() {
+	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
+		sp = $('#score').val(),
+		data = {
+				flipped: true,
+			};
 
 	$.ajax({
 		url: url,
