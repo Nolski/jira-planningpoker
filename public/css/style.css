@@ -54,7 +54,7 @@ body{
 	font-family: 'Source Sans Pro';
 	background-color: #70828a;
 	color: #FFF;
-	height:47vh;
+	height:37vh;
 	padding:1vw;
 	position:relative;
 	z-index: 2;
@@ -80,7 +80,7 @@ body{
 
 .description {
 	margin-top:20px;
-	height:38.6vh;
+	height:28.6vh;
 	width:101.1%;
 	overflow-y:auto;
 	color: #FFF;
