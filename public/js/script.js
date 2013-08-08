@@ -15,7 +15,6 @@ $(document).ready(function(){
 
 	id = getURLParameter('id');
 	gameinfo = getGameInfo();
-	getStories();
 	$('.card').hover(function() {
 		$(this).animate({
 			'top': '5px'
@@ -164,6 +163,7 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			currentStory = data;
 			console.log('getCurrentStory: ', currentStory);
+			getStories()
 			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -173,7 +173,7 @@ function getCurrentStory() {
 	});
 }
 
-function getStories( story ) {
+function getStories() {
 	var url = '/game/' + getId() + '/story';
 
 	$.ajax({
@@ -283,7 +283,7 @@ function update() {
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
-
+		console.log(story)
 		if(story.story_points == null) {
 			story.story_points = 0;
 		}
