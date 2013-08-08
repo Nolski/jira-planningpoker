@@ -96,7 +96,6 @@ $(document).ready(function(){
 
 	channel.bind('estimate', function ( data ) {
 		$('#result-cards').empty();
-		estimates.push( data );
 		for (var i = 0; i < estimates.length; i++) {
 			estimate = estimates[i];
 			console.log("estimate");
