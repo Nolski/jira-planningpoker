@@ -75,3 +75,7 @@ body{
 .games-table {
 	width:100%;
 }
+
+.table-body > tr {
+	margin: 5px 0 5px 0;
+}
