@@ -57,7 +57,7 @@ function makeGame( id, callback ) {
 		success: function( data, textStatus, jqXHR ) {
 			var gameInfo = data;
 			console.log('makeGame()', gameInfo);
-			window.location = '/game/' + gameInfo.id;
+			window.location = '/index.html?id=' + gameInfo.id;
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
