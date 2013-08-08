@@ -54,7 +54,7 @@ body{
 	font-family: 'Source Sans Pro';
 	background-color: #70828a;
 	color: #FFF;
-	height:47vh;
+	height:37vh;
 	padding:1vw;
 	position:relative;
 	z-index: 2;
@@ -80,7 +80,7 @@ body{
 
 .description {
 	margin-top:20px;
-	height:38.6vh;
+	height:28.6vh;
 	width:101.1%;
 	overflow-y:auto;
 	color: #FFF;
@@ -171,12 +171,12 @@ body{
 }
 
 .admin-panel {
-	width:14vw;
 	position: fixed;
-	right:0;
+	left: 0;
 	bottom:0;
 	color: #FFF;
 	padding:10px;
+	background-color: #191919;
 }
 
 .admin-panel button {
@@ -191,4 +191,9 @@ body{
 	position:absolute;
 	left: 0;
 	bottom: 0;
+}
+
+.form-group {
+	float: left;
+	margin: 0 160px 0 10px;
 }

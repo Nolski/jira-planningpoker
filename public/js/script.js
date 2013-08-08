@@ -15,7 +15,6 @@ $(document).ready(function(){
 
 	id = getURLParameter('id');
 	gameinfo = getGameInfo();
-	getStories();
 	$('.card').hover(function() {
 		$(this).animate({
 			'top': '5px'
@@ -94,11 +93,16 @@ $(document).ready(function(){
 
 	channel.bind('estimate', function ( data ) {
 		$('#result-cards').empty();
+		estimates.push( data );
 		for (var i = 0; i < estimates.length; i++) {
 			estimate = estimates[i];
-			var resultCard = "<div class='result-card' data-original-title='" 
-				+ estimate.fullname + "'></div>";
+			console.log("estimate");
+			console.log(estimate);
+			var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
+				+ estimate.user.fullname + "'></div>";
 			$('#result-cards').append(resultCard);
+			var id = '#' + i;
+			$(id).tooltip();
 		}
 	});
 
@@ -112,7 +116,7 @@ function sendVote( storyValue ) {
 	var data = {
 				vote: storyValue
 			},
-		ticket = 'TVTA-1234'
+		ticket = currentStory.ticket_no,
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + '/estimate';
 
@@ -139,7 +143,6 @@ function getGameInfo() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = JSON.parse( data );
-			console.log(gameInfo.stories)
 			stories = gameInfo.stories;
 			getCurrentStory();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
@@ -152,6 +155,7 @@ function getGameInfo() {
 }
 
 function getCurrentStory() {
+	console.log('getcurrentStory', gameInfo);
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
 
 	$.ajax({
@@ -160,7 +164,7 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			currentStory = data;
 			console.log('getCurrentStory: ', currentStory);
-			update();
+			getStories();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -169,7 +173,7 @@ function getCurrentStory() {
 	});
 }
 
-function getStories( story ) {
+function getStories() {
 	var url = '/game/' + getId() + '/story';
 
 	$.ajax({
@@ -189,6 +193,10 @@ function getStories( story ) {
 /*================================
 	Admin Ajax functions
 =================================*/
+function checkAdmin() {
+
+}
+
 function makeGame( id, callback ) {
 	var url = '/game',
 		name = $('#game').val(),
@@ -240,7 +248,7 @@ function endGame() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
-			window.location('/login.html');
+			window.location = '/join.html';
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -256,6 +264,7 @@ function setScore() {
 				complete: true,
 				story_points: sp
 			};
+		console.log(data);
 
 	$.ajax({
 		url: url,
@@ -274,11 +283,12 @@ function setScore() {
 	Utility functions
 =================================*/
 function update() {
+	console.log('update');
 	console.log(stories);
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
-
+		console.log(story)
 		if(story.story_points == null) {
 			story.story_points = 0;
 		}
