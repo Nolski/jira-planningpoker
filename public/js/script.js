@@ -215,6 +215,7 @@ function makeGame( id, callback ) {
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = data;
 			console.log('makeGame()', gameInfo);
+			window.location = '/game/' + gameInfo.id;
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
