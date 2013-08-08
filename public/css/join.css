@@ -76,6 +76,10 @@ body{
 	width:100%;
 }
 
+.games-table > thead {
+	font-weight: bold;
+}
+
 .table-body > tr {
-	margin: 5px 0 5px 0;
+	height:47px;
 }
