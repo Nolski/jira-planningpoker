@@ -64,7 +64,7 @@ $(document).ready(function(){
 		for (var i = 0; i < stories.length; i++) {
 			story = stories[i];
 			if (story.ticket_no == data.ticket_no) {
-				story = data;
+				story = JSON.parse( data );
 			}
 
 			if(story.story_points == null) {
@@ -123,7 +123,7 @@ function sendVote( storyValue ) {
 	$.ajax({
 		url: url,
 		type: 'POST',
-		dataType: 'json',
+		dataType: 'JSON',
 		'data': data,
 		success: function( data, textStatus, jqXHR ) {
 			console.log( 'success!' );
@@ -167,7 +167,7 @@ function getCurrentStory() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			currentStory = data;
+			currentStory = JSON.parse( data );
 			console.log('getCurrentStory: ', currentStory);
 			getStories();
 		},
@@ -186,6 +186,7 @@ function getStories() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
+			console.log('getstories currentstory', currentStory);
 			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -228,7 +229,7 @@ function makeGame( id, callback ) {
 		type: 'POST',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			gameInfo = data;
+			gameInfo = JSON.parse( data );
 			console.log('makeGame()', gameInfo);
 			window.location = '/index.html?id=' + gameInfo.id;
 			return gameInfo;
@@ -250,7 +251,7 @@ function makeStory() {
 		type: 'POST',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			gameInfo = data;
+			gameInfo = JSON.parse( data );
 			console.log('makeGame()', gameInfo);
 			getGameInfo();
 			return gameInfo;
