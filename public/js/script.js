@@ -335,6 +335,8 @@ function update() {
 	if (stories.length == 0) {
 		return;
 	}
+
+	//Generate stories on side bar
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
@@ -348,6 +350,7 @@ function update() {
 		$('#stories').append(storyTitle);
 	}
 
+	//Generate ticket info
 	$('#title').empty();
 	$('#description').empty();
 	var title = currentStory.ticket_no + " - " + currentStory.summary,
@@ -361,6 +364,20 @@ function update() {
 
 	$('#title').html(title);
 	$('#description').html(description);
+
+	// Generate result cards
+	$('#result-cards').empty();
+	for (var i = 0; i < estimates.length; i++) {
+		estimate = estimates[i];
+		console.log("estimate");
+		console.log(estimate);
+		var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
+			+ estimate.user.fullname + "'></div>";
+		$('#result-cards').append(resultCard);
+		var id = '#' + i;
+		$(id).tooltip();
+	}
+
 	$('#ticket').val("");
 	$('#score').val("");
 	$('#game').val("");
