@@ -164,7 +164,7 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			currentStory = data;
 			console.log('getCurrentStory: ', currentStory);
-			//update();
+			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -181,7 +181,7 @@ function getStories( story ) {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
-			update();
+			//update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
