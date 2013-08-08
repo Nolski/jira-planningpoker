@@ -95,6 +95,9 @@ before do
 end
 
 
+get '/' do
+	redirect to((loggedInUser.nil?) ? 'login.html' : 'join.html')
+end
 ########
 #Authentication
 ########
@@ -336,6 +339,7 @@ put '/game/:game/story/:ticket' do
 	end
 
 	unless story.story_points.nil?
+	puts "gonna update jira"
 		begin
 			#update JIRA
 			resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
@@ -356,7 +360,7 @@ put '/game/:game/story/:ticket' do
 		Pusher.trigger("game_#{params[:game]}", 'updated_story', story.to_hash)
 		g_h = game.to_hash
 		#using the logic in game, push the full object of the "current story" of one exists
-		if g_h.key?(:current_story)
+		if g_h.key?(:current_story) && !g_h[:current_story].nil?
 			Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, g_h[:current_story]).to_hash)
 		end
 	end
