@@ -145,6 +145,7 @@ function getGameInfo() {
 			gameInfo = JSON.parse( data );
 			stories = gameInfo.stories;
 			getCurrentStory();
+			checkAdmin();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -198,7 +199,21 @@ function getStories() {
 	Admin Ajax functions
 =================================*/
 function checkAdmin() {
+	var url = '/login';
 
+	$.ajax({
+		url: url,
+		type: 'GET',
+		success: function( data, textStatus, jqXHR ) {
+			if (data.username == gameInfo.moderator.username) {
+				$('#admin-panel').show();
+			}
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
 }
 
 function makeGame( id, callback ) {
@@ -319,6 +334,9 @@ function update() {
 
 	$('#title').html(title);
 	$('#description').html(description);
+	$('#ticket').val("");
+	$('#score').val("");
+	$('#game').val("");
 }
 
 function getUsername() {
