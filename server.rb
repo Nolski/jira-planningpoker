@@ -357,14 +357,40 @@ put '/game/:game/story/:ticket' do
 	else
 		broadcast({:story => story.to_hash}.to_json)
 		Pusher.trigger("game_#{params[:game]}", 'updated_story', story.to_hash)
-		g_h = game.to_hash
+		#g_h = game.to_hash
 		#using the logic in game, push the full object of the "current story" of one exists
-		if g_h.key?(:current_story) && !g_h[:current_story].nil?
-			Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, g_h[:current_story]).to_hash)
-		end
+		#if g_h.key?(:current_story) && !g_h[:current_story].nil?
+			#Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, g_h[:current_story]).to_hash)
+		#end
 	end
 	story.to_hash.to_json
 end
+
+post '/game/:game/goto-story/:ticket' do
+	game = getGame(params[:game].to_i)
+	if loggedInUser != game.moderator
+		halt 403, "You must be the moderator to move to another ticket"
+	end
+	#todo validation
+	game.current_story = params[:ticket]
+	game.save
+	Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, params[:ticket]).to_hash)
+end
+
+post '/game/:game/goto-next-story' do
+	game = getGame(params[:game].to_i)
+	ticket_no = nil
+	begin
+		ticket_no =  game.stories(:order => [:created.asc], :complete => false, :fields => [:ticket_no]).first.ticket_no
+	rescue
+		return false
+	end
+	call env.merge("PATH_INFO" => "/game/#{params[:game]}/goto-story/#{ticket_no}")
+	return ticket_no
+end
+	
+
+	
 ##########
 #Estimates
 ##########
@@ -390,7 +416,7 @@ post '/game/:game/story/:ticket/estimate' do
 	estimate = Estimate.create(:story => story, :user => user, :vote => vote, :made_at => Time.now)
 
 	#mark as complete if everyone is done estimating
-	#story.complete = story.estimates.length == story.game.participants.length
+	story.complete = story.complete || story.estimates.length == story.game.participants.length
 	story.save
 
 	broadcast({:story => story.to_hash}.to_json)

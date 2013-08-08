@@ -15,6 +15,7 @@ class Game
 	property :name, String, :length => 160
 	property :created, DateTime, :required => true
 	property :closed, Boolean, :default => false
+	property :current_story, String, :required => false
 
 	def name
 		cname = super
@@ -28,16 +29,16 @@ class Game
 			:stories => Array.new,
 			:moderator => moderator.to_hash,
 			:participants => participants.map {|user| user.to_hash},
-			:current_story => nil,
+			:current_story => current_story,
 			:closed => closed
 		}
 		#TODO: make more efficient
-		stories(:order => [:created.asc]).each do |story|
-			result[:stories] << story.ticket_no
-			if result[:current_story].nil? && !story.complete
-				result[:current_story] = story.ticket_no
-			end
-		end
+		#stories(:order => [:created.asc]).each do |story|
+			#result[:stories] << story.ticket_no
+			#if result[:current_story].nil? && !story.complete
+				#result[:current_story] = story.ticket_no
+			#end
+		#end
 		return result
 	end
 
