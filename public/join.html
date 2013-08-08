@@ -16,14 +16,12 @@
 				<legend class="join-title">Select Game</legend>
 				<div class="form-group">
 					<table class="games-table" id="games">
-						<thead>
-							<tr>
-								<td>Game Name</td>
-								<td></td>
-							</tr>
-						</thead>
-						<tbody id="games-body"></tbody>
+						<tbody class="table-body" id="games-body"></tbody>
 					</table>
+				</div>
+				<div class="new-game">
+					<input id="new" type="text" class="form-control input-small form-input" placeholder="Game Name" name="game" />
+					<input type="button" class="btn btn-default" onclick="return makeGame()" value="New Game" />
 				</div>
 			</fieldset>
 		</form>

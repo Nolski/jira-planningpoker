@@ -16,7 +16,7 @@
 		<div class="header">
 			<div class="title">
 				<h3 class="header-ticket">Up now:</h3>
-				<h1 class="header-title" id="title">TVTA-9012 - Report Query Service</h1>
+				<h1 class="header-title" id="title"></h1>
 			</div>
 			<p class="description" id="description"></p>
 		</div>
@@ -33,7 +33,6 @@
 		<ul class="side-tickets" id="stories">
 		</ul>
 	</div>
-	<h1 class="moderator">Moderator</h1>
 	<div class="admin-panel">
 		<form class="form-group" >
 			<fieldset>
@@ -54,7 +53,8 @@
 					<input type="button" class="btn btn-default" onclick="return setScore()" value="Set" />
 				</div>
 				<div class="form-group">
-					<input type="button" class="btn btn-default" onclick="return endGame()" value="End Game" />
+					<input style="margin-top:2em;" type="button" class="btn btn-default" onclick="return endGame()" value="End Game" />
+					<input style="float:left; width:94px;" type="button" class="btn btn-default" onclick="return flipCards()" value="Flip Cards" />
 				</div>
 			</fieldset>
 		</form>

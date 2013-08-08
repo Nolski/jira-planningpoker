@@ -145,6 +145,7 @@ function getGameInfo() {
 			gameInfo = JSON.parse( data );
 			stories = gameInfo.stories;
 			getCurrentStory();
+			checkAdmin();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -155,7 +156,11 @@ function getGameInfo() {
 }
 
 function getCurrentStory() {
-	console.log('getcurrentStory', gameInfo);
+	if(gameInfo.current_story == null) {
+		getStories();
+		return;
+	}
+
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
 
 	$.ajax({
@@ -194,7 +199,21 @@ function getStories() {
 	Admin Ajax functions
 =================================*/
 function checkAdmin() {
+	var url = '/login';
 
+	$.ajax({
+		url: url,
+		type: 'GET',
+		success: function( data, textStatus, jqXHR ) {
+			if (data.username == gameInfo.moderator.username) {
+				$('#admin-panel').show();
+			}
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
 }
 
 function makeGame( id, callback ) {
@@ -211,6 +230,7 @@ function makeGame( id, callback ) {
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = data;
 			console.log('makeGame()', gameInfo);
+			window.location = '/index.html?id=' + gameInfo.id;
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -261,10 +281,30 @@ function setScore() {
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
-				complete: true,
+				flipped: true,
 				story_points: sp
 			};
 		console.log(data);
+
+	$.ajax({
+		url: url,
+		type: 'PUT',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			console.log('setScore: ', data);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
+
+function flipCards() {
+	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
+		sp = $('#score').val(),
+		data = {
+				flipped: true,
+			};
 
 	$.ajax({
 		url: url,
@@ -285,6 +325,9 @@ function setScore() {
 function update() {
 	console.log('update');
 	console.log(stories);
+	if (stories.length == 0) {
+		return;
+	}
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
@@ -301,13 +344,19 @@ function update() {
 	$('#title').empty();
 	$('#description').empty();
 	var title = currentStory.ticket_no + " - " + currentStory.summary,
+		description = "";
+
+	if (currentStory.description != null) {
 		description = currentStory.description.replace('\n', '<br />');
-	
-	description = description.replace('\t', '');
-	description = description.replace('\r', '');
+		description = description.replace('\t', '');
+		description = description.replace('\r', '');
+	}
 
 	$('#title').html(title);
 	$('#description').html(description);
+	$('#ticket').val("");
+	$('#score').val("");
+	$('#game').val("");
 }
 
 function getUsername() {

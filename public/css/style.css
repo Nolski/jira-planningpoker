@@ -170,6 +170,10 @@ body{
 	cursor: pointer;
 }
 
+/*==============================
+	All Styles Relating to 
+	Admin Tools
+===============================*/
 .admin-panel {
 	position: fixed;
 	left: 0;
@@ -177,6 +181,7 @@ body{
 	color: #FFF;
 	padding:10px;
 	background-color: #191919;
+	display:hidden;
 }
 
 .admin-panel button {
@@ -187,13 +192,11 @@ body{
 	margin: 5px 0 5px 0;
 }
 
-.moderator {
-	position:absolute;
-	left: 0;
-	bottom: 0;
-}
-
 .form-group {
 	float: left;
 	margin: 0 160px 0 10px;
+}
+
+.form-input {
+	height:26px;
 }

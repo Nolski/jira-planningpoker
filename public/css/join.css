@@ -63,13 +63,28 @@ body{
 }
 
 .form-input {
-	width:90%;
+	width:60%;
+	float:left;
+	height:26px;
+}
+
+.btn {
+	float: right;
 }
 
 .games-table {
 	width:100%;
 }
 
-.games-button {
-	float:right;
+.games-table > thead {
+	font-weight: bold;
+}
+
+.table-body > tr {
+	height:47px;
+}
+
+.new-game {
+	border-top:solid 1px #FFF;
+	padding-top:15px;
 }

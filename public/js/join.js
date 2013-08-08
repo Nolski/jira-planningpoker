@@ -42,3 +42,27 @@ function joinGame() {
 		}
 	});	
 }
+
+function makeGame( id, callback ) {
+	var url = '/game',
+		name = $('#new').val(),
+		data = {
+			name: name
+		};
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: data,
+		success: function( data, textStatus, jqXHR ) {
+			var gameInfo = data;
+			console.log('makeGame()', gameInfo);
+			window.location = '/index.html?id=' + gameInfo.id;
+			return gameInfo;
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
