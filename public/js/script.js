@@ -155,6 +155,7 @@ function getGameInfo() {
 }
 
 function getCurrentStory() {
+	console.log('getcurrentStory', gameInfo);
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
 
 	$.ajax({
