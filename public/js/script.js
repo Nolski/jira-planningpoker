@@ -6,7 +6,8 @@ var id,
 	gameInfo = {},
 	currentStory = {},
 	estimates = [],
-	stories = [];
+	stories = [],
+	flipped = false;
 
 /*================================
 	Event listeners
@@ -58,22 +59,24 @@ $(document).ready(function(){
 		};
 	});
 
-	channel.bind('update_story', function ( data ) {
-		$('#stories').empty();
-		stories.push(data);
-		for (var i = 0; i < stories.length; i++) {
-			story = stories[i];
-			if (story.ticket_no == data.ticket_no) {
-				story = data;
-			}
-
-			if(story.story_points == null) {
-				story.story_points = 0;
-			}
-			var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
-						   + story.story_points; + '</li>';
-			$('#stories').append(storyTitle);
-		};
+	channel.bind('updated_story', function ( data ) {
+		if (data.flipped == false) {
+			return;
+		}
+		
+		$('#result-cards').empty();
+		flipped = true;
+		for (var i = 0; i < data.estimates.length; i++) {
+			estimate = data.estimates[i];
+			console.log("estimate");
+			console.log(estimate);
+			var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
+				+ estimate.user.fullname + "'><h1>" + estimate.vote + "</h1></div>";
+			$('#result-cards').append(resultCard);
+			var id = '#' + i;
+			$(id).tooltip();
+		}
+		
 	});
 
 	channel.bind('current_story', function ( data ) {
@@ -93,7 +96,6 @@ $(document).ready(function(){
 
 	channel.bind('estimate', function ( data ) {
 		$('#result-cards').empty();
-		estimates.push( data );
 		for (var i = 0; i < estimates.length; i++) {
 			estimate = estimates[i];
 			console.log("estimate");
@@ -123,7 +125,7 @@ function sendVote( storyValue ) {
 	$.ajax({
 		url: url,
 		type: 'POST',
-		dataType: 'json',
+		dataType: 'JSON',
 		'data': data,
 		success: function( data, textStatus, jqXHR ) {
 			console.log( 'success!' );
@@ -167,7 +169,10 @@ function getCurrentStory() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
+			console.log(data);
 			currentStory = data;
+			flipped = currentStory.flipped;
+			estimates = currentStory.estimates;
 			console.log('getCurrentStory: ', currentStory);
 			getStories();
 		},
@@ -186,6 +191,7 @@ function getStories() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
+			console.log('getstories currentstory', currentStory);
 			update();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -228,7 +234,7 @@ function makeGame( id, callback ) {
 		type: 'POST',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			gameInfo = data;
+			gameInfo = JSON.parse( data );
 			console.log('makeGame()', gameInfo);
 			window.location = '/index.html?id=' + gameInfo.id;
 			return gameInfo;
@@ -250,7 +256,7 @@ function makeStory() {
 		type: 'POST',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			gameInfo = data;
+			gameInfo = JSON.parse( data );
 			console.log('makeGame()', gameInfo);
 			getGameInfo();
 			return gameInfo;
@@ -277,6 +283,7 @@ function endGame() {
 }
 
 function setScore() {
+	flipped = false;
 	console.log(gameInfo);
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
@@ -284,7 +291,7 @@ function setScore() {
 				flipped: true,
 				story_points: sp
 			};
-		console.log(data);
+	console.log(data);
 
 	$.ajax({
 		url: url,
@@ -300,12 +307,13 @@ function setScore() {
 }
 
 function flipCards() {
+	flipped = true;
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
 				flipped: true,
 			};
-
+	console.log(gameInfo());
 	$.ajax({
 		url: url,
 		type: 'PUT',
@@ -328,6 +336,8 @@ function update() {
 	if (stories.length == 0) {
 		return;
 	}
+
+	//Generate stories on side bar
 	$('#stories').empty();
 	for (var i = 0; i < stories.length; i++) {
 		story = stories[i];
@@ -341,11 +351,12 @@ function update() {
 		$('#stories').append(storyTitle);
 	}
 
+	//Generate ticket info
 	$('#title').empty();
 	$('#description').empty();
 	var title = currentStory.ticket_no + " - " + currentStory.summary,
 		description = "";
-
+	console.log('currentStory - update', currentStory);
 	if (currentStory.description != null) {
 		description = currentStory.description.replace('\n', '<br />');
 		description = description.replace('\t', '');
@@ -354,6 +365,25 @@ function update() {
 
 	$('#title').html(title);
 	$('#description').html(description);
+
+	// Generate result cards
+	$('#result-cards').empty();
+	for (var i = 0; i < estimates.length; i++) {
+		estimate = estimates[i];
+		console.log("estimate");
+		console.log(estimate);
+		var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
+			+ estimate.user.fullname + "'>";
+		console.log(flipped);
+		if (flipped) {
+			resultCard += estimate.user.fullname;
+		}
+		resultCard += "</div>";
+		$('#result-cards').append(resultCard);
+		var id = '#' + i;
+		$(id).tooltip();
+	}
+
 	$('#ticket').val("");
 	$('#score').val("");
 	$('#game').val("");
