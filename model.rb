@@ -2,9 +2,9 @@ require 'rubygems'
 require "bundler/setup"
 require 'data_mapper'
 
-DataMapper::Logger.new($stdout, :debug)
+#DataMapper::Logger.new($stdout, :debug)
 #DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.db")
-#DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/db.db")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/db.db")
 class Game
 	include DataMapper::Resource
 

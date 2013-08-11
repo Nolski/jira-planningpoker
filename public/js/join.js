@@ -1,8 +1,30 @@
 $(document).ready(function() {
-	getGames();
+	//getGames();
+	$('#new-btn').click(function makeGame( id, callback ) {
+		var url = '/game',
+			name = $('#new').val(),
+			data = {
+				name: name
+			};
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: data,
+			success: function( data, textStatus, jqXHR ) {
+				var gameInfo = data;
+				window.location = '/index.html?id=' + gameInfo.id;
+				return gameInfo;
+			},
+			error: function( jqXHR, textStatus, errorThrown ) {
+				console.log('ERROR: ', errorThrown);
+				return null;
+			}
+		});
+	});
 });
 
-function getGames() {
+/*function getGames() {
 	$.ajax({
 		url: '/game',
 		method: 'GET',
@@ -13,9 +35,9 @@ function getGames() {
 			console.log('ERROR: ', errorThrown);
 		}
 	});	
-}
+}*/
 
-function update( data ) {
+/*function update( data ) {
 	$('#games-body').empty();
 	for (var i = 0; i < data.length; i++) {
 		var game = data[i],
@@ -25,9 +47,9 @@ function update( data ) {
 		$('#games-body').append( html );
 	};
 	$('.games-button').click(joinGame);
-}
+}*/
 
-function joinGame() {
+/*function joinGame() {
 	var self = $(this),
 		url = '/game/' + self.attr('id') + '/participants'
 	$.ajax({
@@ -41,28 +63,6 @@ function joinGame() {
 			console.log('ERROR: ', errorThrown);
 		}
 	});	
-}
+}*/
 
-function makeGame( id, callback ) {
-	var url = '/game',
-		name = $('#new').val(),
-		data = {
-			name: name
-		};
 
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: data,
-		success: function( data, textStatus, jqXHR ) {
-			var gameInfo = data;
-			console.log('makeGame()', gameInfo);
-			window.location = '/index.html?id=' + gameInfo.id;
-			return gameInfo;
-		},
-		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
-			return null;
-		}
-	});
-}

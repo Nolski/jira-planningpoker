@@ -9,7 +9,7 @@ function login() {
 		data: data,
 		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
-			window.location = "/join.html";
+			window.location = "/gamesList";
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log('ERROR: ', errorThrown);

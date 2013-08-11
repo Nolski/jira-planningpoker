@@ -1,3 +1,5 @@
+/* @override http://localhost:9393/css/join.css */
+
 /*===========================
 
 	Siteworx
@@ -39,7 +41,7 @@ body{
 /*===========================
 			Login
 ===========================*/
-.join {
+/*.join {
 	width:500px;
 	height:230px;
 	background-color:#70828a;
@@ -51,7 +53,26 @@ body{
 	left:50%;
 	margin:-155px 0 0 -250px;
 	overflow-y:scroll;
+}*/
+body{
+	
+	text-align: center;
 }
+.join {
+	width: 500px;
+	left:50%;
+	margin:10% 0 0 -250px;
+	text-align: left;
+	position: absolute;
+	background-color:#70828a;
+	
+}
+
+/*#games-list {
+	height: 70%;
+	overflow-y:scroll;	
+}*/
+
 
 .join-form {
 	text-align: center;

@@ -90,14 +90,14 @@ get '/viewsession' do
 end
 
 before do
-	puts request.path_info
-	protect unless request.path_info.start_with?("/login") || request.path_info == '/'
+	path = request.path_info
+	protect unless path.start_with?("/login") ||  path == '/' || path=='/gamesList'
 	content_type :json
 end
 
 
 get '/' do
-	redirect to((loggedInUser.nil?) ? 'login.html' : 'join.html')
+	redirect to((loggedInUser.nil?) ? 'login.html' : 'gamesList')
 end
 ########
 #Authentication
@@ -499,4 +499,13 @@ get '/websocket' do
 	end
 end
 
-	
+
+#########
+#Views
+#########
+get '/gamesList' do
+	content_type :html
+	if (loggedInUser.nil?) then redirect to('login.html') end
+	@games = Game.all(:closed => false, :order => [:created.asc], :fields => [:id, :name])
+	erb :join
+end

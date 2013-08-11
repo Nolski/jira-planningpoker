@@ -19,6 +19,7 @@ $(document).ready(function(){
 	id = getURLParameter('id');
 	updateGameInfo();
 	updateStories();
+	joinGame();
 	$('.card').hover(function() {
 		$(this).animate({
 			'top': '5px'
@@ -377,6 +378,15 @@ function storyClickHandler(clickEvent){
 
 	});//TODO: error handling
 }
+function joinGame() {
+	var self = $(this),
+		url = '/game/' + getId() + '/participants'
+	$.ajax({
+		url: url,
+		method: 'POST'
+	});	
+}
+
 /*================================
 	Utility functions
 =================================*/
