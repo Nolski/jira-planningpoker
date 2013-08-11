@@ -415,6 +415,7 @@ function refreshAll() {
 	$('#ticket').val("");
 	$('#score').val("");
 	$('#game').val("");
+	document.title = "Game - "+ gameInfo.name;
 
 	refreshParticipants();
 }
