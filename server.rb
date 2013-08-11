@@ -90,7 +90,8 @@ get '/viewsession' do
 end
 
 before do
-	protect unless request.path_info.start_with?("/login")
+	puts request.path_info
+	protect unless request.path_info.start_with?("/login") || request.path_info == '/'
 	content_type :json
 end
 
@@ -109,6 +110,15 @@ end
 post '/login' do
 	username = params['username']
 	password = params['password']
+
+	#debug
+	if (settings.development? && username=='test')
+		session[:username] = username;
+		session[:password] = password;
+		user = User.first_or_create(:username => username)
+		return user.to_hash.to_json;
+	end
+
 
 	#check this with JIRA
 	resource = RestClient::Resource.new(settings.jira_url+'/rest/gadget/1.0/currentUser', {:user => username, :password => password})
@@ -303,6 +313,7 @@ post '/game/:id/story' do
 	if game.current_story.nil?
 		game.current_story = story.ticket_no
 		game.save
+		Pusher.trigger("game_#{params[:game]}", 'current_story', story.to_hash)
 	end
 
 

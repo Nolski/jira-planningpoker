@@ -1,4 +1,7 @@
-/* @override file:///Users/julianboilen/Downloads/planning_poker/css/style.css */
+/* @override 
+	file:///Users/julianboilen/Downloads/planning_poker/css/style.css
+	http://localhost:9393/css/style.css
+*/
 
 /*===========================
 
@@ -171,16 +174,28 @@ body{
 	font-family: Museo;
 }
 
-.side-tickets > li:hover, .side-tickets > li.active {
+.side-tickets > li.clickable:hover, .side-tickets > li.active {
 	color:#5296b5;
 	cursor: pointer;
+}
+#part-header {
+	font-size: medium;
+	margin-top: 2em;
+	margin-bottom: 5px;
+	padding-bottom: 5px;
+	border-bottom: solid;
+	border-width: 1px;
+	border-color: #333;
+}
+#participants {
+		font-family: Museo;
 }
 
 /*==============================
 	All Styles Relating to 
 	Admin Tools
 ===============================*/
-.admin-panel {
+#admin-panel {
 	position: fixed;
 	left: 0;
 	bottom:0;
@@ -190,7 +205,7 @@ body{
 	display:hidden;
 }
 
-.admin-panel button {
+#admin-panel button {
 	margin:5px;
 }
 

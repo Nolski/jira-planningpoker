@@ -32,14 +32,16 @@
 	<div class="side-bar">
 		<ul class="side-tickets" id="stories">
 		</ul>
+		<div id="part-header">Participants</div>
+		<ul id="participants"></ul>
 	</div>
-	<div class="admin-panel">
+	<div id="admin-panel">
 		<form class="form-group" >
 			<fieldset>
 				<legend class="admin-title" style="color:#70828a">Moderator Panel</legend>
 				<div id="new-ticket-form" class="form-group">
 					<label for="ticket">New Ticket: </label>
-					<input id="ticket" type="text" class="form-control input-small form-input" name="ticket"/>
+					<input id="ticket" type="text" class="form-control input-small form-input" name="ticket" pattern="[A-Z]{2,}+-[0-9]+"/>
 					<input type="button" class="btn btn-default" onclick="return makeStory()" value="New Ticket" />
 				</div>
 				<div id="new-game-form" class="form-group">

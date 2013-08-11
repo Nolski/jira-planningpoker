@@ -4,6 +4,7 @@
 var id,
 	socket,
 	gameInfo = {},
+	isAdmin;
 	currentStoryNo = null,
 	stories = {}, //hash of ticket_no => story (new API)
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
@@ -72,7 +73,7 @@ $(document).ready(function(){
 	channel.bind('updated_story', function ( data ) {
 		/*if (data.flipped == false) {
 			return;
-		}
+		}/
 		
 		$('#result-cards').empty();
 		for (var i = 0; i < data.estimates.length; i++) {
@@ -111,7 +112,7 @@ $(document).ready(function(){
 	});
 
 	channel.bind('estimate', function ( data ) {
-		$('#result-cards').empty();
+		//$('#result-cards').empty();
 		/*for (var i = 0; i < currentStory.estimates.length; i++) {
 			estimate = currentStory.estimates[i];
 			console.log("estimate");
@@ -130,6 +131,7 @@ $(document).ready(function(){
 		alert("The moderator ended this game.");
 		window.location = '/join.html';
 	});
+	channel.bind('joined', appendParticipant);
 
 });
 
@@ -233,7 +235,10 @@ function checkAdmin() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			$('#admin-panel').toggle(data.username == gameInfo.moderator.username)
+			isAdmin = data.username == gameInfo.moderator.username;
+			console.log('Am I admin?', isAdmin);
+			$('#admin-panel').toggle(isAdmin)
+			$('.side-tickets li').toggleClass('clickable', isAdmin);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -280,6 +285,10 @@ function makeStory() {
 			//gameInfo = JSON.parse( data ); what?
 			console.log('makeGame()', gameInfo);
 			stories[data.ticket_no] = data;
+			if (currentStoryNo == null){
+				currentStoryNo = data.ticket_no;
+				refreshAll();
+			}
 			//refreshAll();
 			//appendStory(data);
 
@@ -309,7 +318,7 @@ function endGame() {
 
 function setScore() {
 	console.log(gameInfo);
-	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
+	var url = '/game/' + getId() + '/story/' + currentStoryNo,
 		sp = $('#score').val(),
 		data = {
 				story_points: sp
@@ -333,18 +342,18 @@ function setScore() {
 
 function flipCards() {
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
-		sp = $('#score').val(),
+		//sp = $('#score').val(),
 		data = {
 				flipped: true,
 			};
-	console.log(gameInfo());
+	//console.log(gameInfo());
 	$.ajax({
 		url: url,
 		type: 'PUT',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
 			stories[data.ticket_no]=data;
-			console.log('setScore: ', data);
+			console.log('flipCards: ', data);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -383,12 +392,17 @@ function refreshAll() {
 
 	var storyLoaded = currentStoryNo != null;
 	//hide things you can't do w/o a story
-	$('#my-cards,#header,#flip-btn,#set-score-form').toggle(storyLoaded);
+	$('#my-cards,#header').toggle(storyLoaded);
+	$('#set-score-form .btn').toggleClass('disabled', !storyLoaded);
+	$('#flip-btn').toggleClass('disabled', !(storyLoaded && !stories[currentStoryNo].flipped));
 
 	$('#ticket').val("");
 	$('#score').val("");
 	$('#game').val("");
+
+	refreshParticipants();
 }
+var lastStory;
 function refreshDisplayedStory(){
 	//Generate ticket info
 	$('#title').empty();
@@ -413,7 +427,10 @@ function refreshDisplayedStory(){
 	$('#title').html(title);
 	$('#description').html(description);
 
+	if (lastStory != currentStoryNo)
+		$('#result-cards').empty();
 	refreshEstimates();
+	lastStory = currentStoryNo;
 
 }
 function refreshEstimates(){
@@ -421,7 +438,7 @@ function refreshEstimates(){
 	if (currentStoryNo == null)
 		return;
 	// Generate result cards
-	$('#result-cards').empty();
+	//$('#result-cards').empty();
 	for (var i = 0; i < stories[currentStoryNo].estimates.length; i++) {
 		estimate = stories[currentStoryNo].estimates[i];
 		console.log("estimate");
@@ -508,7 +525,7 @@ function appendStory(story){
 		
 		var sepSpan = document.createElement('span');
 		sepSpan.className = 'separator';
-		sepSpan.innerHtml = '&nbsp;&nbsp;:&nbsp;&nbsp;';
+		sepSpan.innerHTML = "&nbsp;&nbsp;:&nbsp;&nbsp;";
 		$(sepSpan).toggle(story.story_points >= 0);
 
 		var li = document.createElement('li');
@@ -520,6 +537,7 @@ function appendStory(story){
 		$spSpan = $(spSpan);
 
 		$(li).click(story, storyClickHandler);
+		$(li).toggleClass('clickable', isAdmin);
 		$('#stories').append(li);
 		$(li).hide().slideDown();
 	} else {
@@ -533,6 +551,21 @@ function appendStory(story){
 	//li.style.display = 'none';
 	$(li).toggleClass('active', story.ticket_no == currentStoryNo);
 
+}
+function refreshParticipants(){
+	for (var i=0;i<gameInfo.participants.length;i++)
+		appendParticipant(gameInfo.participants[i]);
+}
+function appendParticipant(user){
+	var id = 'participant-'+user.username;
+	var li = document.getElementById(id);
+	if (li==undefined){
+		li = document.createElement('li');
+		li.id=id;
+		li.appendChild(document.createTextNode(user.fullname));
+		$('#participants').append(li);
+		$(li).hide().slideDown();
+	}
 }
 function updateResultCards(){
 }
