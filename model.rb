@@ -26,7 +26,7 @@ class Game
 			:id => id,
 			:name => name,
 			:created => created,
-			:stories => Array.new,
+			:stories => stories(:fields => [:ticket_no]).map {|story| story.ticket_no},
 			:moderator => moderator.to_hash,
 			:participants => participants.map {|user| user.to_hash},
 			:current_story => current_story,

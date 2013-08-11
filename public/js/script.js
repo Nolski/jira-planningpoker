@@ -4,10 +4,11 @@
 var id,
 	socket,
 	gameInfo = {},
-	currentStory = {},
-	estimates = [],
-	stories = [],
-	flipped = false;
+	currentStoryNo = null,
+	stories = {}, //hash of ticket_no => story (new API)
+	pusher_prod = 'a8a337eb4d5e4c071c6a',
+	pusher_dev = '32de1f05aeb0cce00299'; //will be active on localhost
+pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod;
 
 /*================================
 	Event listeners
@@ -15,7 +16,8 @@ var id,
 $(document).ready(function(){
 
 	id = getURLParameter('id');
-	gameinfo = getGameInfo();
+	updateGameInfo();
+	updateStories();
 	$('.card').hover(function() {
 		$(this).animate({
 			'top': '5px'
@@ -36,18 +38,24 @@ $(document).ready(function(){
 		sendVote( storyValue );
 	});
 
+	$('#ticket').keyup(function(data){
+		$(this).val($(this).val().toUpperCase().replace(/[^A-Z0-9\-]/g, ''));
+		//this could be better, just hacked this out b/c I didn't want to use capslock
+	});
+
 	
 
 	/*================================
 		Pusher functions
 	=================================*/
-	var pusher = new Pusher('a8a337eb4d5e4c071c6a');
+	var pusher = new Pusher(pusher_key);
 	var channel = pusher.subscribe('game_' + id);
 
 	channel.bind('new_story', function ( data ) {
-		console.log('new story', data);
-		stories.push(data);
-		$('#stories').empty();
+		//data = JSON.parse(data);
+		console.log('new story from pusher', data);
+		stories[data.ticket_no] = data;
+		/*$('#stories').empty();
 		for (var i = 0; i < stories.length; i++) {
 			story = stories[i];
 			if(story.story_points == null) {
@@ -56,16 +64,17 @@ $(document).ready(function(){
 			var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
 						   + story.story_points; + '</li>';
 			$('#stories').append(storyTitle);
-		};
+		};*/
+		//refreshAll();
+		appendStory(data);
 	});
 
 	channel.bind('updated_story', function ( data ) {
-		if (data.flipped == false) {
+		/*if (data.flipped == false) {
 			return;
 		}
 		
 		$('#result-cards').empty();
-		flipped = true;
 		for (var i = 0; i < data.estimates.length; i++) {
 			estimate = data.estimates[i];
 			console.log("estimate");
@@ -75,12 +84,17 @@ $(document).ready(function(){
 			$('#result-cards').append(resultCard);
 			var id = '#' + i;
 			$(id).tooltip();
-		}
+		}*/
+		stories[data.ticket_no] = data;
+		refreshAll();
 		
 	});
 
 	channel.bind('current_story', function ( data ) {
-		currentStory = data
+		console.log('pusher has a new current story', data);
+		currentStoryNo = data.ticket_no
+		stories[data.ticket_no] = data;
+		/*
 		$('#title').empty();
 		$('#description').empty();
 		var title = data.ticket_no + " - " + data.summary,
@@ -91,13 +105,15 @@ $(document).ready(function(){
 
 		$('#title').html(title);
 		$('#description').html(description);
+		*/
+		refreshAll();
 
 	});
 
 	channel.bind('estimate', function ( data ) {
 		$('#result-cards').empty();
-		for (var i = 0; i < estimates.length; i++) {
-			estimate = estimates[i];
+		/*for (var i = 0; i < currentStory.estimates.length; i++) {
+			estimate = currentStory.estimates[i];
 			console.log("estimate");
 			console.log(estimate);
 			var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
@@ -105,7 +121,14 @@ $(document).ready(function(){
 			$('#result-cards').append(resultCard);
 			var id = '#' + i;
 			$(id).tooltip();
-		}
+		}*/
+		stories[data.ticket_no].estimates.push(data);
+		appendEstimate(data);
+	});
+
+	channel.bind('closed', function ( data ) {
+		alert("The moderator ended this game.");
+		window.location = '/join.html';
 	});
 
 });
@@ -114,11 +137,11 @@ $(document).ready(function(){
 	Ajax functions
 =================================*/
 function sendVote( storyValue ) {
-	console.log('gameInfo before username: ', getGameInfo());
+	//console.log('gameInfo before username: ', getGameInfo());
 	var data = {
 				vote: storyValue
 			},
-		ticket = currentStory.ticket_no,
+		ticket = currentStoryNo,
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + '/estimate';
 
@@ -136,7 +159,7 @@ function sendVote( storyValue ) {
 	});
 }
 
-function getGameInfo() {
+function updateGameInfo() {
 	var id = getId(),
 		url = '/game/' + id;
 		
@@ -145,10 +168,12 @@ function getGameInfo() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = JSON.parse( data );
-			stories = gameInfo.stories;
-			getCurrentStory();
+			//stories = gameInfo.stories;//wrong
+			currentStoryNo = gameInfo['current_story'];
+			//getCurrentStory();
 			checkAdmin();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
+			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -157,13 +182,13 @@ function getGameInfo() {
 	});
 }
 
-function getCurrentStory() {
+/*function getCurrentStory() {
 	if(gameInfo.current_story == null) {
 		getStories();
 		return;
 	}
 
-	var url = '/game/' + getId() + '/story/' + gameInfo.current_story;
+	var url = '/game/' + getId() + '/story/' + currentStoryNo;
 
 	$.ajax({
 		url: url,
@@ -171,19 +196,16 @@ function getCurrentStory() {
 		success: function( data, textStatus, jqXHR ) {
 			console.log(data);
 			currentStory = data;
-			flipped = currentStory.flipped;
-			estimates = currentStory.estimates;
 			console.log('getCurrentStory: ', currentStory);
-			getStories();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
 			return null;
 		}
 	});
-}
+}*/
 
-function getStories() {
+function updateStories() {
 	var url = '/game/' + getId() + '/story';
 
 	$.ajax({
@@ -191,8 +213,8 @@ function getStories() {
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
-			console.log('getstories currentstory', currentStory);
-			update();
+			//console.log('getstories currentstory', currentStory);
+			refreshAll();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -211,9 +233,7 @@ function checkAdmin() {
 		url: url,
 		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
-			if (data.username == gameInfo.moderator.username) {
-				$('#admin-panel').show();
-			}
+			$('#admin-panel').toggle(data.username == gameInfo.moderator.username)
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -255,11 +275,16 @@ function makeStory() {
 		url: url,
 		type: 'POST',
 		data: data,
+		dataType: 'JSON',
 		success: function( data, textStatus, jqXHR ) {
-			gameInfo = JSON.parse( data );
+			//gameInfo = JSON.parse( data ); what?
 			console.log('makeGame()', gameInfo);
-			getGameInfo();
-			return gameInfo;
+			stories[data.ticket_no] = data;
+			//refreshAll();
+			//appendStory(data);
+
+			//remember, pusher will come in, too
+			//getGameInfo();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -283,12 +308,10 @@ function endGame() {
 }
 
 function setScore() {
-	flipped = false;
 	console.log(gameInfo);
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
-				flipped: true,
 				story_points: sp
 			};
 	console.log(data);
@@ -298,6 +321,8 @@ function setScore() {
 		type: 'PUT',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
+			stories[data.ticket_no] = data;//save updated story
+			refreshAll();
 			console.log('setScore: ', data);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -307,7 +332,6 @@ function setScore() {
 }
 
 function flipCards() {
-	flipped = true;
 	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
 		sp = $('#score').val(),
 		data = {
@@ -319,6 +343,7 @@ function flipCards() {
 		type: 'PUT',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
+			stories[data.ticket_no]=data;
 			console.log('setScore: ', data);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -327,68 +352,190 @@ function flipCards() {
 	});
 }
 
+//todo the story you clicked in the sidebar
+function storyClickHandler(clickEvent){
+	var story = clickEvent.data;
+	console.log('click data', story);
+	var url = '/game/'+getId() + '/goto-story/'+story.ticket_no;
+	$.ajax({
+		url: url,
+		type: 'POST',
+		/*success: function(data,textStatus,somethingElse){
+			//pusher will be called, but it's kinda slow
+			currentStoryNo = story.ticket_no;
+			refreshDisplayedStory();
+		}*/
+
+	});//TODO: error handling
+}
 /*================================
 	Utility functions
 =================================*/
-function update() {
-	console.log('update');
-	console.log(stories);
-	if (stories.length == 0) {
+function refreshAll() {
+	//console.log('update');
+	//console.log(stories);
+	/*if (stories.length == 0) {
 		return;
-	}
+	}*/
 
-	//Generate stories on side bar
-	$('#stories').empty();
-	for (var i = 0; i < stories.length; i++) {
-		story = stories[i];
-		console.log(story)
-		if(story.story_points == null) {
-			story.story_points = 0;
-		}
+	refreshStoryList();
+	refreshDisplayedStory();
 
-		var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
-					   + story.story_points; + '</li>';
-		$('#stories').append(storyTitle);
-	}
+	var storyLoaded = currentStoryNo != null;
+	//hide things you can't do w/o a story
+	$('#my-cards,#header,#flip-btn,#set-score-form').toggle(storyLoaded);
 
+	$('#ticket').val("");
+	$('#score').val("");
+	$('#game').val("");
+}
+function refreshDisplayedStory(){
 	//Generate ticket info
 	$('#title').empty();
 	$('#description').empty();
-	var title = currentStory.ticket_no + " - " + currentStory.summary,
+	var storyLoaded = currentStoryNo != undefined && currentStoryNo != null;
+	var title,description;
+	if (storyLoaded) {
+		title = stories[currentStoryNo].ticket_no;
+		if (stories[currentStoryNo].summary!= null)
+			title+= " - " + stories[currentStoryNo].summary;
 		description = "";
-	console.log('currentStory - update', currentStory);
-	if (currentStory.description != null) {
-		description = currentStory.description.replace('\n', '<br />');
-		description = description.replace('\t', '');
-		description = description.replace('\r', '');
+		console.log('currentStory - update', stories[currentStoryNo]);
+		if (stories[currentStoryNo].description != null) { //always was true anyways
+			description = stories[currentStoryNo].description.replace('\n', '<br />');
+			description = description.replace('\t', '');
+			description = description.replace('\r', '');
+		}
+	} else {
+		var description = '',
+			title = 'No story loaded';
 	}
-
 	$('#title').html(title);
 	$('#description').html(description);
 
+	refreshEstimates();
+
+}
+function refreshEstimates(){
+	//TODO: eliminate this total refresh and animate new ones in nicely
+	if (currentStoryNo == null)
+		return;
 	// Generate result cards
 	$('#result-cards').empty();
-	for (var i = 0; i < estimates.length; i++) {
-		estimate = estimates[i];
+	for (var i = 0; i < stories[currentStoryNo].estimates.length; i++) {
+		estimate = stories[currentStoryNo].estimates[i];
 		console.log("estimate");
 		console.log(estimate);
-		var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
+		/*var resultCard = "<div id='" + i + "'class='result-card' data-original-title='" 
 			+ estimate.user.fullname + "'>";
-		console.log(flipped);
-		if (flipped) {
+		console.log(stories[currentStoryNo].flipped);
+		if (stories[currentStoryNo].flipped) {
 			resultCard += estimate.user.fullname;
 		}
 		resultCard += "</div>";
 		$('#result-cards').append(resultCard);
 		var id = '#' + i;
 		$(id).tooltip();
+		*/
+		appendEstimate(estimate);
+	}
+}
+//show new estimate OR update vote on existing one
+function appendEstimate(estimate){
+	var id = "card-"+estimate.user.username;
+	var card = document.getElementById(id);
+	if (card == undefined){
+		card = document.createElement('div');
+		card.id = id;
+		var nameOnCard = document.createElement('span')
+		nameOnCard.appendChild(document.createTextNode(estimate.user.fullname));
+		nameOnCard.style.display = 'none';
+		card.appendChild(nameOnCard);
+		var vote = document.createElement('h1');
+		vote.className = 'vote';
+		card.appendChild(vote);
+		card.className = 'result-card';
+		card.setAttribute('data-original-title', estimate.user.fullname);
+		if (estimate.vote != undefined){
+			$(vote).empty().text(estimate.vote);
+		}
+		$(card).hide().appendTo('#result-cards').slideDown();
+	} else { //update existing card
+		var $vote = $('#'+id+' .vote');
+		if ($vote.length && estimate.vote != undefined){
+			$vote.empty().text(estimate.vote);
+			$vote.fadeIn();
+		} else {
+			$vote.hide();
+		}
+	}
+	$(card).tooltip();
+}
+//Generate stories on side bar
+function refreshStoryList(){
+	//$('#stories').empty();
+	$('.side-tickets > li.active').removeClass('active');
+	console.log('the stories are', stories);
+	$.each(stories, function (ticket_no, story){
+		console.log('showing a story list item', story);
+		/*if(story.story_points == null) {
+			story.story_points = 0;
+		}
+
+		var storyTitle = '<li>' + story.ticket_no + '&nbsp;&nbsp;:&nbsp;&nbsp;'
+					   + story.story_points; + '</li>';
+		$('#stories').append(storyTitle);
+		*/
+		appendStory(story);
+	});
+
+}
+//append a story to the sidebar OR update one that's already there
+function appendStory(story){
+	var id = 'list-'+story.ticket_no;
+	var li = document.getElementById(id);
+	var $spSpan; //will be the jquery element for the story point span, created now or fetched
+	if (li == undefined){
+		var noText = document.createTextNode(story.ticket_no);
+		var noSpan = document.createElement('span');
+		noSpan.appendChild(noText);
+		noSpan.className = "ticket-no";
+		
+		var spText = document.createTextNode(story.story_points);
+		var spSpan = document.createElement('span');
+		spSpan.className = "story-points";
+		spSpan.appendChild(spText);
+		
+		var sepSpan = document.createElement('span');
+		sepSpan.className = 'separator';
+		sepSpan.innerHtml = '&nbsp;&nbsp;:&nbsp;&nbsp;';
+		$(sepSpan).toggle(story.story_points >= 0);
+
+		var li = document.createElement('li');
+		li.id = "list-"+story.ticket_no;
+		li.appendChild(noSpan);
+		li.appendChild(sepSpan);
+		li.appendChild(spSpan);
+
+		$spSpan = $(spSpan);
+
+		$(li).click(story, storyClickHandler);
+		$('#stories').append(li);
+		$(li).hide().slideDown();
+	} else {
+		$spSpan = $('#'+id+" .story-points");
+		$spSpan.text(story.story_points);
+		$('#'+id+' .separator').toggle(story.story_points >= 0);
 	}
 
-	$('#ticket').val("");
-	$('#score').val("");
-	$('#game').val("");
-}
+	$spSpan.toggle(story.story_points >= 0);
 
+	//li.style.display = 'none';
+	$(li).toggleClass('active', story.ticket_no == currentStoryNo);
+
+}
+function updateResultCards(){
+}
 function getUsername() {
 	return getURLParameter('username');
 }

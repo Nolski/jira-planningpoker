@@ -254,7 +254,12 @@ end
 #note: should this just be ticket no.s?
 get '/game/:id/story' do
 	game = getGame(params[:id].to_i)
-	(game.stories.map {|story| story.to_hash}).to_json
+	list = Hash.new
+	game.stories.each do |story|
+		list[story.ticket_no] = story.to_hash
+	end
+	return list.to_json
+	#(game.stories.map {|story| {story.ticket_no => story.to_hash}}).to_json
 end
 
 #give a hash of parameters for the new story, currently only ticket_no is supported and *required*
@@ -379,6 +384,7 @@ post '/game/:game/goto-story/:ticket' do
 		halt 403, "You must be the moderator to move to another ticket"
 	end
 	#todo validation
+	halt 404 unless (game.stories(:fields => [:ticket_no]).map { |s| s.ticket_no}).include?(params[:ticket])
 	game.current_story = params[:ticket]
 	game.save
 	Pusher.trigger("game_#{params[:game]}", 'current_story', getStory(game.id, params[:ticket]).to_hash)

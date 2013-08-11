@@ -15,12 +15,12 @@
 	<div class="content">
 		<div class="header">
 			<div class="title">
-				<h3 class="header-ticket">Up now:</h3>
+				<h3 class="header-ticket" id="header">Up now:</h3>
 				<h1 class="header-title" id="title"></h1>
 			</div>
 			<p class="description" id="description"></p>
 		</div>
-		<ul class="cards">
+		<ul id="my-cards" class="cards">
 			<li class="card" value="1">1</li>
 			<li class="card" value="3">3</li>
 			<li class="card" value="5">5</li>
@@ -37,24 +37,24 @@
 		<form class="form-group" >
 			<fieldset>
 				<legend class="admin-title" style="color:#70828a">Moderator Panel</legend>
-				<div class="form-group">
+				<div id="new-ticket-form" class="form-group">
 					<label for="ticket">New Ticket: </label>
 					<input id="ticket" type="text" class="form-control input-small form-input" name="ticket"/>
 					<input type="button" class="btn btn-default" onclick="return makeStory()" value="New Ticket" />
 				</div>
-				<div class="form-group">
+				<div id="new-game-form" class="form-group">
 					<label for="game">New Game: </label>
 					<input id="game" type="text" class="form-control input-small form-input" name="game" />
 					<input type="button" class="btn btn-default" onclick="return makeGame()" value="New Game" />
 				</div>
-				<div class="form-group">
+				<div id="set-score-form" class="form-group">
 					<label for="game">Set Score: </label>
 					<input id="score" type="text" class="form-control input-small form-input" name="game" />
 					<input type="button" class="btn btn-default" onclick="return setScore()" value="Set" />
 				</div>
 				<div class="form-group">
 					<input style="margin-top:2em;" type="button" class="btn btn-default" onclick="return endGame()" value="End Game" />
-					<input style="float:left; width:94px;" type="button" class="btn btn-default" onclick="return flipCards()" value="Flip Cards" />
+					<input id="flip-btn" style="float:left; width:94px;" type="button" class="btn btn-default" onclick="return flipCards()" value="Flip Cards" />
 				</div>
 			</fieldset>
 		</form>
