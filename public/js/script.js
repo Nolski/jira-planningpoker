@@ -45,6 +45,12 @@ $(document).ready(function(){
 		//this could be better, just hacked this out b/c I didn't want to use capslock
 	});
 
+	$('#new-ticket-btn').click(makeStory);
+	$('#new-game-btn').click(makeGame);
+	$('#set-score-btn').click(setScore);
+	$('#flip-btn').click(flipCards);
+	$('#end-game-btn').click(endGame);
+
 	
 
 	/*================================

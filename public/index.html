@@ -42,21 +42,21 @@
 				<div id="new-ticket-form" class="form-group">
 					<label for="ticket">New Ticket: </label>
 					<input id="ticket" type="text" class="form-control input-small form-input" name="ticket" pattern="[A-Z]{2,}+-[0-9]+"/>
-					<input type="button" class="btn btn-default" onclick="return makeStory()" value="New Ticket" />
+					<input id="new-ticket-btn" type="button" class="btn btn-default" value="New Ticket" />
 				</div>
 				<div id="new-game-form" class="form-group">
 					<label for="game">New Game: </label>
 					<input id="game" type="text" class="form-control input-small form-input" name="game" />
-					<input type="button" class="btn btn-default" onclick="return makeGame()" value="New Game" />
+					<input id="new-game-button" type="button" class="btn btn-default" value="New Game" />
 				</div>
 				<div id="set-score-form" class="form-group">
 					<label for="game">Set Score: </label>
 					<input id="score" type="text" class="form-control input-small form-input" name="game" />
-					<input type="button" class="btn btn-default" onclick="return setScore()" value="Set" />
+					<input id="set-score-btn" type="button" class="btn btn-default" value="Set" />
 				</div>
 				<div class="form-group">
-					<input style="margin-top:2em;" type="button" class="btn btn-default" onclick="return endGame()" value="End Game" />
-					<input id="flip-btn" style="float:left; width:94px;" type="button" class="btn btn-default" onclick="return flipCards()" value="Flip Cards" />
+					<input id="end-game-btn" style="margin-top:2em;" type="button" class="btn btn-default" value="End Game" />
+					<input id="flip-btn" style="float:left; width:94px;" type="button" class="btn btn-default" value="Flip Cards" />
 				</div>
 			</fieldset>
 		</form>
