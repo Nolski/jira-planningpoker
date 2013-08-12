@@ -139,6 +139,10 @@ $(document).ready(function(){
 		window.location = '/gamesList';
 	});
 	channel.bind('joined', appendParticipant);
+	channel.bind('new_round', function ( data ){
+		stories[data.ticket_no].estimates = [];
+		refreshAll();
+	});
 
 });
 
@@ -242,6 +246,7 @@ function deleteEstimates() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
+			stories[currentStoryNo].estimates=data;
 			refreshDisplayedStory();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -460,7 +465,7 @@ function refreshDisplayedStory(){
 	$('#title').html(title);
 	$('#description').html(description);
 
-	if (lastStory != currentStoryNo)
+	if (lastStory != currentStoryNo || (storyLoaded && stories[currentStoryNo].estimates.length == 0))
 		$('#result-cards').empty();
 	refreshEstimates();
 	lastStory = currentStoryNo;
