@@ -495,7 +495,9 @@ function refreshDisplayedStory(callback){
 		$('#result-cards').empty();
 	refreshEstimates();
 	lastStory = currentStoryNo;
-	callback();
+	if (callback != undefined) {
+		callback();
+	}
 
 }
 function refreshEstimates(){
