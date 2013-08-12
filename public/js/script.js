@@ -256,6 +256,9 @@ function makeStory() {
 }
 
 function endGame() {
+	if (!confirm('Are you sure you want to end this game?')) {
+		return;
+	}
 	var url = '/game/' + getId();
 	$.ajax({
 		url: url,
