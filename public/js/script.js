@@ -150,8 +150,8 @@ $(document).ready(function(){
 	Ajax functions
 =================================*/
 function sendVote( storyValue ) {
-	if (currentStory.flipped) {
-		return
+	if (stories[currentStoryNo].flipped) {
+		return;
 	}
 	//console.log('gameInfo before username: ', getGameInfo());
 	var data = {
@@ -249,7 +249,6 @@ function deleteEstimates() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
-			currentStory.flipped = true;
 			stories[currentStoryNo].estimates=data;
 			stories[currentStoryNo].flipped = false;
 			refreshDisplayedStory();
@@ -385,7 +384,7 @@ function flipCards() {
 		type: 'PUT',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
-			currentStory.flipped = true;
+			stories[currentStoryNo].flipped = true;
 			stories[data.ticket_no]=data;
 			console.log('flipCards: ', data);
 		},
