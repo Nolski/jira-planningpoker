@@ -222,7 +222,9 @@ a {
 }
 
 .input-small {
-	height:26px !important;
+	height: 24px !important;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
 }
 
 .last-group {
