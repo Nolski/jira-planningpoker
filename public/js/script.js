@@ -458,8 +458,8 @@ function refreshDisplayedStory(){
 		console.log('currentStory - update', stories[currentStoryNo]);
 		if (stories[currentStoryNo].description != null) { //always was true anyways
 			description = stories[currentStoryNo].description.split('\n').join('<br />');
-			description = description.replace('\t', '');
-			description = description.replace('\r', '');
+			description = description.split('\t').join('');
+			description = description.split('\r').join('');
 		}
 	} else {
 		var description = '',
