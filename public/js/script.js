@@ -50,7 +50,7 @@ $(document).ready(function(){
 	$('#set-score-btn').click(setScore);
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
-
+	$('#clear-btn').click(deleteEstimates);
 	
 
 	/*================================
@@ -235,6 +235,22 @@ function updateStories() {
 /*================================
 	Admin Ajax functions
 =================================*/
+function deleteEstimates() {
+	var url = '/game/' + getId() + '/story/' + currentStoryNo + '/estimate';
+
+	$.ajax({
+		url: url,
+		type: 'DELETE',
+		success: function( data, textStatus, jqXHR ) {
+			refreshDisplayedStory();
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
 function checkAdmin() {
 	var url = '/login';
 
