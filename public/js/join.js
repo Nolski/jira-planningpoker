@@ -13,7 +13,7 @@ $(document).ready(function() {
 			data: data,
 			success: function( data, textStatus, jqXHR ) {
 				var gameInfo = data;
-				window.location = '/index.html?id=' + gameInfo.id;
+				window.location = '/showgame?id=' + gameInfo.id;
 				return gameInfo;
 			},
 			error: function( jqXHR, textStatus, errorThrown ) {
