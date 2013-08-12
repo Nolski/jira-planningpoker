@@ -29,11 +29,11 @@ Deploying to Heroku
 ----------------
 - Setup a Heroku app.
 - Install the Postgres addon
-- Make the Postgres database url you were assigned the default DATABASE_URL
+- [Make the Postgres database url you were assigned the default DATABASE_URL](https://devcenter.heroku.com/articles/heroku-postgresql#establish-primary-db)
 - Install the pusher add-on
 - Add Heroku as a remote for git
 - `git push heroku`
 
 Requires
 ---------
-Ruby and the bundler gem. Bundler will install all other required components. A Heroku account is preferred, though it may run in other environments.
+Ruby and the bundler gem. Bundler will install all other required components. A Heroku account is preferred, though it may run in other environments with some configuration.
