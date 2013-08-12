@@ -448,10 +448,13 @@ function refreshDisplayedStory(){
 	var storyLoaded = currentStoryNo != undefined && currentStoryNo != null;
 	var title,description;
 	if (storyLoaded) {
-		title = stories[currentStoryNo].ticket_no;
+		title = '<a href="' + stories[currentStoryNo].ticket_no 
+			    + '">';
+		title += stories[currentStoryNo].ticket_no;
 		if (stories[currentStoryNo].summary!= null)
 			title+= " - " + stories[currentStoryNo].summary;
 		description = "";
+		title += "</a>";
 		console.log('currentStory - update', stories[currentStoryNo]);
 		if (stories[currentStoryNo].description != null) { //always was true anyways
 			description = stories[currentStoryNo].description.replace('\n', '<br />');
