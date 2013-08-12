@@ -481,6 +481,8 @@ delete '/game/:game/story/:ticket/estimate' do
 		halt 403, "You must be the moderator to clear all the estimates"
 	end
 	if story.estimates.destroy
+		story.flipped = false
+		story.save
 		Pusher.trigger("game_#{params[:game]}", 'new_round', {:ticket_no => params[:ticket], :estimates => []})
 	end
 	(story.estimates.map { |e| e.to_hash }).to_json
