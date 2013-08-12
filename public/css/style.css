@@ -206,19 +206,11 @@ body{
 	display:hidden;
 }
 
-#admin-panel button {
-	margin:5px;
-}
-
-.btn-default {
-	margin: 5px 0 5px 0;
-}
-
 .form-group {
 	float: left;
 	margin: 0 160px 0 10px;
 }
 
-.form-input {
-	height:26px;
+.admin-group {
+	width:260px;
 }
