@@ -212,7 +212,7 @@ a:hover {
 	padding:10px;
 	background-color: #191919;
 	width: 85vw;
-	display:hidden;
+	display: none;
 }
 
 .form-group, .btn-group {
