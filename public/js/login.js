@@ -13,7 +13,11 @@ function login() {
 		data: data,
 		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
-			window.location = "/gamesList";
+			var id = getURLParameter('goto');
+			if (id!=null)
+				window.location='showgame?id='+id;
+			else
+				window.location = "/gamesList";
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			//console.log('ERROR: ', errorThrown);
@@ -46,4 +50,6 @@ function shake(){
 		shakes=0;//I give 0 shakes
 	}
 }
-
+function getURLParameter( name ) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
