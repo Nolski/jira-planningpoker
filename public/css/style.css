@@ -227,3 +227,7 @@ body{
 	position:relative;
 	top:14px;
 }
+
+legend {
+	width: 85%;
+}
