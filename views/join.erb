@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Planning Poker - Games List</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/join.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/join.js"></script>
@@ -14,7 +14,7 @@
 		<div id="games-list" class="list-group">
 			<div>
 			<% @games.each do |game| %>
-			<a href="showgame?id=<%= game.id %>" class="list-group-item"><%=game.name %></a>
+				<a href="showgame?id=<%= game.id %>" class="list-group-item"><%=game.name %></a>
 			<% end %>
 			</div>
 		</div>
@@ -25,21 +25,6 @@
         	<button id="new-btn" class="btn btn-default" type="button">Create</button>
      	 </span>
    		 </div><!-- /input-group -->
-  		
-		<!--<form class="form-group" >
-			<fieldset>
-				<legend class="join-title">Select Game</legend>
-				<div class="form-group">
-					<table class="games-table" id="games">
-						<tbody class="table-body" id="games-body"></tbody>
-					</table>
-				</div>
-				<div class="new-game">
-					<input id="new" type="text" class="form-control input-small form-input" placeholder="Game Name" name="game" />
-					<input type="button" class="btn btn-default" onclick="return makeGame()" value="New Game" />
-				</div>
-			</fieldset>
-		</form>-->
 	</div>
 </body>
 </html>
