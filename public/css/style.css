@@ -208,6 +208,7 @@ a {
 	color: #FFF;
 	padding:10px;
 	background-color: #191919;
+	width: 85vw;
 	display:hidden;
 }
 
@@ -225,18 +226,14 @@ a {
 }
 
 .last-group {
-	height:67px;
 	clear:left;
 	width:auto;
+	margin: 20px 0 10px 0;
 }
 
 .last-group > input {
 	float:left;
-}
-
-#flip-btn {
-	position:relative;
-	top:14px;
+	margin-right:25px;
 }
 
 legend {
