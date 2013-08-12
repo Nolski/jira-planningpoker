@@ -136,7 +136,7 @@ $(document).ready(function(){
 
 	channel.bind('closed', function ( data ) {
 		alert("The moderator ended this game.");
-		window.location = '/join.html';
+		window.location = '/gamesList';
 	});
 	channel.bind('joined', appendParticipant);
 
@@ -315,7 +315,7 @@ function endGame() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
-			window.location = '/join.html';
+			window.location = '/gamesList';
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -476,8 +476,9 @@ function refreshEstimates(){
 }
 //show new estimate OR update vote on existing one
 function appendEstimate(estimate){
-	var id = "card-"+estimate.user.username;
-	var card = document.getElementById(id);
+	var id = "card-"+estimate.user.username,
+		card = document.getElementById(id);
+
 	if (card == undefined){
 		card = document.createElement('div');
 		card.id = id;
