@@ -430,7 +430,7 @@ function refreshAll() {
 	}*/
 
 	refreshStoryList();
-	refreshDisplayedStory();
+	refreshDisplayedStory(refreshParticipants);
 
 	var storyLoaded = currentStoryNo != null;
 	//hide things you can't do w/o a story
@@ -443,10 +443,10 @@ function refreshAll() {
 	$('#game').val("");
 	document.title = "Game - "+ gameInfo.name;
 
-	refreshParticipants();
+	
 }
 var lastStory;
-function refreshDisplayedStory(){
+function refreshDisplayedStory(callback){
 	//Generate ticket info
 	$('#title').empty();
 	$('#description').empty();
@@ -480,6 +480,7 @@ function refreshDisplayedStory(){
 		$('#result-cards').empty();
 	refreshEstimates();
 	lastStory = currentStoryNo;
+	callback();
 
 }
 function refreshEstimates(){
