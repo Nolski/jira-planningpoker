@@ -242,6 +242,7 @@ function deleteEstimates() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
+			console.log('delete sucessful');
 			refreshDisplayedStory();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
