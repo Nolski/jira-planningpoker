@@ -17,9 +17,13 @@ var id,
 $(document).ready(function(){
 
 	id = getURLParameter('id');
-	updateGameInfo();
-	updateStories();
-	joinGame();
+	updateGameInfo(function() {
+		updateGameInfo(function {
+			joinGame(function() {
+				console.log('end of join game');
+			});
+		});
+	});
 	$('.card').hover(function() {
 		$(this).animate({
 			'top': '5px'
@@ -175,7 +179,7 @@ function sendVote( storyValue ) {
 	});
 }
 
-function updateGameInfo() {
+function updateGameInfo(callback) {
 	var id = getId(),
 		url = '/game/' + id;
 		
@@ -189,6 +193,7 @@ function updateGameInfo() {
 			//getCurrentStory();
 			checkAdmin();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
+			callback();
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -221,7 +226,7 @@ function updateGameInfo() {
 	});
 }*/
 
-function updateStories() {
+function updateStories(callback) {
 	var url = '/game/' + getId() + '/story';
 
 	$.ajax({
@@ -230,6 +235,7 @@ function updateStories() {
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
 			//console.log('getstories currentstory', currentStory);
+			callback()
 			refreshAll();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -410,12 +416,15 @@ function storyClickHandler(clickEvent){
 
 	});//TODO: error handling
 }
-function joinGame() {
+function joinGame(callback) {
 	var self = $(this),
 		url = '/game/' + getId() + '/participants'
 	$.ajax({
 		url: url,
-		method: 'POST'
+		method: 'POST',
+		success: function() {
+			callback();
+		}
 	});	
 }
 
