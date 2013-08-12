@@ -452,7 +452,7 @@ function refreshDisplayedStory(){
 	var title,description;
 	if (storyLoaded) {
 		title = '<a href="https://request.siteworx.com/browse/' + stories[currentStoryNo].ticket_no 
-			    + '">';
+			    + '" target="_blank">';
 		title += stories[currentStoryNo].ticket_no;
 		if (stories[currentStoryNo].summary!= null)
 			title+= " - " + stories[currentStoryNo].summary;
