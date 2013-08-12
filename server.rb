@@ -104,7 +104,7 @@ get '/showgame' do
 	if !loggedInUser.nil?
 		erb :gameView
 	else
-		redirect to('login.html')
+		redirect to("login.html?goto=#{params[:id]}")
 	end
 end
 		

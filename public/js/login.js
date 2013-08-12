@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	$('#login-btn').click(login);
+	$('#login-form').submit(login);
 });
 function login() {
 	var username = document.getElementById('username').value,
@@ -23,6 +24,7 @@ function login() {
 			}
 		}
 	});
+	return false;
 }
 var shakes = 0;
 var amount =10;
