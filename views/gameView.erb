@@ -36,13 +36,13 @@
 		<ul id="participants"></ul>
 	</div>
 	<div id="admin-panel">
-		<form class="form-group" style="overflow-y: auto;">
+		<form class="form-group">
 			<fieldset>
 				<legend class="admin-title" style="color:#70828a">Moderator Panel</legend>
 				<div id="new-ticket-form" class="form-group">
 					<div class="admin-group">
 						<div class="input-group">
-							<input id="ticket" type="text" class="input-small" name="ticket" pattern="[A-Z]{2,}+-[0-9]+"/>
+							<input id="ticket" type="text" class="input-small" placeholder="Ticket Name" name="ticket" pattern="[A-Z]{2,}+-[0-9]+"/>
 							<span class="input-group-btn">
 								<button id="new-ticket-btn" type="button" class="btn btn-default">New Ticket</button>
 							</span>
@@ -52,7 +52,7 @@
 				<div id="new-game-form" class="form-group">
 					<div class="admin-group">
 						<div class="input-group">
-							<input id="game" type="text" class="input-small" name="game" />
+							<input id="game" type="text" placeholder="Game Name" class="input-small" name="game" />
 							<span class="input-group-btn">
 								<button id="new-game-button" type="button" class="btn btn-default">New Game</button>
 							</span>
@@ -62,7 +62,7 @@
 				<div id="set-score-form" class="form-group">
 					<div class="admin-group">
 						<div class="input-group">
-							<input id="score" type="text" class="input-small" name="game" />
+							<input id="score" type="text" placeholder="Story Points" class="input-small" name="game" />
 							<span class="input-group-btn">
 								<button id="set-score-btn" type="button" class="btn btn-default">Set Score</button>
 							</span>
