@@ -259,7 +259,7 @@ function deleteEstimates() {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
-			stories[currentStoryNo].estimates=data;
+			stories[currentStoryNo].estimates = data;
 			stories[currentStoryNo].flipped = false;
 			refreshDisplayedStory();
 		},
