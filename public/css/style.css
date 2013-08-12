@@ -222,6 +222,7 @@ a:hover {
 
 .admin-group {
 	width:260px;
+	margin-bottom: 20px;
 }
 
 .input-small {
@@ -233,7 +234,7 @@ a:hover {
 .last-group {
 	clear:left;
 	width:auto;
-	margin: 20px 0 10px 10px;
+	margin: 0 0 10px 10px;
 }
 
 .last-group > input {
