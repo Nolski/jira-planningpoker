@@ -68,6 +68,7 @@ body{
 	height:7.7vh;
 }
 .title > h1 {
+	color: #FFF;
 	font-weight: 200;
 	font-size: 34px;
 	border-bottom: 1px solid;
