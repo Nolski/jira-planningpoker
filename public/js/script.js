@@ -457,7 +457,7 @@ function refreshDisplayedStory(){
 		title += "</a>";
 		console.log('currentStory - update', stories[currentStoryNo]);
 		if (stories[currentStoryNo].description != null) { //always was true anyways
-			description = stories[currentStoryNo].description.replace('/\n/g', '<br />');
+			description = stories[currentStoryNo].description.split('\n').join('<br />');
 			description = description.replace('\t', '');
 			description = description.replace('\r', '');
 		}
