@@ -473,6 +473,12 @@ function refreshDisplayedStory(){
 
 	if (lastStory != currentStoryNo || (storyLoaded && stories[currentStoryNo].estimates.length == 0))
 		$('#result-cards').empty();
+	if (storyLoaded){
+		if (stories[currentStoryNo].flipped)
+			$('#my-cards').slideUp();
+		else
+			$('#my-cards').slideDown();
+	}
 	refreshEstimates();
 	lastStory = currentStoryNo;
 
