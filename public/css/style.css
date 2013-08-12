@@ -217,7 +217,7 @@ a:hover {
 
 .form-group, .btn-group {
 	float: left;
-	margin: 20px 90px 0px 10px;
+	margin: 0 90px 0px 10px;
 }
 
 .admin-group {
@@ -233,7 +233,7 @@ a:hover {
 .last-group {
 	clear:left;
 	width:auto;
-	margin: 20px 0px 0 10px;
+	margin: 20px 0 10px 10px;
 }
 
 .last-group > input {
@@ -242,5 +242,6 @@ a:hover {
 
 legend {
 	width: 100%;
-	margin-left: 10px;
+	margin: 0 0 20px 10px;
+	padding-top: 10px;
 }
