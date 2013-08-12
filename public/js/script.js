@@ -448,7 +448,7 @@ function refreshDisplayedStory(){
 	var storyLoaded = currentStoryNo != undefined && currentStoryNo != null;
 	var title,description;
 	if (storyLoaded) {
-		title = '<a href="' + stories[currentStoryNo].ticket_no 
+		title = '<a href="https://request.siteworx.com/browse/' + stories[currentStoryNo].ticket_no 
 			    + '">';
 		title += stories[currentStoryNo].ticket_no;
 		if (stories[currentStoryNo].summary!= null)
