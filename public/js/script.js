@@ -306,6 +306,9 @@ function flipCards() {
 }
 
 function storyClickHandler(clickEvent){
+	if( !isAdmin ) {
+		return;
+	}
 	var story = clickEvent.data;
 	var url = '/game/'+getId() + '/goto-story/'+story.ticket_no;
 	$.ajax({
@@ -345,8 +348,6 @@ function refreshAll() {
 	$('#score').val("");
 	$('#game').val("");
 	document.title = "Game - "+ gameInfo.name;
-
-	
 }
 var lastStory;
 function refreshDisplayedStory(callback){

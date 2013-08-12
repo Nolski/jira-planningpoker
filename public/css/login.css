@@ -41,7 +41,7 @@ body{
 ===========================*/
 .login {
 	width:500px;
-	height:230px;
+	height:auto;
 	background-color:#70828a;
 	color:#FFF;
 	margin: 0 auto 0 auto;
@@ -64,4 +64,3 @@ body{
 .form-input {
 	width:90%;
 }
-
