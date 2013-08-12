@@ -212,9 +212,9 @@ a {
 	display:hidden;
 }
 
-.form-group {
+.form-group, .btn-group {
 	float: left;
-	margin: 0 90px 0 10px;
+	margin: 20px 90px 0px 10px;
 }
 
 .admin-group {
@@ -228,7 +228,7 @@ a {
 .last-group {
 	clear:left;
 	width:auto;
-	margin: 20px 0 10px 10px;
+	/*margin: 20px 0 10px 10px;*/
 }
 
 .last-group > input {
