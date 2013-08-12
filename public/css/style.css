@@ -226,15 +226,17 @@ a {
 
 .last-group {
 	height:67px;
+	clear:left;
+	width:auto;
+}
+
+.last-group > input {
+	float:left;
 }
 
 #flip-btn {
 	position:relative;
 	top:14px;
-}
-
-#clear-btn {
-	margin-top: 16px;
 }
 
 legend {
