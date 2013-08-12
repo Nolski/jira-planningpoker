@@ -91,7 +91,7 @@ end
 
 before do
 	path = request.path_info
-	protect unless path.start_with?("/login") ||  path == '/' || path=='/gamesList'
+	protect unless path.start_with?("/login") ||  path == '/' || path=='/gamesList' || path == '/showgame'
 	content_type :json
 end
 
@@ -99,6 +99,15 @@ end
 get '/' do
 	redirect to((loggedInUser.nil?) ? 'login.html' : 'gamesList')
 end
+get '/showgame' do
+	content_type :html
+	if !loggedInUser.nil?
+		erb :gameView
+	else
+		redirect to('login.html')
+	end
+end
+		
 ########
 #Authentication
 ########
