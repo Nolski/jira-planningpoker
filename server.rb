@@ -474,6 +474,7 @@ delete '/game/:game/story/:ticket/estimate' do
 	if story.estimates.destroy
 		Pusher.trigger("game_#{params[:game]}", 'new_round', {:ticket_no => params[:ticket], :estimates => []})
 	end
+	(story.estimates.map { |e| e.to_hash }).to_json
 end
 
 	
