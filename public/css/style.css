@@ -218,3 +218,12 @@ body{
 .input-small {
 	height:26px !important;
 }
+
+.last-group {
+	height:62px;
+}
+
+#flip-btn {
+	position:relative;
+	top:14px;
+}
