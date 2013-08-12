@@ -38,6 +38,10 @@ a {
 	color: #FFF;
 }
 
+a:hover {
+	color: #FFF;
+	text-decoration: none;
+}
 /*===========================
 			Fonts
 ===========================*/
