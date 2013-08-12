@@ -8,8 +8,8 @@ var id,
 	currentStoryNo = null,
 	stories = {}, //hash of ticket_no => story (new API)
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
-	pusher_dev = '32de1f05aeb0cce00299'; //will be active on localhost
-pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod;
+	pusher_dev = '32de1f05aeb0cce00299', //will be active on localhost
+	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod;
 
 /*================================
 	Event listeners
@@ -56,8 +56,8 @@ $(document).ready(function(){
 	/*================================
 		Pusher functions
 	=================================*/
-	var pusher = new Pusher(pusher_key);
-	var channel = pusher.subscribe('game_' + id);
+	var pusher = new Pusher(pusher_key),
+		channel = pusher.subscribe('game_' + id);
 
 	channel.bind('new_story', function ( data ) {
 		//data = JSON.parse(data);
@@ -150,6 +150,9 @@ $(document).ready(function(){
 	Ajax functions
 =================================*/
 function sendVote( storyValue ) {
+	if (currentStory.flipped) {
+		return
+	}
 	//console.log('gameInfo before username: ', getGameInfo());
 	var data = {
 				vote: storyValue
@@ -449,7 +452,10 @@ function refreshDisplayedStory(){
 	$('#title').empty();
 	$('#description').empty();
 	var storyLoaded = currentStoryNo != undefined && currentStoryNo != null;
-	var title,description;
+	
+	var title,
+		description;
+	
 	if (storyLoaded) {
 		title = '<a href="https://request.siteworx.com/browse/' + stories[currentStoryNo].ticket_no 
 			    + '" target="_blank">';
@@ -465,8 +471,8 @@ function refreshDisplayedStory(){
 			description = description.split('\r').join('');
 		}
 	} else {
-		var description = '',
-			title = 'No story loaded';
+		description = '';
+		title = 'No story loaded';
 	}
 	$('#title').html(title);
 	$('#description').html(description);
