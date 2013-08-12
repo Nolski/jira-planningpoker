@@ -396,7 +396,6 @@ function flipCards() {
 		success: function( data, textStatus, jqXHR ) {
 			stories[currentStoryNo].flipped = true;
 			stories[data.ticket_no] = data;
-			refreshEstimates();
 			console.log('flipCards: ', data);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
