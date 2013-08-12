@@ -380,6 +380,7 @@ function flipCards() {
 		type: 'PUT',
 		data: data,
 		success: function( data, textStatus, jqXHR ) {
+			currentStory.flipped = true;
 			stories[data.ticket_no]=data;
 			console.log('flipCards: ', data);
 		},
