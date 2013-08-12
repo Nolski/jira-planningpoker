@@ -228,6 +228,10 @@ body{
 	top:14px;
 }
 
+#clear-btn {
+	margin-top: 16px;
+}
+
 legend {
 	width: 85%;
 }
