@@ -247,6 +247,7 @@ function deleteEstimates() {
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
 			stories[currentStoryNo].estimates=data;
+			stories[currentStoryNo].flipped = false;
 			refreshDisplayedStory();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
