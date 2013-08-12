@@ -18,7 +18,7 @@ $(document).ready(function(){
 
 	id = getURLParameter('id');
 	updateGameInfo(function() {
-		updateGameInfo(function() {
+		updateStories(function() {
 			joinGame(function() {
 				console.log('end of join game');
 			});
