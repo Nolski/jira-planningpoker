@@ -310,14 +310,8 @@ function flipCards() {
 }
 
 function storyClickHandler(clickEvent){
-<<<<<<< HEAD
-	if( !isAdmin ) {
-		return;
-	}
-=======
 	if (!isAdmin)
 		return;//non admin cannot go to story
->>>>>>> e3c306b83831b781bded875cf8419a363ee7b64a
 	var story = clickEvent.data;
 	var url = '/game/'+getId() + '/goto-story/'+story.ticket_no;
 	$.ajax({
