@@ -193,7 +193,9 @@ function updateGameInfo(callback) {
 			//getCurrentStory();
 			checkAdmin();
 			console.log( 'sucessful! getGameInfo(): ', gameInfo );
-			callback();
+			if (callback != undefined) {
+				callback();
+			}
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -235,7 +237,9 @@ function updateStories(callback) {
 		success: function( data, textStatus, jqXHR ) {
 			stories = JSON.parse( data );
 			//console.log('getstories currentstory', currentStory);
-			callback()
+			if (callback != undefined) {
+				callback()
+			}
 			refreshAll();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -423,7 +427,9 @@ function joinGame(callback) {
 		url: url,
 		method: 'POST',
 		success: function() {
-			callback();
+			if (callback != undefined) {
+				callback();
+			}
 		}
 	});	
 }
