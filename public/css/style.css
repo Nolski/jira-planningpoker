@@ -216,5 +216,5 @@ body{
 }
 
 .input-small {
-	height:26px;
+	height:26px !important;
 }
