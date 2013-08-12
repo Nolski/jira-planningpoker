@@ -97,6 +97,7 @@ $(document).ready(function(){
 			var id = '#' + i;
 			$(id).tooltip();
 		}*/
+		console.log('updated story');
 		stories[data.ticket_no] = data;
 		refreshAll();
 		
@@ -261,6 +262,7 @@ function deleteEstimates() {
 		success: function( data, textStatus, jqXHR ) {
 			stories[currentStoryNo].estimates=data;
 			stories[currentStoryNo].flipped = false;
+			$('#flip-btn').removeClass('disabled');
 			refreshDisplayedStory();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -438,7 +440,7 @@ function joinGame(callback) {
 	Utility functions
 =================================*/
 function refreshAll() {
-	//console.log('update');
+	console.log('update');
 	//console.log(stories);
 	/*if (stories.length == 0) {
 		return;
