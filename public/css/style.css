@@ -28,9 +28,14 @@
 body{
 	background-color: #fbfcfc;
 }
+
 * {
 	margin:0;
 	padding:0;
+}
+
+a {
+	color: #FFF;
 }
 
 /*===========================
@@ -68,7 +73,6 @@ body{
 	height:7.7vh;
 }
 .title > h1 {
-	color: #FFF !important;
 	font-weight: 200;
 	font-size: 34px;
 	border-bottom: 1px solid;
