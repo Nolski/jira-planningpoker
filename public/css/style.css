@@ -233,7 +233,7 @@ a:hover {
 .last-group {
 	clear:left;
 	width:auto;
-	/*margin: 20px 0 10px 10px;*/
+	margin: 20px 0px 0 10px;
 }
 
 .last-group > input {
@@ -241,5 +241,6 @@ a:hover {
 }
 
 legend {
-	width: 85%;
+	width: 100%;
+	margin-left: 10px;
 }
