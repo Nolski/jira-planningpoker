@@ -170,7 +170,8 @@ function updateStories(callback) {
 /*================================
 	Admin Ajax functions
 =================================*/
-function deleteStory() {
+function deleteStory(event) {
+	event.stopPropagation();
 	var url = '/game/' + getId() + '/story/' + $(this).id();
 
 	$.ajax({
