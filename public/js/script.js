@@ -55,7 +55,7 @@ $(document).ready(function(){
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
 	$('#clear-btn').click(deleteEstimates);
-	
+	$('.close-story').click(deleteStory);
 
 	/*================================
 		Pusher functions
@@ -171,7 +171,7 @@ function updateStories(callback) {
 	Admin Ajax functions
 =================================*/
 function deleteStory() {
-	var url = '/game/' + getId() + '/story/' + currentStoryNo;
+	var url = '/game/' + getId() + '/story/' + $(this).id();
 
 	$.ajax({
 		url: url,
