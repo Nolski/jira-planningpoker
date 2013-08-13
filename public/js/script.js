@@ -92,6 +92,7 @@ $(document).ready(function(){
 	channel.bind('joined', appendParticipant);
 	channel.bind('new_round', function ( data ){
 		stories[data.ticket_no].estimates = [];
+		stories[data.ticket_no].flipped = false;
 		refreshAll();
 	});
 
