@@ -427,6 +427,24 @@ function refreshEstimates(){
 		appendEstimate(estimate);
 	}
 }
+//Generate stories on side bar
+function refreshStoryList(){
+	//$('#stories').empty();
+	$('.side-tickets > li.active').removeClass('active');
+	
+	$.each(stories, function (ticket_no, story){
+		appendStory(story);
+	});
+	$('.close-story').bind('click', deleteStory);
+	$('.close-story').click(deleteStory);
+}
+function refreshParticipants(callback){
+	for (var i=0;i<gameInfo.participants.length;i++)
+		appendParticipant(gameInfo.participants[i]);
+	if(callback != undefined) {
+		callback();
+	}
+}
 //show new estimate OR update vote on existing one
 function appendEstimate(estimate){
 	var id = "card-"+estimate.user.username,
@@ -458,17 +476,6 @@ function appendEstimate(estimate){
 		}
 	}
 	$(card).tooltip();
-}
-//Generate stories on side bar
-function refreshStoryList(){
-	//$('#stories').empty();
-	$('.side-tickets > li.active').removeClass('active');
-	
-	$.each(stories, function (ticket_no, story){
-		appendStory(story);
-	});
-	$('.close-story').bind('click', deleteStory);
-	$('.close-story').unbind('click', deleteStory);
 }
 //append a story to the sidebar OR update one that's already there
 function appendStory(story){
@@ -524,13 +531,6 @@ function appendStory(story){
 
 	$(li).toggleClass('active', story.ticket_no == currentStoryNo);
 
-}
-function refreshParticipants(callback){
-	for (var i=0;i<gameInfo.participants.length;i++)
-		appendParticipant(gameInfo.participants[i]);
-	if(callback != undefined) {
-		callback();
-	}
 }
 function appendParticipant(user){
 	var id = 'participant-'+user.username;
