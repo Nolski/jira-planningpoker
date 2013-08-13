@@ -18,8 +18,9 @@ $(document).ready(function(){
 
 	id = getURLParameter('id');
 	updateGameInfo(function() {
-		updateStories(function() {
-			joinGame(function() {
+		checkAdmin(function(){
+			updateStories(function() {
+				joinGame()
 			});
 		});
 	});
@@ -134,7 +135,6 @@ function updateGameInfo(callback) {
 		success: function( data, textStatus, jqXHR ) {
 			gameInfo = JSON.parse( data );
 			currentStoryNo = gameInfo['current_story'];
-			checkAdmin();
 			if (callback != undefined) {
 				callback();
 			}
@@ -189,7 +189,7 @@ function deleteEstimates() {
 	});
 }
 
-function checkAdmin() {
+function checkAdmin(callback) {
 	var url = '/login';
 
 	$.ajax({
@@ -199,6 +199,8 @@ function checkAdmin() {
 			isAdmin = data.username == gameInfo.moderator.username;
 			$('#admin-panel').toggle(isAdmin)
 			$('.side-tickets li').toggleClass('clickable', isAdmin);
+			if (callback!=undefined)
+				callback();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
@@ -308,6 +310,8 @@ function flipCards() {
 }
 
 function storyClickHandler(clickEvent){
+	if (!isAdmin)
+		return;//non admin cannot go to story
 	var story = clickEvent.data;
 	var url = '/game/'+getId() + '/goto-story/'+story.ticket_no;
 	$.ajax({
