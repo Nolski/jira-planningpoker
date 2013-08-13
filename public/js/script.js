@@ -55,7 +55,9 @@ $(document).ready(function(){
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
 	$('#clear-btn').click(deleteEstimates);
-	$('.close-story').click(deleteStory);
+	$('.close-story').click(function() {
+		console.log('sahdfjha');
+	});
 
 	/*================================
 		Pusher functions
