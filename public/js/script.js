@@ -305,6 +305,7 @@ function flipCards() {
 		success: function( data, textStatus, jqXHR ) {
 			stories[currentStoryNo].flipped = true;
 			stories[data.ticket_no] = data;
+			console.log('flipCards', data);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
