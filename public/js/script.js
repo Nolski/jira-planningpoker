@@ -86,7 +86,8 @@ $(document).ready(function(){
 	});
 
 	channel.bind('closed', function ( data ) {
-		alert("The moderator ended this game.");
+		if (!isAdmin)
+			alert("The moderator ended this game.");
 		window.location = '/gamesList';
 	});
 	channel.bind('joined', appendParticipant);
