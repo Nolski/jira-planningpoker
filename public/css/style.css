@@ -188,14 +188,14 @@ a:hover {
 	cursor: pointer;
 }
 
-.closeSpan {
+.close-story {
 	color: #FFF;
 	float: left;
 	margin: 1px 0 0 0;
 	font-family: Arial;
 }
 
-.closeSpan:hover {
+.close-story:hover {
 	color: #5296b5;
 }
 
