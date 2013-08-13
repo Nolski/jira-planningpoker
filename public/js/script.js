@@ -463,7 +463,7 @@ function appendStory(story){
 		
 		var closeText = document.createTextNode('X'),
 			closeSpan = document.createElement('span');
-		closeSpan.appendChild('X');
+		closeSpan.appendChild(closeText);
 		closeSpan.id = 'close-' + story.ticket_no;
 		closeSpan.className = 'close-story';
 
