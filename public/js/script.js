@@ -291,7 +291,7 @@ function setScore() {
 }
 
 function flipCards() {
-	var url = '/game/' + getId() + '/story/' + gameInfo.current_story,
+	var url = '/game/' + getId() + '/story/' + currentStoryNo,
 		data = {
 				flipped: true,
 			};
@@ -299,10 +299,6 @@ function flipCards() {
 		url: url,
 		type: 'PUT',
 		data: data,
-		success: function( data, textStatus, jqXHR ) {
-			stories[currentStoryNo].flipped = true;
-			stories[data.ticket_no] = data;
-		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
 		}
