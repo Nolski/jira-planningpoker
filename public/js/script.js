@@ -55,9 +55,7 @@ $(document).ready(function(){
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
 	$('#clear-btn').click(deleteEstimates);
-	$('.close-story').click(function(){
-		console.log('aghah')
-	});
+
 
 
 	/*================================
@@ -465,10 +463,12 @@ function appendEstimate(estimate){
 function refreshStoryList(){
 	//$('#stories').empty();
 	$('.side-tickets > li.active').removeClass('active');
+	
 	$.each(stories, function (ticket_no, story){
 		appendStory(story);
 	});
-
+	$('.close-story').bind('click', deleteStory);
+	$('.close-story').unbind('click', deleteStory);
 }
 //append a story to the sidebar OR update one that's already there
 function appendStory(story){
