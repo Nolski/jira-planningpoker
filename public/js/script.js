@@ -415,7 +415,6 @@ function refreshDisplayedStory(callback){
 	if (callback != undefined) {
 		callback();
 	}
-
 }
 function refreshEstimates(){
 	if (currentStoryNo == null)
@@ -473,17 +472,17 @@ function appendStory(story){
 		$spSpan; //will be the jquery element for the story point span, created now or fetched
 
 	if (li == undefined){
-		var noText = document.createTextNode(story.ticket_no),
-			noSpan = document.createElement('span');
-		noSpan.appendChild(noText);
-		noSpan.className = "ticket-no";
-		
 		var closeText = document.createTextNode('X'),
 			closeSpan = document.createElement('span');
 		closeSpan.appendChild(closeText);
 		closeSpan.id = 'close-' + story.ticket_no;
 		closeSpan.className = 'close-story';
 
+		var noText = document.createTextNode(story.ticket_no),
+			noSpan = document.createElement('span');
+		noSpan.appendChild(noText);
+		noSpan.className = "ticket-no";
+		
 		var spText = document.createTextNode(story.story_points),
 			spSpan = document.createElement('span');
 		spSpan.className = "story-points";
@@ -494,12 +493,15 @@ function appendStory(story){
 		sepSpan.innerHTML = "&nbsp;&nbsp;:&nbsp;&nbsp;";
 		$(sepSpan).toggle(story.story_points >= 0);
 
+		var storyDiv = document.createElement('div');
+		storyDiv.id = "list-"+story.ticket_no;
+		storyDiv.appendChild(noSpan);
+		storyDiv.appendChild(sepSpan);
+		storyDiv.appendChild(spSpan);
+
 		var li = document.createElement('li');
-		li.id = "list-"+story.ticket_no;
 		li.appendChild(closeSpan);
-		li.appendChild(noSpan);
-		li.appendChild(sepSpan);
-		li.appendChild(spSpan);
+		li.appendChild(storyDiv);
 
 		$spSpan = $(spSpan);
 
