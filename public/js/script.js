@@ -451,8 +451,8 @@ function refreshStoryList(){
 }
 //append a story to the sidebar OR update one that's already there
 function appendStory(story){
-	var id = 'list-'+story.ticket_no
-		li = document.getElementById(id)
+	var id = 'list-'+story.ticket_no,
+		li = document.getElementById(id),
 		$spSpan; //will be the jquery element for the story point span, created now or fetched
 
 	if (li == undefined){
