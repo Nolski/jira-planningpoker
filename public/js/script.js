@@ -71,7 +71,7 @@ $(document).ready(function(){
 	channel.bind('updated_story', function ( data ) {
 		stories[data.ticket_no] = data;
 		refreshAll();
-		
+		console.log('updated_story: ', data);
 	});
 
 	channel.bind('current_story', function ( data ) {
