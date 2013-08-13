@@ -175,7 +175,7 @@ function deleteStory(event) {
 	event.stopPropagation();
 	event.preventDefault();
 	console.log('deleteStory');
-	var url = '/game/' + getId() + '/story/' + $(this).id();
+	var url = '/game/' + getId() + '/story/' + $(this).attr('id');
 
 	$.ajax({
 		url: url,
