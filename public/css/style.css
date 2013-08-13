@@ -167,6 +167,7 @@ a:hover {
 	height:100%;
 	padding:1vw;
 	font-size: 22px;
+	overflow-y: scroll;
 }
 .side-tickets {
 	list-style: none;
