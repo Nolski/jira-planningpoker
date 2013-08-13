@@ -170,6 +170,22 @@ function updateStories(callback) {
 /*================================
 	Admin Ajax functions
 =================================*/
+function deleteStory() {
+	var url = '/game/' + getId() + '/story/' + currentStoryNo;
+
+	$.ajax({
+		url: url,
+		type: 'DELETE',
+		success: function( data, textStatus, jqXHR ) {
+			refreshStoryList();
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+			return null;
+		}
+	});
+}
+
 function deleteEstimates() {
 	var url = '/game/' + getId() + '/story/' + currentStoryNo + '/estimate';
 
