@@ -181,6 +181,7 @@ function deleteStory(event) {
 		url: url,
 		type: 'DELETE',
 		success: function( data, textStatus, jqXHR ) {
+			console.log(data);
 			refreshStoryList();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
