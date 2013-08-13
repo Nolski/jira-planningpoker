@@ -187,6 +187,18 @@ a:hover {
 	color:#5296b5;
 	cursor: pointer;
 }
+
+.closeSpan {
+	color: #FFF;
+	float: left;
+	margin: 1px 0 0 0;
+	font-family: Arial;
+}
+
+.closeSpan:hover {
+	color: #5296b5;
+}
+
 #part-header {
 	font-size: medium;
 	margin-top: 2em;
@@ -196,6 +208,7 @@ a:hover {
 	border-width: 1px;
 	border-color: #333;
 }
+
 #participants {
 		font-family: Museo;
 		list-style: none;

@@ -451,17 +451,23 @@ function refreshStoryList(){
 }
 //append a story to the sidebar OR update one that's already there
 function appendStory(story){
-	var id = 'list-'+story.ticket_no;
-	var li = document.getElementById(id);
-	var $spSpan; //will be the jquery element for the story point span, created now or fetched
+	var id = 'list-'+story.ticket_no
+		li = document.getElementById(id)
+		$spSpan; //will be the jquery element for the story point span, created now or fetched
+
 	if (li == undefined){
-		var noText = document.createTextNode(story.ticket_no);
-		var noSpan = document.createElement('span');
+		var noText = document.createTextNode(story.ticket_no),
+			noSpan = document.createElement('span');
 		noSpan.appendChild(noText);
 		noSpan.className = "ticket-no";
 		
-		var spText = document.createTextNode(story.story_points);
-		var spSpan = document.createElement('span');
+		var closeSpan = document.createElement('span');
+		closeSpan.appendChild('X');
+		closeSpan.id = 'close-' + story.ticket_no;
+		closeSpan.className = 'close-story';
+
+		var spText = document.createTextNode(story.story_points),
+			spSpan = document.createElement('span');
 		spSpan.className = "story-points";
 		spSpan.appendChild(spText);
 		
@@ -472,6 +478,7 @@ function appendStory(story){
 
 		var li = document.createElement('li');
 		li.id = "list-"+story.ticket_no;
+		li.appendChild(closeSpan);
 		li.appendChild(noSpan);
 		li.appendChild(sepSpan);
 		li.appendChild(spSpan);
