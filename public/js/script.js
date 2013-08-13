@@ -343,7 +343,11 @@ function joinGame(callback) {
 =================================*/
 function refreshAll() {
 	refreshStoryList();
-	refreshDisplayedStory(refreshParticipants);
+	refreshDisplayedStory(function() {
+		refreshParticipants(function() {
+			refreshEstimates();
+		});
+	});
 
 	var storyLoaded = currentStoryNo != null;
 	//hide things you can't do w/o a story
@@ -494,9 +498,12 @@ function appendStory(story){
 	$(li).toggleClass('active', story.ticket_no == currentStoryNo);
 
 }
-function refreshParticipants(){
+function refreshParticipants(callback){
 	for (var i=0;i<gameInfo.participants.length;i++)
 		appendParticipant(gameInfo.participants[i]);
+	if(callback != undefined) {
+		callback();
+	}
 }
 function appendParticipant(user){
 	var id = 'participant-'+user.username;
