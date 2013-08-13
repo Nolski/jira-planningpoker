@@ -338,7 +338,11 @@ delete '/game/:game/story/:ticket' do
 		preventModClosed(story.game)
 		broadcast({:game => story.game.to_hash}.to_json)
 		Pusher.trigger("game_#{params[:game]}", 'deleted_story', params[:ticket])
-		story.destroy.to_json
+		story.game.current_story = nil
+		story.game.save
+		story.estimates.destroy
+		story.destroy
+		story.destroyed?.to_json
 end
 
 get '/game/:game/story/:ticket' do
