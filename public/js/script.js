@@ -172,6 +172,7 @@ function updateStories(callback) {
 =================================*/
 function deleteStory(event) {
 	event.stopPropagation();
+	event.preventDefault();
 	var url = '/game/' + getId() + '/story/' + $(this).id();
 
 	$.ajax({
