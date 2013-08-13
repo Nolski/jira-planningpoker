@@ -487,7 +487,7 @@ function appendStory(story){
 		var closeText = document.createTextNode('X'),
 			closeSpan = document.createElement('span');
 		closeSpan.appendChild(closeText);
-		closeSpan.id = 'close-' + story.ticket_no;
+		closeSpan.id = story.ticket_no;
 		closeSpan.className = 'close-story';
 
 		var noText = document.createTextNode(story.ticket_no),
