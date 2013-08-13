@@ -97,6 +97,17 @@ $(document).ready(function(){
 		stories[data.ticket_no].flipped = false;
 		refreshAll();
 	});
+	channel.bind('deleted_story', function ( data ){
+		ticket_no = data;
+		console.log("got delete event with data", data);
+		delete stories[ticket_no];
+		if (currentStoryNo == ticket_no)
+			currentStoryNo = null;
+		$('#list-'+ticket_no).slideUp({complete: function(){
+			this.remove();
+		}});
+		//refreshAll();
+	});
 
 });
 
@@ -316,6 +327,17 @@ function storyClickHandler(clickEvent){
 
 	});
 }
+function storyDeleteHandler(clickEvent){
+	if (!isAdmin)
+		return;//non admin cannot delete
+	var story = clickEvent.data;
+	var url = '/game/'+getId() + '/story/'+story.ticket_no;
+	$.ajax({
+		url: url,
+		type: 'DELETE',
+
+	});
+}
 function joinGame(callback) {
 	var self = $(this),
 		url = '/game/' + getId() + '/participants'
@@ -448,6 +470,10 @@ function appendStory(story){
 	var li = document.getElementById(id);
 	var $spSpan; //will be the jquery element for the story point span, created now or fetched
 	if (li == undefined){
+		//contain the text we click 
+		var textDiv = document.createElement('div');
+		textDiv.className = "ticket-text";
+
 		var noText = document.createTextNode(story.ticket_no);
 		var noSpan = document.createElement('span');
 		noSpan.appendChild(noText);
@@ -464,15 +490,25 @@ function appendStory(story){
 		$(sepSpan).toggle(story.story_points >= 0);
 
 		var li = document.createElement('li');
-		li.id = "list-"+story.ticket_no;
-		li.appendChild(noSpan);
-		li.appendChild(sepSpan);
-		li.appendChild(spSpan);
+		li.id = id;
+		textDiv.appendChild(noSpan);
+		textDiv.appendChild(sepSpan);
+		textDiv.appendChild(spSpan);
+		li.appendChild(textDiv);
+
+		$(textDiv).click(story, storyClickHandler);
+		$(li).toggleClass('clickable', isAdmin);
+		//that's it for the text
+
+		var closeBtn = document.createElement('div');
+		closeBtn.appendChild(document.createTextNode('X'));
+		closeBtn.className = "close-btn";
+		$(closeBtn).click(story, storyDeleteHandler);
+		if (isAdmin)
+			li.appendChild(closeBtn);
 
 		$spSpan = $(spSpan);
 
-		$(li).click(story, storyClickHandler);
-		$(li).toggleClass('clickable', isAdmin);
 		$('#stories').append(li);
 		$(li).hide().slideDown();
 	} else {

@@ -183,7 +183,7 @@ a:hover {
 	font-family: Museo;
 }
 
-.side-tickets > li.clickable:hover, .side-tickets > li.active {
+.side-tickets > li.clickable .ticket-text:hover, .side-tickets > li.active .ticket-text, .side-tickets > li .close-btn:hover{
 	color:#5296b5;
 	cursor: pointer;
 }
