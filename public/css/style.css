@@ -41,6 +41,12 @@ a {
 a:hover {
 	color: #FFF;
 }
+
+sup {
+	top: -.9em;
+	font-size: 49%;
+}
+
 /*===========================
 			Fonts
 ===========================*/
@@ -298,4 +304,13 @@ legend {
 .start {
 	text-align: center;
 	margin-top: 1em;
+	font-weight: bold;
+}
+
+.start:hover {
+	cursor: pointer;
+}
+
+.start:active {
+	color: #FF4444;
 }
