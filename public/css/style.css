@@ -282,5 +282,20 @@ legend {
 }
 
 .timer {
-	border: solid 1px #000;
+	border: solid 1px #FFF;
+	width: 6em;
+	height: 6em;
+	float: left;
+	border-radius: 3em;
+}
+
+.time {
+	text-align: center;
+	margin-top: 1em;
+	font-size: 20px;
+}
+
+.start {
+	text-align: center;
+	margin-top: 1em;
 }
