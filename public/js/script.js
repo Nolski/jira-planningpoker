@@ -271,17 +271,19 @@ function makeStory() {
 }
 
 function endGame() {
-	var url = '/game/' + getId();
-	$.ajax({
-		url: url,
-		type: 'DELETE',
-		success: function( data, textStatus, jqXHR ) {
-			window.location = '/gamesList';
-		},
-		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
-		}
-	});
+	if ( confirm('Are you sure you want to end this game?') ) {
+		var url = '/game/' + getId();
+		$.ajax({
+			url: url,
+			type: 'DELETE',
+			success: function( data, textStatus, jqXHR ) {
+				window.location = '/gamesList';
+			},
+			error: function( jqXHR, textStatus, errorThrown ) {
+				console.log('ERROR: ', errorThrown);
+			}
+		});
+	}
 }
 
 function setScore() {
