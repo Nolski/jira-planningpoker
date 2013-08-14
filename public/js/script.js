@@ -45,7 +45,7 @@ $(document).ready(function(){
 	});
 
 	$('#ticket').keyup(function(data){
-		$(this).val($(this).val().toUpperCase().replace(/[^A-Z0-9\-]/g, ''));
+		$(this).val($(this).val().toUpperCase().replace(/[^A-Z0-9\-,]/g, ''));
 		//this could be better, just hacked this out b/c I didn't want to use capslock
 	});
 
@@ -245,18 +245,21 @@ function makeGame( id, callback ) {
 
 function makeStory() {
 	var url = '/game/' + getId() + '/story',
-		ticketNum = $('#ticket').val(),
-		data = { 'ticket_no': ticketNum };
+		ticketNums = $('#ticket').val(),
+		data = { 'ticket_nos': ticketNums };
 	$.ajax({
 		url: url,
 		type: 'POST',
 		data: data,
 		dataType: 'JSON',
 		success: function( data, textStatus, jqXHR ) {
-			stories[data.ticket_no] = data;
-			if (currentStoryNo == null){
-				currentStoryNo = data.ticket_no;
-				refreshAll();
+			for (var i =0; i< data.length; i++){
+				story = data[i];
+				stories[story.ticket_no] = story;
+				if (currentStoryNo == null){
+					currentStoryNo = story.ticket_no;
+					refreshAll();
+				}
 			}
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
