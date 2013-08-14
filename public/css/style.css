@@ -312,11 +312,7 @@ legend {
 }
 
 .timer:active {
-	border-color: #FF4444;
-}
-
-.start:active {
-	color: #FF4444;
+	color: #FF4444 !important;
 }
 
 .seconds {
