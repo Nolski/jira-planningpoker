@@ -293,48 +293,53 @@ post '/game/:id/story' do
 	end
 	preventModClosed(game)
 	body = request.body.read
-	ticket_no = nil
-	if !params[:ticket_no].nil?
-		ticket_no = params[:ticket_no]
+	ticket_nos = nil
+	if !params[:ticket_nos].nil?
+		ticket_nos = params[:ticket_nos]
 	elsif !body.nil? && !body.empty?
 		data = JSON.parse(body)
-		ticket_no = data['ticket_no']
+		ticket_nos = data['ticket_nos']
 	else
 		halt 400, "No data received" if body.empty?
 	end
 
-	halt 400, "Ticket number required" if ticket_no.nil?
+	halt 400, "Ticket number required" if ticket_nos.nil?
 
-	story = Story.create(:ticket_no => ticket_no, :game => game, :created => Time.now)
+	response = Array.new
+	ticket_nos.gsub(' ','').split(',').each do |ticket_no|
 
-	#get jira details
-	begin
-		resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
-		ticketInfo = JSON.parse(resource.get)
-		story.summary = ticketInfo['fields']['summary']
-		story.description = ticketInfo['fields']['description']
-		if ticketInfo['fields'].key?("customfield_#{settings.story_points_customid}")
-			story.story_points = ticketInfo['fields']['customfield_10183']
-			#TODO: Figure out if it always has the same key
+		story = Story.create(:ticket_no => ticket_no, :game => game, :created => Time.now)
+
+		#get jira details
+		begin
+			resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
+			ticketInfo = JSON.parse(resource.get)
+			story.summary = ticketInfo['fields']['summary']
+			story.description = ticketInfo['fields']['description']
+			if ticketInfo['fields'].key?("customfield_#{settings.story_points_customid}")
+				story.story_points = ticketInfo['fields']['customfield_10183']
+				#TODO: Figure out if it always has the same key
+			end
+			story.save
+		rescue
+			puts "Could not get JIRA data for #{story.ticket_no}"
 		end
-		story.save
-	rescue
-		puts "Could not get JIRA data for #{story.ticket_no}"
+
+		#set this as the current story if there isn't one
+		if game.current_story.nil?
+			game.current_story = story.ticket_no
+			game.save
+			Pusher.trigger("game_#{params[:game]}", 'current_story', story.to_hash)
+		end
+
+
+		puts story.errors.inspect if !story.saved?
+		#halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
+		broadcast({:story => story.to_hash}.to_json)
+		Pusher.trigger("game_#{params[:id]}", 'new_story', story.to_hash)
+		response << story.to_hash
 	end
-
-	#set this as the current story if there isn't one
-	if game.current_story.nil?
-		game.current_story = story.ticket_no
-		game.save
-		Pusher.trigger("game_#{params[:game]}", 'current_story', story.to_hash)
-	end
-
-
-	puts story.errors.inspect if !story.saved?
-	halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
-	broadcast({:story => story.to_hash}.to_json)
-	Pusher.trigger("game_#{params[:id]}", 'new_story', story.to_hash)
-	story.to_hash.to_json
+	response.to_json
 end
 
 delete '/game/:game/story/:ticket' do
