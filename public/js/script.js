@@ -556,7 +556,7 @@ function startTimer() {
 		timerStarted = true;
 		var start = new Date().getTime();
 		$('#start-timer').empty();
-		$('#start-timer').html("stop");
+		$('#start-timer').html("STOP");
 
 		interval = window.setInterval(function incrementTime() {
 			$('#minutes').empty();
