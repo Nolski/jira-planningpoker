@@ -541,6 +541,9 @@ function startTimer() {
 	var minHtml = "";
 		secHtml = "";
 	if(timerStarted) {
+		$('#minutes').empty();
+		$('#seconds').empty();
+		$('#start-timer').empty();
 		minHtml = "00<sup>M</sup>";
 		secHtml = "00<sup>S</sup>";
 		$('#minutes').html(minHtml);
@@ -549,9 +552,13 @@ function startTimer() {
 		return;
 	} else {
 		var start = new Date().getTime();
+		$('#start-timer').empty();
 		$('#start-timer').html("stop");
-		
+
 		window.setInterval(function incrementTime() {
+			$('#minutes').empty();
+			$('#seconds').empty();
+			
 			var time = new Date().getTime() - start,
 				timeInSeconds = Math.floor(time / 1000),
 				minutes = Math.floor(timeInSeconds / 60),
