@@ -45,7 +45,7 @@ $(document).ready(function(){
 	});
 
 	$('#ticket').keyup(function(data){
-		$(this).val($(this).val().toUpperCase().replace(/[^A-Z0-9\-]/g, ''));
+		$(this).val($(this).val().toUpperCase().replace(/[^A-Z0-9\-,]/g, ''));
 		//this could be better, just hacked this out b/c I didn't want to use capslock
 	});
 

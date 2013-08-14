@@ -162,13 +162,14 @@ a:hover {
 	right: 0;
 	top: 0;
 	background-color: #191919;
+	width: 200px;
 	width:13vw;
-	/*width: 200px;*/
 	color:#DDDDDD;
 	height:100%;
 	padding:1vw;
 	font-size: 22px;
 	overflow-y: scroll;
+	z-index: 1;
 }
 .side-tickets {
 	list-style: none;
@@ -238,6 +239,7 @@ a:hover {
 	background-color: #191919;
 	width: 85vw;
 	display: none;
+	z-index: 0;
 }
 
 .form-group, .btn-group {
