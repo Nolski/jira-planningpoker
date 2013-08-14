@@ -535,7 +535,19 @@ function appendParticipant(user){
 		$(li).hide().slideDown();
 	}
 }
-function updateResultCards(){
+function startTimer() {
+	var start = new Date().getTime(),
+		elapsed = '0.0';
+
+	window.setInterval(function incrementTime() {
+		var time = new Date().getTime() - start,
+			timeInSeconds = Math.floor(time / 1000),
+			minutes = Math.floor(seconds / 60),
+			seconds = timeInSeconds % 60;
+
+		console.log("time: " + minutes + ':' + seconds);
+	}, 100);
+
 }
 function getUsername() {
 	return getURLParameter('username');
