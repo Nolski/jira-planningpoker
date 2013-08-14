@@ -573,9 +573,12 @@ function startTimer() {
 
 			minHtml += minutes + "<sup>M</sup>";
 			secHtml += seconds + "<sup>S</sup>";
-			
+
 			$('#minutes').html(minHtml);
 			$('#seconds').html(secHtml);
+
+			minHtml = "";
+			secHtml = "";
 		}, 100);		
 	}
 }
