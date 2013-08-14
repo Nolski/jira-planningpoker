@@ -250,8 +250,7 @@ a:hover {
 
 .input-small {
 	height: 24px !important;
-	border-top-right-radius: 0px;
-	border-bottom-right-radius: 0px;
+	border-radius: 3px 0 0 3px;
 	float:left;
 }
 
