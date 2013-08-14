@@ -11,7 +11,7 @@ var id,
 	pusher_dev = '32de1f05aeb0cce00299', //will be active on localhost
 	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod,
 	timerStarted = false,
-	interval;
+	interval = null;
 
 /*================================
 	Event listeners
@@ -542,6 +542,7 @@ function startTimer() {
 	var minHtml = "";
 		secHtml = "";
 	if(timerStarted) {
+		timerStarted = false;
 		window.clearInterval(interval);
 		$('#minutes').empty();
 		$('#seconds').empty();
@@ -551,8 +552,8 @@ function startTimer() {
 		$('#minutes').html(minHtml);
 		$('#seconds').html(secHtml);
 		$('#start-timer').html("START");
-		return;
 	} else {
+		timerStarted = true;
 		var start = new Date().getTime();
 		$('#start-timer').empty();
 		$('#start-timer').html("stop");
@@ -581,7 +582,7 @@ function startTimer() {
 
 			minHtml = "";
 			secHtml = "";
-		}, 100);		
+		}, 100);
 	}
 }
 function getUsername() {
