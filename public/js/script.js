@@ -55,7 +55,6 @@ $(document).ready(function(){
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
 	$('#clear-btn').click(deleteEstimates);
-	
 
 	/*================================
 		Pusher functions
@@ -108,7 +107,6 @@ $(document).ready(function(){
 		}});
 		//refreshAll();
 	});
-
 });
 
 /*================================

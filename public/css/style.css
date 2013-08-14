@@ -174,6 +174,8 @@ a:hover {
 .side-tickets {
 	list-style: none;
 	margin-top: 10px;
+	max-height: 70vh;
+	overflow-y: auto;
 }
 
 .side-tickets > li {
@@ -189,11 +191,11 @@ a:hover {
 	display: inline-block;
 }
 
-
 .side-tickets > li.clickable .ticket-text:hover, .side-tickets > li.active .ticket-text, .side-tickets > li .close-btn:hover{
 	color:#5296b5;
 	cursor: pointer;
 }
+
 #part-header {
 	font-size: medium;
 	margin-top: 2em;
@@ -203,6 +205,7 @@ a:hover {
 	border-width: 1px;
 	border-color: #333;
 }
+
 #participants {
 		font-family: Museo;
 		list-style: none;
@@ -221,6 +224,7 @@ a:hover {
 	text-align: center;	
 	float: left;	
 }
+
 .side-tickets .close-btn:hover{
 	background-color: #70828a;
 	color:#FFF !important;
