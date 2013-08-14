@@ -542,7 +542,7 @@ function startTimer() {
 	window.setInterval(function incrementTime() {
 		var time = new Date().getTime() - start,
 			timeInSeconds = Math.floor(time / 1000),
-			minutes = Math.floor(seconds / 60),
+			minutes = Math.floor(timeInSeconds / 60),
 			seconds = timeInSeconds % 60;
 
 		console.log('time: ' + time);
