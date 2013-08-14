@@ -252,6 +252,7 @@ a:hover {
 	height: 24px !important;
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
+	float:left;
 }
 
 .last-group {
