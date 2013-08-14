@@ -45,6 +45,7 @@ a:hover {
 sup {
 	top: -.9em;
 	font-size: 49%;
+	font-weight: 200;
 }
 
 /*===========================
@@ -300,6 +301,7 @@ legend {
 	text-align: center;
 	margin-top: 1em;
 	font-size: 26px;
+	font-family: 'Source Sans Pro';
 }
 
 .start {
