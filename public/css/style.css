@@ -311,7 +311,11 @@ legend {
 	cursor: pointer;
 }
 
-.start .timer:active {
+.timer:active {
+	border-color: #FF4444;
+}
+
+.start:active {
 	color: #FF4444;
 }
 
