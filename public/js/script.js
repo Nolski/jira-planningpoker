@@ -9,7 +9,8 @@ var id,
 	stories = {}, //hash of ticket_no => story (new API)
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
 	pusher_dev = '32de1f05aeb0cce00299', //will be active on localhost
-	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod;
+	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod,
+	timerStarted = false;
 
 /*================================
 	Event listeners
@@ -55,6 +56,7 @@ $(document).ready(function(){
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
 	$('#clear-btn').click(deleteEstimates);
+	$('#start-timer').click(startTimer);
 
 	/*================================
 		Pusher functions
@@ -536,18 +538,37 @@ function appendParticipant(user){
 	}
 }
 function startTimer() {
-	var start = new Date().getTime(),
-		elapsed = '0.0';
+	var minHtml = "";
+		secHtml;
+	if(timerStarted) {
+		minHtml = "00<sup>M</sup>";
+		secHtml = "00<sup>S</sup>";
+		$('#minutes').html(minHtml);
+		$('#seconds').html(secHtml);
+		return;
+	} else {
+		var start = new Date().getTime(),
+			elapsed = '0.0';
 
-	window.setInterval(function incrementTime() {
-		var time = new Date().getTime() - start,
-			timeInSeconds = Math.floor(time / 1000),
-			minutes = Math.floor(timeInSeconds / 60),
-			seconds = timeInSeconds % 60;
+		window.setInterval(function incrementTime() {
+			var time = new Date().getTime() - start,
+				timeInSeconds = Math.floor(time / 1000),
+				minutes = Math.floor(timeInSeconds / 60),
+				seconds = timeInSeconds % 60;
+			
+			if (minutes < 10) {
+				minHtml += "0";
+			}
+			if(seconds < 10) {
+				secHtml += "0";
+			}
 
-		console.log("time: " + minutes + ':' + seconds);
-	}, 100);
-
+			minHtml += minutes + "<sup>M</sup>";
+			secHtml += seconds + "<sup>S</sup>";
+			$('#minutes').html(minHtml);
+			$('#seconds').html(secHtml);
+		}, 100);		
+	}
 }
 function getUsername() {
 	return getURLParameter('username');
