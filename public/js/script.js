@@ -542,7 +542,7 @@ function startTimer() {
 	var minHtml = "";
 		secHtml = "";
 	if(timerStarted) {
-		clearInterval(interval);
+		window.clearInterval(interval);
 		$('#minutes').empty();
 		$('#seconds').empty();
 		$('#start-timer').empty();
