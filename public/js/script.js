@@ -494,7 +494,6 @@ function appendStory(story){
 		textDiv.appendChild(noSpan);
 		textDiv.appendChild(sepSpan);
 		textDiv.appendChild(spSpan);
-		li.appendChild(textDiv);
 
 		$(textDiv).click(story, storyClickHandler);
 		$(li).toggleClass('clickable', isAdmin);
@@ -506,6 +505,7 @@ function appendStory(story){
 		$(closeBtn).click(story, storyDeleteHandler);
 		if (isAdmin)
 			li.appendChild(closeBtn);
+		li.appendChild(textDiv);
 
 		$spSpan = $(spSpan);
 

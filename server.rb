@@ -160,6 +160,10 @@ end
 delete '/login' do
 	session[:username] = nil
 end
+get '/logout' do
+	session[:username] = nil
+	redirect to('/')
+end
 
 ##########
 #Game mgmt

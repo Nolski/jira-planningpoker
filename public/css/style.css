@@ -163,6 +163,7 @@ a:hover {
 	top: 0;
 	background-color: #191919;
 	width:13vw;
+	/*width: 200px;*/
 	color:#DDDDDD;
 	height:100%;
 	padding:1vw;
@@ -183,6 +184,11 @@ a:hover {
 	font-family: Museo;
 }
 
+.side-tickets li > * {
+	display: inline-block;
+}
+
+
 .side-tickets > li.clickable .ticket-text:hover, .side-tickets > li.active .ticket-text, .side-tickets > li .close-btn:hover{
 	color:#5296b5;
 	cursor: pointer;
@@ -199,6 +205,19 @@ a:hover {
 #participants {
 		font-family: Museo;
 		list-style: none;
+}
+
+.side-tickets .close-btn{
+	width: 16px;
+	height: 16px;
+	background-image: url('../img/close_btn.png');
+	font-size: 0;
+	margin: 0px 7px 0px 7px;
+	position: relative;
+	top: -16px;	
+}
+.side-tickets .close-btn:hover{
+	background-position: 0 -16px;
 }
 
 /*==============================
