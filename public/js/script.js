@@ -556,8 +556,6 @@ function startTimer() {
 		$('#start-timer').html("stop");
 
 		window.setInterval(function incrementTime() {
-			$('#minutes').empty();
-			$('#seconds').empty();
 			
 			var time = new Date().getTime() - start,
 				timeInSeconds = Math.floor(time / 1000),
@@ -573,6 +571,9 @@ function startTimer() {
 
 			minHtml += minutes + "<sup>M</sup>";
 			secHtml += seconds + "<sup>S</sup>";
+			$('#minutes').empty();
+			$('#seconds').empty();
+			
 			$('#minutes').html(minHtml);
 			$('#seconds').html(secHtml);
 		}, 100);		
