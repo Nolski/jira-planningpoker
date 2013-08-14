@@ -10,7 +10,8 @@ var id,
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
 	pusher_dev = '32de1f05aeb0cce00299', //will be active on localhost
 	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod,
-	timerStarted = false;
+	timerStarted = false,
+	interval;
 
 /*================================
 	Event listeners
@@ -541,6 +542,7 @@ function startTimer() {
 	var minHtml = "";
 		secHtml = "";
 	if(timerStarted) {
+		clearInterval(interval);
 		$('#minutes').empty();
 		$('#seconds').empty();
 		$('#start-timer').empty();
@@ -555,7 +557,7 @@ function startTimer() {
 		$('#start-timer').empty();
 		$('#start-timer').html("stop");
 
-		window.setInterval(function incrementTime() {
+		interval = window.setInterval(function incrementTime() {
 			$('#minutes').empty();
 			$('#seconds').empty();
 			
