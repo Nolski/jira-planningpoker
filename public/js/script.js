@@ -539,17 +539,18 @@ function appendParticipant(user){
 }
 function startTimer() {
 	var minHtml = "";
-		secHtml;
+		secHtml = "";
 	if(timerStarted) {
 		minHtml = "00<sup>M</sup>";
 		secHtml = "00<sup>S</sup>";
 		$('#minutes').html(minHtml);
 		$('#seconds').html(secHtml);
+		$('#start-timer').html("START");
 		return;
 	} else {
-		var start = new Date().getTime(),
-			elapsed = '0.0';
-
+		var start = new Date().getTime();
+		$('#start-timer').html("stop");
+		
 		window.setInterval(function incrementTime() {
 			var time = new Date().getTime() - start,
 				timeInSeconds = Math.floor(time / 1000),
