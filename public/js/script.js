@@ -4,7 +4,7 @@
 var id,
 	socket,
 	gameInfo = {},
-	isAdmin;
+	isAdmin,
 	currentStoryNo = null,
 	stories = {}, //hash of ticket_no => story (new API)
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
