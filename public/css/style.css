@@ -210,14 +210,17 @@ a:hover {
 .side-tickets .close-btn{
 	width: 16px;
 	height: 16px;
-	background-image: url('../img/close_btn.png');
-	font-size: 0;
+	font-size: 12px;
 	margin: 0px 7px 0px 7px;
 	position: relative;
-	top: -16px;	
+	top: -2px;	
+	background-color: #333;
+	border-radius: 10px;
+	vertical-align: bottom;
+	text-align: center;	
 }
 .side-tickets .close-btn:hover{
-	background-position: 0 -16px;
+	background-color: #70828a;
 }
 
 /*==============================
