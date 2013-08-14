@@ -545,10 +545,6 @@ function startTimer() {
 			minutes = Math.floor(timeInSeconds / 60),
 			seconds = timeInSeconds % 60;
 
-		console.log('time: ' + time);
-		console.log('timeInSeconds: ' + timeInSeconds);
-		console.log('minutes: ' + minutes);
-		console.log('seconds: ' + time);
 		console.log("time: " + minutes + ':' + seconds);
 	}, 100);
 
