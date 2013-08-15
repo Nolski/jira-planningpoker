@@ -108,3 +108,15 @@ body{
 	border-top:solid 1px #FFF;
 	padding-top:15px;
 }
+
+.glyphicon-remove {
+	position: relative;
+	top: 2px;
+	left: -6px;
+	color: #70828a;
+}
+
+.glyphicon-remove:hover {
+	cursor:pointer;
+	color:#333;
+}
