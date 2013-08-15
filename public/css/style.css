@@ -45,7 +45,7 @@ a:hover {
 sup {
 	top: -.9em;
 	font-size: 49%;
-	font-weight: 200;
+	font-weight: 400;
 }
 
 /*===========================
@@ -307,6 +307,7 @@ legend {
 .start {
 	text-align: center;
 	margin-top: 0.5em;
+	margin-left:-4px;
 	font-weight: bold;
 	font-size: 14px;
 }
@@ -319,6 +320,11 @@ legend {
 	color: #FF4444 !important;
 }
 
+#minutes {
+	font-weight: 600;
+}
+
 #seconds {
+	font-weight:200;
 	margin-left: -4px;
 }
