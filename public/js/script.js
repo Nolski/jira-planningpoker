@@ -506,7 +506,7 @@ function appendStory(story){
 		//that's it for the text
 
 		var closeBtn = document.createElement('span');
-		closeBtn.className = "glyphicon glyphicon-remove";
+		closeBtn.className = "glyphicon glyphicon-remove close-btn";
 		$(closeBtn).click(story, storyDeleteHandler);
 		if (isAdmin)
 			li.appendChild(closeBtn);
