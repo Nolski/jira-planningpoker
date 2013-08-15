@@ -132,3 +132,11 @@ body{
 	cursor: pointer;
 	color:#333;
 }
+
+.modal-body {
+	height:115px;
+}
+
+.btn-danger {
+	margin-top: 15px;
+}
