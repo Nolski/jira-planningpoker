@@ -14,7 +14,7 @@
 		<div id="games-list" class="list-group">
 			<div>
 			<% @games.each do |game| %>
-				<a href="showgame?id=<%= game.id %>" class="list-group-item"><%=game.name %></a>
+				<a href="showgame?id=<%= game.id %>" class="list-group-item"><%=escape_html game.name %></a>
 			<% end %>
 			</div>
 		</div>
