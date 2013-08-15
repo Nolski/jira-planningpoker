@@ -120,3 +120,15 @@ body{
 	cursor:pointer;
 	color:#333;
 }
+
+.glyphicon-cog {
+	color: #FFF;
+	position: relative;
+	top: -5px;
+	left: 8px;
+}
+
+.glyphicon-cog:hover {
+	cursor: pointer;
+	color:#333;
+}
