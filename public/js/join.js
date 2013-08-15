@@ -3,6 +3,7 @@ var isAdmin = true;
 $(document).ready(function() {
 	//getGames();
 	$('#new-btn').click(makeGame);
+	$('.glyphicon-remove').click(removeGame);
 	checkAdmin(loadAdminTools);
 });
 
@@ -56,7 +57,8 @@ function loadAdminTools() {
 
 function removeGame() {
 	if ( confirm('Are you sure you want to end this game?') ) {
-		var url = '/game/' + getId();
+		var url = '/game/' + $(this).attr('id');
+		
 		$.ajax({
 			url: url,
 			type: 'DELETE',
