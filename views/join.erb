@@ -42,13 +42,13 @@
 					<div class="modal-body">
 						<div class="input-group">
 							<form action="/change-server" method="POST">
-								<input type="text" name="url" class="form-control" placeholder="Jira URL" />
+								<input type="text" name="url" class="form-control" placeholder="<%= settings.jira_url %>" />
 								<span class="input-group-btn">
 									<button type="submit" class="btn btn-primary">Save changes</button>
 								</span>
 							</form>
 						</div>
-						<form action="/clear-closed">
+						<form action="/clear-closed" method="POST">
 							<button type="button" class="btn btn-danger">Clear all closed games</button>
 						</form>
 					</div>
