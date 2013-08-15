@@ -219,22 +219,13 @@ sup {
 }
 
 .side-tickets .close-btn{
-	width: 15px;
-	height: 15px;
-	font-size: 12px;
-	margin: 0px 7px 0px 7px;
-	position: relative;
-	top: 6px;	
-	background-color: #333;
-	border-radius: 10px;
-	vertical-align: bottom;
-	text-align: center;	
-	float: left;	
+	float: left;
+    position: relative;
+    top: 3px;
 }
 
 .side-tickets .close-btn:hover{
-	background-color: #70828a;
-	color:#FFF !important;
+	color:#5296b5 !important;
 }
 
 /*==============================
