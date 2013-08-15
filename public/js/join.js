@@ -5,7 +5,7 @@ $(document).ready(function() {
 	$('#new-btn').click(makeGame);
 	checkAdmin(loadAdminTools);
 	$('#settings').click(function() {
-		$('#myModal').modal();
+		$('#myModal').modal('show');
 	});
 });
 
