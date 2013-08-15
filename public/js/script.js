@@ -459,7 +459,7 @@ function appendEstimate(estimate){
 			$vote.hide();
 		}
 	}
-	$(card).tooltip();
+	$('.result-card').tooltip(id);
 }
 //Generate stories on side bar
 function refreshStoryList(){
