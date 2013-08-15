@@ -4,12 +4,14 @@
 var id,
 	socket,
 	gameInfo = {},
-	isAdmin;
+	isAdmin,
 	currentStoryNo = null,
 	stories = {}, //hash of ticket_no => story (new API)
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
 	pusher_dev = '32de1f05aeb0cce00299', //will be active on localhost
-	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod;
+	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod,
+	timerStarted = false,
+	interval = null;
 
 /*================================
 	Event listeners
@@ -55,7 +57,7 @@ $(document).ready(function(){
 	$('#flip-btn').click(flipCards);
 	$('#end-game-btn').click(endGame);
 	$('#clear-btn').click(deleteEstimates);
-	
+	$('#start-timer').click(startTimer);
 
 	/*================================
 		Pusher functions
@@ -108,7 +110,6 @@ $(document).ready(function(){
 		}});
 		//refreshAll();
 	});
-
 });
 
 /*================================
@@ -540,7 +541,52 @@ function appendParticipant(user){
 		$(li).hide().slideDown();
 	}
 }
-function updateResultCards(){
+function startTimer() {
+	var minHtml = "";
+		secHtml = "";
+	if(timerStarted) {
+		timerStarted = false;
+		window.clearInterval(interval);
+		$('#minutes').empty();
+		$('#seconds').empty();
+		$('#start-timer').empty();
+		minHtml = "00<sup>M</sup>";
+		secHtml = "00<sup>S</sup>";
+		$('#minutes').html(minHtml);
+		$('#seconds').html(secHtml);
+		$('#start-timer').html("START");
+	} else {
+		timerStarted = true;
+		var start = new Date().getTime();
+		$('#start-timer').empty();
+		$('#start-timer').html("STOP");
+
+		interval = window.setInterval(function incrementTime() {
+			$('#minutes').empty();
+			$('#seconds').empty();
+			
+			var time = new Date().getTime() - start,
+				timeInSeconds = Math.floor(time / 1000),
+				minutes = Math.floor(timeInSeconds / 60),
+				seconds = timeInSeconds % 60;
+			
+			if (minutes < 10) {
+				minHtml += "0";
+			}
+			if(seconds < 10) {
+				secHtml += "0";
+			}
+
+			minHtml += minutes + "<sup>M</sup>";
+			secHtml += seconds + "<sup>S</sup>";
+
+			$('#minutes').html(minHtml);
+			$('#seconds').html(secHtml);
+
+			minHtml = "";
+			secHtml = "";
+		}, 100);
+	}
 }
 function getUsername() {
 	return getURLParameter('username');

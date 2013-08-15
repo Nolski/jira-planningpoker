@@ -41,6 +41,13 @@ a {
 a:hover {
 	color: #FFF;
 }
+
+sup {
+	top: -.9em;
+	font-size: 49%;
+	font-weight: 200;
+}
+
 /*===========================
 			Fonts
 ===========================*/
@@ -162,17 +169,20 @@ a:hover {
 	right: 0;
 	top: 0;
 	background-color: #191919;
+	width: 200px;
 	width:13vw;
-	/*width: 200px;*/
 	color:#DDDDDD;
 	height:100%;
 	padding:1vw;
 	font-size: 22px;
 	overflow-y: scroll;
+	z-index: 1;
 }
 .side-tickets {
 	list-style: none;
 	margin-top: 10px;
+	max-height: 70vh;
+	overflow-y: auto;
 }
 
 .side-tickets > li {
@@ -188,11 +198,11 @@ a:hover {
 	display: inline-block;
 }
 
-
 .side-tickets > li.clickable .ticket-text:hover, .side-tickets > li.active .ticket-text, .side-tickets > li .close-btn:hover{
 	color:#5296b5;
 	cursor: pointer;
 }
+
 #part-header {
 	font-size: medium;
 	margin-top: 2em;
@@ -202,22 +212,29 @@ a:hover {
 	border-width: 1px;
 	border-color: #333;
 }
+
 #participants {
 		font-family: Museo;
 		list-style: none;
 }
 
 .side-tickets .close-btn{
-	width: 16px;
-	height: 16px;
-	background-image: url('../img/close_btn.png');
-	font-size: 0;
+	width: 15px;
+	height: 15px;
+	font-size: 12px;
 	margin: 0px 7px 0px 7px;
 	position: relative;
-	top: -16px;	
+	top: 6px;	
+	background-color: #333;
+	border-radius: 10px;
+	vertical-align: bottom;
+	text-align: center;	
+	float: left;	
 }
+
 .side-tickets .close-btn:hover{
-	background-position: 0 -16px;
+	background-color: #70828a;
+	color:#FFF !important;
 }
 
 /*==============================
@@ -233,6 +250,7 @@ a:hover {
 	background-color: #191919;
 	width: 85vw;
 	display: none;
+	z-index: 0;
 }
 
 .form-group, .btn-group {
@@ -246,8 +264,8 @@ a:hover {
 
 .input-small {
 	height: 24px !important;
-	border-top-right-radius: 0px;
-	border-bottom-right-radius: 0px;
+	border-radius: 3px 0 0 3px;
+	float:left;
 }
 
 .last-group {
@@ -264,4 +282,43 @@ legend {
 	width: 100%;
 	margin: 0 0 20px 10px;
 	padding-top: 10px;
+}
+
+.input-group-btn {
+	float: left;
+}
+
+.timer {
+	border: solid 1px #FFF;
+	width: 6em;
+	height: 6em;
+	float: left;
+	border-radius: 3em;
+	margin: 55px 0 0 -80px;
+}
+
+.time {
+	text-align: center;
+	margin-top: 1em;
+	font-size: 26px;
+	font-family: 'Source Sans Pro';
+}
+
+.start {
+	text-align: center;
+	margin-top: 0.5em;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.start:hover {
+	cursor: pointer;
+}
+
+.timer:active {
+	color: #FF4444 !important;
+}
+
+#seconds {
+	margin-left: -4px;
 }
