@@ -4,9 +4,6 @@ $(document).ready(function() {
 	//getGames();
 	$('#new-btn').click(makeGame);
 	checkAdmin(loadAdminTools);
-	$('#settings').click(function() {
-		$('#myModal').modal('show');
-	});
 });
 
 function makeGame( id, callback ) {
