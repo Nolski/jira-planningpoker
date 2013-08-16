@@ -4,7 +4,7 @@ $(document).ready(function() {
 	//getGames();
 	$('#new-btn').click(makeGame);
 	$('.glyphicon-remove').click(removeGame);
-	checkAdmin(loadAdminTools);
+	//checkAdmin(loadAdminTools);
 });
 
 function makeGame( id, callback ) {
@@ -30,7 +30,7 @@ function makeGame( id, callback ) {
 	});
 }
 
-function checkAdmin(callback) {
+/*function checkAdmin(callback) {
 	callback();
 	return;
 
@@ -53,7 +53,7 @@ function loadAdminTools() {
 		$('#settings').show();
 		$('.glyphicon-remove').click(removeGame);
 	}
-}
+}*/
 
 function removeGame() {
 	if ( confirm('Are you sure you want to end this game?') ) {
