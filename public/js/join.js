@@ -51,6 +51,7 @@ function loadAdminTools() {
 	if (isAdmin) {
 		$('.glyphicon-remove').show();
 		$('#settings').show();
+		$('#new-game').hide();
 		$('.glyphicon-remove').click(removeGame);
 	}
 }
