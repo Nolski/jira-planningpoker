@@ -35,7 +35,7 @@ function checkAdmin(callback) {
 
 	$.ajax({
 		url: url,
-		type: 'POST',
+		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			isAdmin = data;
 			console.log(isAdmin);
