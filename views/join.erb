@@ -19,7 +19,7 @@
 			<% @games.each do |game| %>
 				<div class="list-group-item">
 					<span class="glyphicon glyphicon-remove" id="<%= game.id %>"></span>
-					<a href="showgame?id=<%= game.id %>"><%=game.name %></a>
+					<a href="showgame?id=<%= game.id %>"><%=escape_html game.name %></a>
 				</div>
 			<% end %>
 			</div>

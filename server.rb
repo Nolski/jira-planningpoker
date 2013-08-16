@@ -54,6 +54,8 @@ helpers do
 		{:user => session[:username], :password => session[:password]}
 	end
 
+	include Rack::Utils
+
 	
 end
 
