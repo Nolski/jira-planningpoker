@@ -24,7 +24,9 @@ helpers do
 
 
 	def protect
-		if loggedInUser.nil? && loggedInAdmin.nil?
+		if settings.adminPaths.include?(request.path_info) && !loggedInAdmin.nil? then return true end
+
+		if loggedInUser.nil?
 			content_type :text
 			halt 403, "Login required"
 		end
@@ -98,6 +100,7 @@ configure do
 
 	#no protection on these urls, they may protect themselves
 	set :anonPaths, ['/login', '/', '/gamesList', '/showgame']
+	set :adminPaths, ['/gamesList', '/change-server', '/clear-closed', '/system-admin']
 end
 
 #debug
