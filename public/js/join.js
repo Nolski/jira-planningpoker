@@ -4,6 +4,8 @@ $(document).ready(function() {
 	//getGames();
 	$('#new-btn').click(makeGame);
 	$('.glyphicon-remove').click(removeGame);
+	$('#save-url').click(changeUrl);
+	$('#clear-games').click(clearGames);
 	//checkAdmin(loadAdminTools);
 });
 
@@ -45,4 +47,35 @@ function removeGame() {
 			}
 		});
 	}
+}
+
+function changeUrl() {
+	var url = {
+		"url": $('#url').val()
+	};
+
+	$.ajax({
+		url: '/change-server',
+		type: 'POST',
+		data: url,
+		success: function( data, textStatus, jqXHR ) {
+			console.log("success: ", data);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
+
+function clearGames() {
+	$.ajax({
+		url: '/clear-games',
+		type: 'POST',
+		success: function( data, textStatus, jqXHR ) {
+			console.log("success: ", data);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
 }
