@@ -519,7 +519,7 @@ end
 delete '/game/:game/story/:ticket/estimate' do
 	story = getStory(params[:game].to_i, params[:ticket])
 	preventModClosed(story.game)
-	if loggedInUser != story.game.moderator
+	if loggedInUser != story.game.moderator && loggedInAdmin.nil?
 		halt 403, "You must be the moderator to clear all the estimates"
 	end
 	if story.estimates.destroy
