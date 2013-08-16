@@ -99,6 +99,9 @@ configure do
 		Settings.create(:setting_key => 'jira_url', :value =>  'https://request.siteworx.com')
 	end
 	set :jira_url, Settings.get('jira_url').value
+
+	#no protection on these urls, they may protect themselves
+	set :anonPaths, ['/login', '/', '/gamesList', '/showgame']
 end
 
 #debug
@@ -110,7 +113,7 @@ end
 
 before do
 	path = request.path_info
-	protect unless path.start_with?("/login") ||  path == '/' || path=='/gamesList' || path == '/showgame'
+	protect unless settings.anonPaths.include?(path)
 	content_type :json
 end
 
