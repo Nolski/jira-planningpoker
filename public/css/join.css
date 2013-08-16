@@ -110,7 +110,6 @@ body{
 }
 
 .glyphicon-remove {
-	display:none;
 	position: relative;
 	top: 2px;
 	left: -6px;
@@ -123,7 +122,6 @@ body{
 }
 
 .glyphicon-cog {
-	display:none;
 	color: #FFF;
 	position: relative;
 	top: -5px;
