@@ -38,7 +38,7 @@ function checkAdmin(callback) {
 		type: 'POST',
 		success: function( data, textStatus, jqXHR ) {
 			isAdmin = !!data;
-			console.log(isAdmin);
+			console.log(typeof isAdmin);
 			callback();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
