@@ -72,7 +72,7 @@ function changeUrl() {
 function clearGames() {
 	$.ajax({
 		url: '/clear-closed',
-		type: 'POST',
+		type: 'GET',
 		success: function( data, textStatus, jqXHR ) {
 			console.log("success: ", data);
 		},
