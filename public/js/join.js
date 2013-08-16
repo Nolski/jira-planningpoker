@@ -3,8 +3,8 @@ var isAdmin = true;
 $(document).ready(function() {
 	//getGames();
 	$('#new-btn').click(makeGame);
-	$('.glyphicon-remove').click(removeGame);
-	//checkAdmin(loadAdminTools);
+	//$('.glyphicon-remove').click(removeGame);
+	checkAdmin(loadAdminTools);
 });
 
 function makeGame( id, callback ) {
@@ -30,15 +30,15 @@ function makeGame( id, callback ) {
 	});
 }
 
-/*function checkAdmin(callback) {
-	callback();
-	return;
+function checkAdmin(callback) {
+	var url = "/system-admin"
 
 	$.ajax({
 		url: url,
 		type: 'POST',
 		success: function( data, textStatus, jqXHR ) {
 			isAdmin = data;
+			console.log(isAdmin);
 			callback;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -51,9 +51,10 @@ function loadAdminTools() {
 	if (isAdmin) {
 		$('.glyphicon-remove').show();
 		$('#settings').show();
+		$('#new-game').hide();
 		$('.glyphicon-remove').click(removeGame);
 	}
-}*/
+}
 
 function removeGame() {
 	if ( confirm('Are you sure you want to end this game?') ) {
