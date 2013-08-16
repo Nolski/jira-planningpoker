@@ -24,7 +24,7 @@ helpers do
 
 
 	def protect
-		if User.get(session[:username]).nil?
+		if loggedInUser.nil? && loggedInAdmin.nil?
 			content_type :text
 			halt 403, "Login required"
 		end
