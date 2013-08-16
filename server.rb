@@ -586,3 +586,6 @@ get '/clear-closed' do
 	Game.all(:closed => true).destroy
 end
 
+get '/system-admin' do
+	(!loggedInAdmin.nil?).to_json
+end
