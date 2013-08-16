@@ -39,7 +39,7 @@ function checkAdmin(callback) {
 		success: function( data, textStatus, jqXHR ) {
 			isAdmin = data;
 			console.log(isAdmin);
-			callback;
+			callback(isAdmin);
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);
