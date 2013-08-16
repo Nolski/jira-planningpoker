@@ -3,7 +3,7 @@ var isAdmin = true;
 $(document).ready(function() {
 	//getGames();
 	$('#new-btn').click(makeGame);
-	$('.glyphicon-remove').click(removeGame);
+	//$('.glyphicon-remove').click(removeGame);
 	checkAdmin(loadAdminTools);
 });
 
@@ -31,14 +31,14 @@ function makeGame( id, callback ) {
 }
 
 function checkAdmin(callback) {
-	callback();
-	return;
+	var url = "/system-admin"
 
 	$.ajax({
 		url: url,
 		type: 'POST',
 		success: function( data, textStatus, jqXHR ) {
 			isAdmin = data;
+			console.log(isAdmin);
 			callback;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
