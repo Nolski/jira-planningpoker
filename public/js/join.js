@@ -56,7 +56,7 @@ function changeUrl() {
 
 	$.ajax({
 		url: '/change-server',
-		type: 'POST',
+		type: 'GET',
 		data: url,
 		success: function( data, textStatus, jqXHR ) {
 			console.log("success: ", data);
@@ -69,7 +69,7 @@ function changeUrl() {
 
 function clearGames() {
 	$.ajax({
-		url: '/clear-games',
+		url: '/clear-closed',
 		type: 'POST',
 		success: function( data, textStatus, jqXHR ) {
 			console.log("success: ", data);
