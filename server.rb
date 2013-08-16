@@ -77,7 +77,6 @@ configure do
 
 	set :sockets, Array.new
 
-	set :jira_url, 'https://request.siteworx.com'
 	#Don't know if this is static. Can be found at https://JIRA/rest/api/2/field
 	set :story_points_customid, 10183
 	
@@ -96,6 +95,10 @@ configure do
 	else
 		puts "#{Admin.count} admins exist"
 	end
+	if Settings.get('jira_url').nil?
+		Settings.create(:setting_key => 'jira_url', :value =>  'https://request.siteworx.com')
+	end
+	set :jira_url, Settings.get('jira_url').value
 end
 
 #debug
@@ -561,3 +564,21 @@ get '/gamesList' do
 	@games = Game.all(:closed => false, :order => [:created.asc], :fields => [:id, :name])
 	erb :join
 end
+
+
+########
+#Administrative functions
+########
+get '/change-server' do
+	admin = loggedInAdmin
+	if admin.nil? then halt 401, "Not logged in as an admin" end
+	setting = Settings.get('jira_url')
+	setting.value = params[:url];
+	if (setting.save)
+		settings.jira_url = params[:url]
+		status 200
+	else
+		status 500
+	end
+end
+
