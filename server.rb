@@ -582,3 +582,7 @@ get '/change-server' do
 	end
 end
 
+get '/clear-closed' do
+	Game.all(:closed => true).destroy
+end
+
