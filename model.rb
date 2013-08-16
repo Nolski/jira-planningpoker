@@ -41,6 +41,9 @@ class Game
 		#end
 		return result
 	end
+	before :destroy do
+		stories.destroy
+	end
 
 end
 class User
@@ -103,11 +106,17 @@ class Story
 			:description => description,
 			:estimates => estimates.map {|estimate| estimate.to_hash},
 			:flipped => flipped,
-			:sister_stories => game.stories.map {|s| s.ticket_no}
+			#:sister_stories => game.stories.map {|s| s.ticket_no}
 		}
 		h[:story_points] = unless story_points.nil? then story_points else -1 end
 		return h
 	end
 	validates_uniqueness_of :ticket_no, :scope => :game
+	before :destroy do
+		if game.current_story == ticket_no then game.current_story = nil end
+		game.save
+		estimates.destroy
+	end
 end
+require './model-admin'
 DataMapper.auto_upgrade!

@@ -17,6 +17,11 @@ helpers do
 		User.get(session[:username])
 
 	end
+	def loggedInAdmin
+		if (!session[:admin]) then return nil end
+		Admin.authenticate(session[:username], session[:password])
+	end
+
 
 	def protect
 		if User.get(session[:username]).nil?
@@ -82,6 +87,15 @@ configure do
 		Pusher.key    = '32de1f05aeb0cce00299'
 		Pusher.secret = '0d8dd90217332c305441'
 	end
+
+	# make a default user
+	if Admin.count == 0
+		user = Admin.makeUser('admin', 'admin')
+		puts "attempting to make default user, got #{user}"
+		pp user.errors
+	else
+		puts "#{Admin.count} admins exist"
+	end
 end
 
 #debug
@@ -130,24 +144,34 @@ post '/login' do
 		return user.to_hash.to_json;
 	end
 
-
-	#check this with JIRA
-	resource = RestClient::Resource.new(settings.jira_url+'/rest/gadget/1.0/currentUser', {:user => username, :password => password})
-	#will throw exceptions on login failure
-	begin
-		response = resource.get
-		jiraInfo = JSON.parse(response)
-		user = User.first_or_create(:username => username, :fullname => jiraInfo['fullName'])
+	#first, check for admins
+	adminUser = Admin.authenticate(username, password)
+	unless adminUser.nil?
 		session[:username] = username
+		session[:admin] = true
 		session[:password] = password
 		status 200
-		user.to_hash.to_json
-	rescue Exception => e
-		content_type :html
-		halt e.http_code, e.http_body
-		#raise e
-		e.inspect
-	end
+		true.to_json
+	else
+
+		#check this with JIRA
+		resource = RestClient::Resource.new(settings.jira_url+'/rest/gadget/1.0/currentUser', {:user => username, :password => password})
+		#will throw exceptions on login failure
+		begin
+			response = resource.get
+			jiraInfo = JSON.parse(response)
+			user = User.first_or_create(:username => username, :fullname => jiraInfo['fullName'])
+			session[:username] = username
+			session[:password] = password
+			status 200
+			user.to_hash.to_json
+		rescue Exception => e
+			content_type :html
+			halt e.http_code, e.http_body
+			#raise e
+			e.inspect
+		end
+	end #end jira user
 end
 
 #Get the currently logged in user
@@ -239,6 +263,7 @@ end
 
 delete '/game/:id' do
 	game = getGame(params[:id].to_i)
+	preventModClosed(game)
 	game.closed = true
 	game.save
 	Pusher.trigger("game_#{params[:id]}", 'closed', true)
@@ -347,12 +372,11 @@ end
 delete '/game/:game/story/:ticket' do
 		story = getStory(params[:game].to_i, params[:ticket])
 		preventModClosed(story.game)
-		broadcast({:game => story.game.to_hash}.to_json)
-		Pusher.trigger("game_#{params[:game]}", 'deleted_story', params[:ticket])
-		story.game.current_story = nil
-		story.game.save
-		story.estimates.destroy
 		story.destroy
+		if story.destroyed?
+			Pusher.trigger("game_#{params[:game]}", 'deleted_story', params[:ticket])
+			broadcast({:game => story.game.to_hash}.to_json)
+		end
 		story.destroyed?.to_json
 end
 
@@ -532,7 +556,8 @@ end
 #########
 get '/gamesList' do
 	content_type :html
-	if (loggedInUser.nil?) then redirect to('login.html') end
+	if (loggedInUser.nil? && loggedInAdmin.nil?) then redirect to('login.html') end
+	@isAdmin = !loggedInAdmin.nil?
 	@games = Game.all(:closed => false, :order => [:created.asc], :fields => [:id, :name])
 	erb :join
 end
