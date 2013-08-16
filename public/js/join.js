@@ -59,6 +59,7 @@ function changeUrl() {
 	$.ajax({
 		url: '/change-server',
 		type: 'GET',
+		dataType: 'text',
 		data: url,
 		success: function( data, textStatus, jqXHR ) {
 			console.log("success: ", data);
@@ -73,6 +74,7 @@ function clearGames() {
 	$.ajax({
 		url: '/clear-closed',
 		type: 'GET',
+		dataType: 'text',
 		success: function( data, textStatus, jqXHR ) {
 			console.log("success: ", data);
 		},
