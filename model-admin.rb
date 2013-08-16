@@ -1,4 +1,4 @@
-require 'SecureRandom'
+require 'securerandom'
 require 'digest/sha2'
 class Admin
 	include DataMapper::Resource

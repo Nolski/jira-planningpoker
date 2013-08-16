@@ -24,7 +24,9 @@ helpers do
 
 
 	def protect
-		if loggedInUser.nil? && loggedInAdmin.nil?
+		if settings.adminPaths.include?(request.path_info) && !loggedInAdmin.nil? then return true end
+
+		if loggedInUser.nil?
 			content_type :text
 			halt 403, "Login required"
 		end
@@ -90,15 +92,15 @@ configure do
 	# make a default user
 	if Admin.count == 0
 		user = Admin.makeUser('admin', 'admin')
-		puts "attempting to make default user, got #{user}"
-		pp user.errors
-	else
-		puts "#{Admin.count} admins exist"
 	end
 	if Settings.get('jira_url').nil?
 		Settings.create(:setting_key => 'jira_url', :value =>  'https://request.siteworx.com')
 	end
 	set :jira_url, Settings.get('jira_url').value
+
+	#no protection on these urls, they may protect themselves
+	set :anonPaths, ['/login', '/', '/gamesList', '/showgame']
+	set :adminPaths, ['/gamesList', '/change-server', '/clear-closed', '/system-admin']
 end
 
 #debug
@@ -110,7 +112,7 @@ end
 
 before do
 	path = request.path_info
-	protect unless path.start_with?("/login") ||  path == '/' || path=='/gamesList' || path == '/showgame'
+	protect unless settings.anonPaths.include?(path)
 	content_type :json
 end
 
