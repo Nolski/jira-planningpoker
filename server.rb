@@ -90,10 +90,6 @@ configure do
 	# make a default user
 	if Admin.count == 0
 		user = Admin.makeUser('admin', 'admin')
-		puts "attempting to make default user, got #{user}"
-		pp user.errors
-	else
-		puts "#{Admin.count} admins exist"
 	end
 	if Settings.get('jira_url').nil?
 		Settings.create(:setting_key => 'jira_url', :value =>  'https://request.siteworx.com')
