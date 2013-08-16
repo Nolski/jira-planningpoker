@@ -54,6 +54,8 @@ function changeUrl() {
 		"url": $('#url').val()
 	};
 
+	console.log(url);
+
 	$.ajax({
 		url: '/change-server',
 		type: 'GET',
