@@ -20,8 +20,8 @@
 			<% @games.each do |game| %>
 				<% if @isAdmin %>
 					<div class="list-group-item">
-					<span class="glyphicon glyphicon-remove" id="<%= game.id %>"></span>
-						<div><%=escape_html game.name %></div>
+						<span class="glyphicon glyphicon-remove" id="<%= game.id %>"></span>
+						<span><%=escape_html game.name %></span>
 					</div>
 				<% else %>
 					<a class="list-group-item" href="showgame?id=<%= game.id %>"><%=escape_html game.name %></a>
