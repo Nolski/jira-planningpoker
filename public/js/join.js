@@ -6,6 +6,7 @@ $(document).ready(function() {
 	$('.glyphicon-remove').click(removeGame);
 	$('#save-url').click(changeUrl);
 	$('#clear-games').click(clearGames);
+	$('#logout').click(logout);
 	//checkAdmin(loadAdminTools);
 });
 
@@ -77,6 +78,19 @@ function clearGames() {
 		dataType: 'text',
 		success: function( data, textStatus, jqXHR ) {
 			console.log("success: ", data);
+		},
+		error: function( jqXHR, textStatus, errorThrown ) {
+			console.log('ERROR: ', errorThrown);
+		}
+	});
+}
+
+function logout() {
+	$.ajax({
+		url: '/login',
+		type: 'DELETE',
+		success: function( data, textStatus, jqXHR ) {
+			window.location = "/login.html";
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			console.log('ERROR: ', errorThrown);

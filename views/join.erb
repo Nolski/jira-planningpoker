@@ -16,6 +16,7 @@
 		<% if @isAdmin %>
 			<span class="glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal" id="settings"></span>
 		<% end %>
+		<span class="logout" id="logout">Logout</span>
 		<div id="games-list" class="list-group">
 			<% @games.each do |game| %>
 				<% if @isAdmin %>

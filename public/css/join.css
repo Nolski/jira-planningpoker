@@ -140,3 +140,17 @@ body{
 .btn-danger {
 	margin-top: 15px;
 }
+
+.logout {
+	float: right;
+	position: relative;
+	top: -6px;
+	right: 13px;
+	color: #FFF;
+	font-weight: bold;
+}
+
+.logout:hover {
+	cursor:pointer;
+	text-decoration: underline;
+}
