@@ -154,3 +154,7 @@ body{
 	cursor:pointer;
 	text-decoration: underline;
 }
+
+.list-group {
+	clear:both;
+}
