@@ -89,6 +89,7 @@ function logout() {
 	$.ajax({
 		url: '/login',
 		type: 'DELETE',
+		dataType: 'text',
 		success: function( data, textStatus, jqXHR ) {
 			window.location = "/login.html";
 		},
