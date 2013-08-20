@@ -62,8 +62,12 @@ $(document).ready(function(){
 	/*================================
 		Pusher functions
 	=================================*/
-	var pusher = new Pusher(pusher_key),
+	var pusher = new Pusher(pusher_key, {
+			authEndpoint: 'localhost:8888'
+		}),
 		channel = pusher.subscribe('game_' + id);
+
+	console.log(pusher);
 
 	channel.bind('new_story', function ( data ) {
 		stories[data.ticket_no] = data;

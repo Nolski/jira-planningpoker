@@ -25,7 +25,9 @@
 						<span><%=escape_html game.name %></span>
 					</div>
 				<% else %>
-					<a class="list-group-item" href="showgame?id=<%= game.id %>"><%=escape_html game.name %></a>
+					<% if game.jira_url == session[:jira_url] %>
+						<a class="list-group-item" href="showgame?id=<%= game.id %>"><%=escape_html game.name %></a>
+					<% end %>
 				<% end %>
 			<% end #for each %>
 		</div>

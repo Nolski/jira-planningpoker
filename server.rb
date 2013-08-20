@@ -22,7 +22,6 @@ helpers do
 		Admin.authenticate(session[:username], session[:password])
 	end
 
-
 	def protect
 		if settings.adminPaths.include?(request.path_info) && !loggedInAdmin.nil? then return true end
 
@@ -81,13 +80,13 @@ configure do
 
 	#Don't know if this is static. Can be found at https://JIRA/rest/api/2/field
 	set :story_points_customid, 10183
-	
-	if settings.development?
-		#For local use only, production keys autoconfigured when running on heroku
-		Pusher.app_id = '51163'
-		Pusher.key    = '32de1f05aeb0cce00299'
-		Pusher.secret = '0d8dd90217332c305441'
-	end
+
+	#For local use only, production keys autoconfigured when running on heroku
+	Pusher.app_id = '51163'
+	Pusher.key    = '32de1f05aeb0cce00299'
+	Pusher.secret = '0d8dd90217332c305441'
+	Pusher.host   = 'http://localhost'
+	Pusher.port   = 8888
 
 	# make a default user
 	if Admin.count == 0
@@ -140,6 +139,7 @@ end
 post '/login' do
 	username = params['username']
 	password = params['password']
+	session[:jira_url] = params['jira_url']
 
 	#debug
 	if (settings.development? && username=='test')
@@ -158,9 +158,8 @@ post '/login' do
 		status 200
 		true.to_json
 	else
-
 		#check this with JIRA
-		resource = RestClient::Resource.new(settings.jira_url+'/rest/gadget/1.0/currentUser', {:user => username, :password => password})
+		resource = RestClient::Resource.new(session[:jira_url] + '/rest/gadget/1.0/currentUser', {:user => username, :password => password})
 		#will throw exceptions on login failure
 		begin
 			response = resource.get
@@ -208,6 +207,7 @@ post '/game' do
 	game.created = Time.now
 	game.moderator = loggedInUser
 	game.participants = [loggedInUser]
+	game.jira_url = session[:jira_url]
 	body = request.body.read
 	if !params[:name].nil?
 		game.name = params[:name] unless params[:name].nil?
@@ -288,6 +288,7 @@ end
 #TODO: fail nicer
 post '/game/:id/participants' do
 	game = getGame(params[:id].to_i)
+	puts game.save
 	preventModClosed(game)
 	game.participants << loggedInUser
 	if !game.save 
@@ -344,7 +345,7 @@ post '/game/:id/story' do
 
 		#get jira details
 		begin
-			resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
+			resource = RestClient::Resource.new(session[:jira_url]+"/rest/api/2/issue/#{story.ticket_no}", authHash)
 			ticketInfo = JSON.parse(resource.get)
 			story.summary = ticketInfo['fields']['summary']
 			story.description = ticketInfo['fields']['description']
@@ -363,7 +364,6 @@ post '/game/:id/story' do
 			game.save
 			Pusher.trigger("game_#{params[:game]}", 'current_story', story.to_hash)
 		end
-
 
 		puts story.errors.inspect if !story.saved?
 		#halt 500, "Could not save record.\n#{story.errors.inspect}" if !story.saved?
@@ -417,7 +417,7 @@ put '/game/:game/story/:ticket' do
 	unless story.story_points.nil?
 		begin
 			#update JIRA
-			resource = RestClient::Resource.new(settings.jira_url+"/rest/api/2/issue/#{story.ticket_no}", authHash)
+			resource = RestClient::Resource.new(session[:jira_url]+"/rest/api/2/issue/#{story.ticket_no}", authHash)
 			updates = {'fields' => {"customfield_#{settings.story_points_customid}" => story.story_points.to_f}}
 			resource.put updates.to_json, :content_type => :json, :accept => :json
 		rescue Exception => e
@@ -577,7 +577,7 @@ get '/change-server' do
 	setting = Settings.get('jira_url')
 	setting.value = params[:url];
 	if (setting.save)
-		settings.jira_url = params[:url]
+		session[:jira_url] = params[:url]
 		status 200
 	else
 		status 500

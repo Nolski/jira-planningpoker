@@ -5,7 +5,12 @@ $(document).ready(function(){
 function login() {
 	var username = document.getElementById('username').value,
 		password = document.getElementById('password').value,
-		data = { username: username, password: password};
+		url = document.getElementById('jira').value,
+		data = { 
+			username: username, 
+			password: password,
+			jira_url: url
+		};
 
 	$.ajax({
 		url: '/login',

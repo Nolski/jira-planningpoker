@@ -16,6 +16,7 @@ class Game
 	property :created, DateTime, :required => true
 	property :closed, Boolean, :default => false
 	property :current_story, String, :required => false
+	property :jira_url, String, :required => true
 
 	def name
 		cname = super
