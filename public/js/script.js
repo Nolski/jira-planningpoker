@@ -59,14 +59,18 @@ $(document).ready(function(){
 	$('#clear-btn').click(deleteEstimates);
 	$('#start-timer').click(startTimer);
 
+	$('.close').click(function() {
+		$(this).parent().removeClass('in');
+	});
+
 	/*================================
 		Pusher functions
 	=================================*/
 	var pusher = new Pusher(pusher_key, {
-			authEndpoint: '172.17.2.228:8888',
-			httpHost: '172.17.2.228',
+			authEndpoint: document.location.hostname + ':8888',
+			httpHost: document.location.hostname,
 			httpPort: 8888,
-			wsHost: '172.17.2.228',
+			wsHost: document.location.hostname,
 			wsPort: 8080
 		}),
 		channel = pusher.subscribe('game_' + id);
@@ -161,7 +165,10 @@ function updateGameInfo(callback) {
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			return null;
 		}
 	});
@@ -181,7 +188,10 @@ function updateStories(callback) {
 			refreshAll();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			return null;
 		}
 	});
@@ -203,7 +213,10 @@ function deleteEstimates() {
 			refreshDisplayedStory();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			return null;
 		}
 	});
@@ -223,7 +236,10 @@ function checkAdmin(callback) {
 				callback();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			return null;
 		}
 	});
@@ -246,7 +262,10 @@ function makeGame( id, callback ) {
 			return gameInfo;
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			return null;
 		}
 	});
@@ -272,7 +291,10 @@ function makeStory() {
 			}
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			return null;
 		}
 	});
@@ -288,7 +310,10 @@ function endGame() {
 				window.location = '/gamesList';
 			},
 			error: function( jqXHR, textStatus, errorThrown ) {
-				console.log('ERROR: ', errorThrown);
+				$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 			}
 		});
 	}
@@ -310,7 +335,10 @@ function setScore() {
 			refreshAll();
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 		}
 	});
 }
@@ -325,7 +353,10 @@ function flipCards() {
 		type: 'PUT',
 		data: data,
 		error: function( jqXHR, textStatus, errorThrown ) {
-			console.log('ERROR: ', errorThrown);
+			$('#error-message').empty();
+			$('#error-message').html('ERROR: ' + errorThrown);
+			$('.popup').addClass('in');
+			console.log('Error', jqXHR);
 		}
 	});
 }
