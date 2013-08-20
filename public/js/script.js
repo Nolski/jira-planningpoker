@@ -9,7 +9,7 @@ var id,
 	stories = {}, //hash of ticket_no => story (new API)
 	pusher_prod = 'a8a337eb4d5e4c071c6a',
 	pusher_dev = '32de1f05aeb0cce00299', //will be active on localhost
-	pusher_key = (document.domain == 'localhost') ? pusher_dev : pusher_prod,
+	pusher_key = '32de1f05aeb0cce00299',
 	timerStarted = false,
 	interval = null;
 
@@ -63,7 +63,11 @@ $(document).ready(function(){
 		Pusher functions
 	=================================*/
 	var pusher = new Pusher(pusher_key, {
-			authEndpoint: 'localhost:8888'
+			authEndpoint: '172.17.2.228:8888',
+			httpHost: '172.17.2.228',
+			httpPort: 8888,
+			wsHost: '172.17.2.228',
+			wsPort: 8080
 		}),
 		channel = pusher.subscribe('game_' + id);
 
@@ -463,7 +467,7 @@ function appendEstimate(estimate){
 			$vote.hide();
 		}
 	}
-	$('.result-card').tooltip(id);
+	$('.result-card').tooltip();
 }
 //Generate stories on side bar
 function refreshStoryList(){

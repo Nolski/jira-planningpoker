@@ -70,6 +70,7 @@ configure do
 	enable :static
 	enable :sessions
 	set :sessions, true
+	set :bind, '0.0.0.0'
 
 	set :session_secret, "vM1IAofoUlBl57bDYzmJ"
 	set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
@@ -85,7 +86,7 @@ configure do
 	Pusher.app_id = '51163'
 	Pusher.key    = '32de1f05aeb0cce00299'
 	Pusher.secret = '0d8dd90217332c305441'
-	Pusher.host   = 'http://localhost'
+	Pusher.host   = 'localhost'
 	Pusher.port   = 8888
 
 	# make a default user
