@@ -269,6 +269,9 @@ end
 
 delete '/game/:id' do
 	game = getGame(params[:id].to_i)
+	if loggedInUser != game.moderator
+		halt 403, "You must be the moderator to end this game"
+	end
 	preventModClosed(game)
 	game.closed = true
 	game.save
@@ -323,7 +326,7 @@ end
 post '/game/:id/story' do
 	game = getGame(params[:id].to_i)
 	if loggedInUser != game.moderator
-		halt 403, "You must be the moderator to edit this game"
+		halt 403, "You must be the moderator to add tickets to this game."
 	end
 	preventModClosed(game)
 	body = request.body.read
@@ -398,7 +401,7 @@ put '/game/:game/story/:ticket' do
 	game = story.game
 	preventModClosed(game)
 	if loggedInUser != game.moderator
-		halt 403, "You must be the moderator to edit this game"
+		halt 403, "You must be the moderator to flip cards"
 	end
 
 	if !params[:flipped].nil? || !params[:story_points].nil?

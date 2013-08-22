@@ -131,9 +131,7 @@ function sendVote( storyValue ) {
 	if (stories[currentStoryNo].flipped) {
 		return;
 	}
-	var data = {
-				vote: storyValue
-			},
+	var data = { vote: storyValue },
 		ticket = currentStoryNo,
 		id = getId(),
 		url = '/game/' + id + '/story/' + ticket + '/estimate';
@@ -166,7 +164,7 @@ function updateGameInfo(callback) {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			return null;
@@ -189,7 +187,7 @@ function updateStories(callback) {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			return null;
@@ -214,7 +212,7 @@ function deleteEstimates() {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			return null;
@@ -237,7 +235,7 @@ function checkAdmin(callback) {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			return null;
@@ -263,7 +261,7 @@ function makeGame( id, callback ) {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			return null;
@@ -292,7 +290,7 @@ function makeStory() {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			return null;
@@ -311,7 +309,7 @@ function endGame() {
 			},
 			error: function( jqXHR, textStatus, errorThrown ) {
 				$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 			}
@@ -336,7 +334,7 @@ function setScore() {
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 		}
@@ -354,7 +352,7 @@ function flipCards() {
 		data: data,
 		error: function( jqXHR, textStatus, errorThrown ) {
 			$('#error-message').empty();
-			$('#error-message').html('ERROR: ' + errorThrown);
+			$('#error-message').html('ERROR: ' + jqXHR.responseText);
 			$('.popup').addClass('in');
 			console.log('Error', jqXHR);
 		}
@@ -372,6 +370,7 @@ function storyClickHandler(clickEvent){
 
 	});
 }
+
 function storyDeleteHandler(clickEvent){
 	if (!isAdmin)
 		return;//non admin cannot delete
@@ -383,6 +382,7 @@ function storyDeleteHandler(clickEvent){
 
 	});
 }
+
 function joinGame(callback) {
 	var self = $(this),
 		url = '/game/' + getId() + '/participants'
@@ -415,6 +415,7 @@ function refreshAll() {
 	$('#game').val("");
 	document.title = "Game - "+ gameInfo.name;
 }
+
 var lastStory;
 function refreshDisplayedStory(callback){
 	//Generate ticket info
@@ -460,6 +461,7 @@ function refreshDisplayedStory(callback){
 	}
 
 }
+
 function refreshEstimates(){
 	if (currentStoryNo == null)
 		return;
@@ -468,6 +470,7 @@ function refreshEstimates(){
 		appendEstimate(estimate);
 	}
 }
+
 //show new estimate OR update vote on existing one
 function appendEstimate(estimate){
 	var id = "card-"+estimate.user.username,
@@ -500,6 +503,7 @@ function appendEstimate(estimate){
 	}
 	$('.result-card').tooltip();
 }
+
 //Generate stories on side bar
 function refreshStoryList(){
 	//$('#stories').empty();
@@ -509,6 +513,7 @@ function refreshStoryList(){
 	});
 
 }
+
 //append a story to the sidebar OR update one that's already there
 function appendStory(story){
 	var id = 'list-'+story.ticket_no;
@@ -566,10 +571,12 @@ function appendStory(story){
 	$(li).toggleClass('active', story.ticket_no == currentStoryNo);
 
 }
+
 function refreshParticipants(){
 	for (var i=0;i<gameInfo.participants.length;i++)
 		appendParticipant(gameInfo.participants[i]);
 }
+
 function appendParticipant(user){
 	var id = 'participant-'+user.username;
 	var li = document.getElementById(id);
@@ -581,6 +588,7 @@ function appendParticipant(user){
 		$(li).hide().slideDown();
 	}
 }
+
 function startTimer() {
 	var minHtml = "";
 		secHtml = "";
@@ -628,6 +636,7 @@ function startTimer() {
 		}, 100);
 	}
 }
+
 function getUsername() {
 	return getURLParameter('username');
 }
